@@ -3025,6 +3025,60 @@
         ]
       },
       {
+        "name": "constricted",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "being constricted by vines.",
+            "type": "exactMatch"
+          }
+        ]
+      },
+      {
+        "name": "snared",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "tangled up by a rope snare.",
+            "type": "exactMatch"
+          }
+        ]
+      },
+      {
+        "name": "vinewreathed",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "wreathed in flailing vines.",
+            "type": "exactMatch"
+          }
+        ]
+      },
+      {
         "name": "inlove",
         "isActive": "yes",
         "isFolder": "no",
@@ -4918,7 +4972,7 @@
         "highlightBG": "#ffff00",
         "patterns": [
           {
-            "pattern": "suffering from a scalded throat.",
+            "pattern": "horrifically scalded.",
             "type": "exactMatch"
           }
         ]
@@ -4937,78 +4991,6 @@
         "patterns": [
           {
             "pattern": "seriously dehydrated.",
-            "type": "exactMatch"
-          }
-        ]
-      },
-      {
-        "name": "severeburn",
-        "isActive": "yes",
-        "isFolder": "no",
-        "multiline": "no",
-        "multilineDelta": "0",
-        "filter": "no",
-        "fireLength": "0",
-        "highlight": "no",
-        "highlightFG": "#ff0000",
-        "highlightBG": "#ffff00",
-        "patterns": [
-          {
-            "pattern": "you are severely burned.",
-            "type": "exactMatch"
-          }
-        ]
-      },
-      {
-        "name": "extremeburn",
-        "isActive": "yes",
-        "isFolder": "no",
-        "multiline": "no",
-        "multilineDelta": "0",
-        "filter": "no",
-        "fireLength": "0",
-        "highlight": "no",
-        "highlightFG": "#ff0000",
-        "highlightBG": "#ffff00",
-        "patterns": [
-          {
-            "pattern": "you are extremely burned.",
-            "type": "exactMatch"
-          }
-        ]
-      },
-      {
-        "name": "charredburn",
-        "isActive": "yes",
-        "isFolder": "no",
-        "multiline": "no",
-        "multilineDelta": "0",
-        "filter": "no",
-        "fireLength": "0",
-        "highlight": "no",
-        "highlightFG": "#ff0000",
-        "highlightBG": "#ffff00",
-        "patterns": [
-          {
-            "pattern": "your flesh is blackened and charred.",
-            "type": "exactMatch"
-          }
-        ]
-      },
-      {
-        "name": "meltingburn",
-        "isActive": "yes",
-        "isFolder": "no",
-        "multiline": "no",
-        "multilineDelta": "0",
-        "filter": "no",
-        "fireLength": "0",
-        "highlight": "no",
-        "highlightFG": "#ff0000",
-        "highlightBG": "#ffff00",
-        "patterns": [
-          {
-            "pattern": "the flesh is melting from your bones.",
             "type": "exactMatch"
           }
         ]
@@ -5734,6 +5716,24 @@
         ]
       },
       {
+        "name": "condemned",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "you are condemned to burn.",
+            "type": "exactMatch"
+          }
+        ]
+      },
+      {
         "name": "Finished",
         "isActive": "yes",
         "isFolder": "no",
@@ -5806,7 +5806,7 @@
     "highlightBG": "#ffff00",
     "patterns": [
       {
-        "pattern": "if isPrompt() then return true else svo.paragraph_length = svo.paragraph_length + 1 return false end",
+        "pattern": "if isPrompt() then return true else svo.paragraph_length = svo.paragraph_length + 1 svo.note_paragraph_line() return false end",
         "type": "lua"
       }
     ],
@@ -7783,6 +7783,24 @@
     ]
   },
   {
+    "name": "svo condemned woreoff",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The righteous condemnation lifts, and you breathe more easily.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
     "name": "svo unconsciousness woreoff",
     "isActive": "yes",
     "isFolder": "no",
@@ -7796,6 +7814,60 @@
     "patterns": [
       {
         "pattern": "You regain consciousness with a start.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo constricted woreoff",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You manage to wrestle the vines away from your limbs.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo snared woreoff",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You manage to disentangle yourself from the rope trap which had snared your ankles.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo vinewreathed woreoff",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The vines flailing about your form recede.",
         "type": "exactMatch"
       }
     ]

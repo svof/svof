@@ -448,70 +448,71 @@ codepaste.addunknownany = function(amount)
   svo.updateaffcount(svo.dict.unknownany)
 end
 
--- The burn ladder is legacy. Achaea made burning one stacking affliction,
--- which GMCP and serverside report as `burning` with a level, so these five
--- separate afflictions are no longer needed. Replacing them with one counted
--- entry (keeping the name ablaze), and reworking pyre with it, is planned as
--- its own change. Don't build new logic on sk.burns.
---
--- A known problem until then: GMCP's `burning` maps to ablaze alone, so when
--- a rung above it is gained, remove_burns tries to remove ablaze, GMCP still
--- reports burning, and svo.rmaff refuses. ablaze and the new rung both stay
--- tracked, and sk.current_burn returns ablaze.
-sk.burns = {'ablaze', 'severeburn', 'extremeburn', 'charredburn', 'meltingburn'}
--- removes all burning afflictions except for the optional specified one
-codepaste.remove_burns = function(skipaff)
-  local burns = deepcopy(sk.burns)
-  if skipaff then
-    table.remove(burns, table.index_of(burns, skipaff))
-  end
+-- Burning is one counted affliction, ablaze, as the game has it: GMCP and
+-- serverside report it as `burning` with a level (the repo owner, 2026-09-25;
+-- the user, 2026-10-31). Mending takes it down a level per application, and
+-- so does a tree touch; the line "The raging fire about your skin goes out."
+-- ends it. Catching fire again, or one of the four old escalation lines,
+-- raises it a level. DIAGNOSE shows "ablaze." at every level (the user,
+-- 2026-10-31), so it says only that you're burning. GMCP's level, outside
+-- blackout, has the final word.
 
-  svo.rmaff(burns)
+-- raises ablaze a level for each of lines, the ignite lines of one paragraph
+-- (svo.valid.simpleablaze), or one, or to level when one is given. Not
+-- burning before, the first line is level 1. While GMCP reports burning, its
+-- Add has already set the level the lines brought, so they leave it
+codepaste.add_burn = function(level, lines)
+  local was = affs.ablaze
+  svo.addaffdict(svo.dict.ablaze)
+  if not affs.ablaze then return end
+  if svo.gmcp_holds('ablaze') and not tonumber(level) then
+    -- GMCP's Add set the level, and this line is still the one that warns
+    if (svo.dict.ablaze.count or 0) >= 5 then sk.warn 'golemdestroyable' end
+    return
+  end
+  local count = svo.dict.ablaze.count or 0
+  local raises = math.max(tonumber(lines) or 1, 1)
+  if tonumber(level) then
+    count = tonumber(level)
+  elseif was then
+    count = count + raises
+  else
+    count = raises
+  end
+  svo.dict.ablaze.count = math.max(count, 1)
+  svo.updateaffcount(svo.dict.ablaze)
+  -- the old ladder's top, meltingburn, warned of this
+  if svo.dict.ablaze.count >= 5 then sk.warn 'golemdestroyable' end
+end
+
+-- takes ablaze down amount levels, and off below one. While GMCP reports
+-- burning, its Add or Remove has already said where the cure left it
+codepaste.reduce_burn = function(amount)
+  if not affs.ablaze then return end
+  if svo.gmcp_holds('ablaze') then return end
+  local count = (svo.dict.ablaze.count or 1) - (amount or 1)
+  if count < 1 then
+    svo.rmaff('ablaze')
+    return
+  end
+  svo.dict.ablaze.count = count
+  svo.updateaffcount(svo.dict.ablaze)
 end
 
 -- -> boolean
--- Pyre builds pyre and ablaze, and a burn cannot tick down below the pyre
--- level. Salving a burn that sits at or under that level is wasted - it comes
--- straight back - so this returns true when pyre is holding the given burn in
--- place and the salve should be skipped.
+-- While pyre is active, ablaze may not be cured below the intensity of the
+-- pyre's own stacks (AFFLICTION SHOW). Mending takes ablaze down one level,
+-- so salving it at or under pyre's level is wasted - it comes straight back -
+-- and this says to skip the salve.
 --
--- Applying takes the burn down exactly one rung, and the rung it lands on has
--- to be at or above the pyre level to survive, so the burn's own index in
--- sk.burns is the threshold: ablaze is held from pyre 1, severeburn from 2,
--- extremeburn from 3. Pyre caps at 3 in game, so charredburn and meltingburn
--- are never held today; they are written the same way rather than dropped, so
--- the rule stays right if that cap ever moves.
---
--- Two traps live here. The level is on .p - svo.affs entries are
--- { p = <the dict entry>, sw = <stopwatch> } with no __index on svo.affs - so
--- reading affs.pyre.count gave nil and raised on the comparison. And having
--- pyre at all is level 1 or more, which is why presence floors the answer at
--- 1: only the GMCP path ever raises svo.dict.pyre.count, since
--- svo.valid.simplepyre passes no argument and pyre sits in the plain diag list
--- rather than the counted one, so without GMCP the stored level stays 0 while
--- the affliction is genuinely there.
-codepaste.pyre_holds = function(burn)
-  if not affs.pyre then return false end
+-- The level is on .p - svo.affs entries are { p = <the dict entry>, sw =
+-- <stopwatch> } with no __index on svo.affs. And having pyre or ablaze at all
+-- is level 1 or more, which is why presence floors both at 1: without GMCP a
+-- stored level can sit at 0 while the affliction is genuinely there.
+codepaste.pyre_holds = function()
+  if not affs.pyre or not affs.ablaze then return false end
 
-  return math.max(affs.pyre.p.count or 0, 1) >= table.index_of(sk.burns, burn)
-end
-
-sk.next_burn = function()
-  for i,v in ipairs(sk.burns) do
-    if affs[v] then return sk.burns[i+1] or sk.burns[#sk.burns] end
-  end
-end
-
-sk.current_burn = function()
-  for _,v in ipairs(sk.burns) do
-    if affs[v] then return v end
-  end
-end
-
-sk.previous_burn = function(howfar)
-  for i,v in ipairs(sk.burns) do
-    if affs[v] then return sk.burns[i-(howfar and howfar or 1)] or nil end
-  end
+  return math.max(affs.pyre.p.count or 0, 1) >= math.max(affs.ablaze.p.count or 0, 1)
 end
 
 codepaste.serversideahealthmanaprio = function()
@@ -702,6 +703,10 @@ if not next(svo.dict) then
       aff = {
         oncompleted = function (number)
           svo.addaffdict(svo.dict.skullfractures)
+          -- DIAGNOSE gives the level of one svof didn't have, and the gain line none: having it at all is level 1.
+          -- A higher level GMCP set is kept, and one GMCP refused is left at 0
+          local level = tonumber(number) or 1
+          if affs.skullfractures and svo.dict.skullfractures.count < level then svo.dict.skullfractures.count = level end
           svo.updateaffcount(svo.dict.skullfractures)
         end
       },
@@ -755,6 +760,10 @@ if not next(svo.dict) then
       aff = {
         oncompleted = function (number)
           svo.addaffdict(svo.dict.crackedribs)
+          -- DIAGNOSE gives the level of one svof didn't have, and the gain line none: having it at all is level 1.
+          -- A higher level GMCP set is kept, and one GMCP refused is left at 0
+          local level = tonumber(number) or 1
+          if affs.crackedribs and svo.dict.crackedribs.count < level then svo.dict.crackedribs.count = level end
           svo.updateaffcount(svo.dict.crackedribs)
         end
       },
@@ -808,6 +817,10 @@ if not next(svo.dict) then
       aff = {
         oncompleted = function (number)
           svo.addaffdict(svo.dict.wristfractures)
+          -- DIAGNOSE gives the level of one svof didn't have, and the gain line none: having it at all is level 1.
+          -- A higher level GMCP set is kept, and one GMCP refused is left at 0
+          local level = tonumber(number) or 1
+          if affs.wristfractures and svo.dict.wristfractures.count < level then svo.dict.wristfractures.count = level end
           svo.updateaffcount(svo.dict.wristfractures)
         end
       },
@@ -861,6 +874,10 @@ if not next(svo.dict) then
       aff = {
         oncompleted = function (number)
           svo.addaffdict(svo.dict.torntendons)
+          -- DIAGNOSE gives the level of one svof didn't have, and the gain line none: having it at all is level 1.
+          -- A higher level GMCP set is kept, and one GMCP refused is left at 0
+          local level = tonumber(number) or 1
+          if affs.torntendons and svo.dict.torntendons.count < level then svo.dict.torntendons.count = level end
           svo.updateaffcount(svo.dict.torntendons)
         end
       },
@@ -917,6 +934,10 @@ if not next(svo.dict) then
       aff = {
         oncompleted = function (number)
           svo.addaffdict(svo.dict.pressure)
+          -- DIAGNOSE gives the level of one svof didn't have, and the gain line none: having it at all is level 1.
+          -- A higher level GMCP set is kept, and one GMCP refused is left at 0
+          local level = tonumber(number) or 1
+          if affs.pressure and svo.dict.pressure.count < level then svo.dict.pressure.count = level end
           svo.updateaffcount(svo.dict.pressure)
         end
       },
@@ -977,6 +998,10 @@ if not next(svo.dict) then
       aff = {
         oncompleted = function (number)
           svo.addaffdict(svo.dict.cholerichumour)
+          -- DIAGNOSE gives the level of one svof didn't have, and the gain line none: having it at all is level 1.
+          -- A higher level GMCP set is kept, and one GMCP refused is left at 0
+          local level = tonumber(number) or 1
+          if affs.cholerichumour and svo.dict.cholerichumour.count < level then svo.dict.cholerichumour.count = level end
           svo.updateaffcount(svo.dict.cholerichumour)
         end
       },
@@ -1037,6 +1062,10 @@ if not next(svo.dict) then
       aff = {
         oncompleted = function (number)
           svo.addaffdict(svo.dict.melancholichumour)
+          -- DIAGNOSE gives the level of one svof didn't have, and the gain line none: having it at all is level 1.
+          -- A higher level GMCP set is kept, and one GMCP refused is left at 0
+          local level = tonumber(number) or 1
+          if affs.melancholichumour and svo.dict.melancholichumour.count < level then svo.dict.melancholichumour.count = level end
           svo.updateaffcount(svo.dict.melancholichumour)
         end
       },
@@ -1056,6 +1085,9 @@ if not next(svo.dict) then
         end,
       }
     },
+    -- Tempered by an Alchemist. Besides its own effects, it gives smoking a
+    -- chance of filling your lungs with mucous, which svof tracks as a longer
+    -- smoke recovery, not an affliction: see svo.dict.mucouslungs
     phlegmatichumour = {
       gamename = 'temperedphlegmatic',
       name = 'phlegmatichumour',
@@ -1096,6 +1128,10 @@ if not next(svo.dict) then
       aff = {
         oncompleted = function (number)
           svo.addaffdict(svo.dict.phlegmatichumour)
+          -- DIAGNOSE gives the level of one svof didn't have, and the gain line none: having it at all is level 1.
+          -- A higher level GMCP set is kept, and one GMCP refused is left at 0
+          local level = tonumber(number) or 1
+          if affs.phlegmatichumour and svo.dict.phlegmatichumour.count < level then svo.dict.phlegmatichumour.count = level end
           svo.updateaffcount(svo.dict.phlegmatichumour)
         end
       },
@@ -1143,18 +1179,22 @@ if not next(svo.dict) then
   
         noeffect = function() svo.lostbal_herb() end,
   
-        -- gives bleeding depending on your sanguine humour level, from 250 for first to 2500 for last
+        -- gives bleeding depending on your sanguine humour level, from 250 for first to 2500 for last. GMCP's
+        -- Bleed: in this paragraph's Char.Vitals already holds it, and Setup.lua recorded that amount, so it's
+        -- left alone. Without one, as in blackout, which stops Vitals, the level gives the amount until the next
         inundated = function()
           local min = 250
           -- local max = 2500
           if not affs.sanguinehumour then return end
-  
-          local bledfor = svo.dict.sanguinehumour.count * min
-  
-          svo.addaffdict(svo.dict.bleeding)
-          svo.dict.bleeding.count = bledfor
-          svo.updateaffcount(svo.dict.bleeding)
-  
+
+          if not sk.gmcp_bleed_seen then
+            local bledfor = svo.dict.sanguinehumour.count * min
+
+            svo.addaffdict(svo.dict.bleeding)
+            svo.dict.bleeding.count = bledfor
+            svo.updateaffcount(svo.dict.bleeding)
+          end
+
           svo.rmaff('sanguinehumour')
           svo.dict.sanguinehumour.count = 0
         end,
@@ -1166,6 +1206,10 @@ if not next(svo.dict) then
       aff = {
         oncompleted = function (number)
           svo.addaffdict(svo.dict.sanguinehumour)
+          -- DIAGNOSE gives the level of one svof didn't have, and the gain line none: having it at all is level 1.
+          -- A higher level GMCP set is kept, and one GMCP refused is left at 0
+          local level = tonumber(number) or 1
+          if affs.sanguinehumour and svo.dict.sanguinehumour.count < level then svo.dict.sanguinehumour.count = level end
           svo.updateaffcount(svo.dict.sanguinehumour)
         end
       },
@@ -1223,6 +1267,10 @@ if not next(svo.dict) then
       aff = {
         oncompleted = function (number)
           svo.addaffdict(svo.dict.horror)
+          -- DIAGNOSE gives the level of one svof didn't have, and the gain line none: having it at all is level 1.
+          -- A higher level GMCP set is kept, and one GMCP refused is left at 0
+          local level = tonumber(number) or 1
+          if affs.horror and svo.dict.horror.count < level then svo.dict.horror.count = level end
           svo.updateaffcount(svo.dict.horror)
         end
       },
@@ -1978,6 +2026,10 @@ if not next(svo.dict) then
       aff = {
         oncompleted = function (number)
           svo.addaffdict(svo.dict.pyre)
+          -- DIAGNOSE gives the level of one svof didn't have, and the gain line none: having it at all is level 1.
+          -- A higher level GMCP set is kept, and one GMCP refused is left at 0
+          local level = tonumber(number) or 1
+          if affs.pyre and svo.dict.pyre.count < level then svo.dict.pyre.count = level end
           svo.updateaffcount(svo.dict.pyre)
         end
       },
@@ -4725,29 +4777,36 @@ if not next(svo.dict) then
       }
     },
     
-    ablaze = {           
+    -- Burning, as one counted affliction: see codepaste.add_burn
+    ablaze = {
       gamename = 'burning',
+      count = 0,
       onservereignore = function()
         return ((svo.defdefup[svo.defs.mode].torch or svo.defkeepup[svo.defs.mode].torch) and 
         (svo.me.class == "fire Elemental Lord" or svo.me.class == "fire Elemental Lady"))
       end,
       salve = {
         isadvisable = function()
-          return (affs.ablaze and not codepaste.pyre_holds('ablaze') and not (defdefup[defs.mode].torch or (conf.keepup and defkeepup[defs.mode].torch) and
+          return (affs.ablaze and not affs.condemned and not codepaste.pyre_holds() and not (defdefup[defs.mode].torch or (conf.keepup and defkeepup[defs.mode].torch) and
           (svo.me.class == "fire Elemental Lord" or svo.me.class == "fire Elemental Lady"))) or false
         end,
   
+        -- "The fires consuming you diminish somewhat."
         oncompleted = function()
+          svo.lostbal_salve()
+          codepaste.reduce_burn(1)
+          if not affs.ablaze and defc.torch and (svo.me.class == "fire Elemental Lord" or svo.me.class == "fire Elemental Lady") then
+            defences.lost('torch')
+          end
+        end,
+  
+        -- "The raging fire about your skin goes out."
+        all = function()
           svo.lostbal_salve()
           svo.rmaff('ablaze')
           if defc.torch and (svo.me.class == "fire Elemental Lord" or svo.me.class == "fire Elemental Lady") then
             defences.lost('torch')
           end
-        end,
-  
-        all = function()
-          svo.lostbal_salve()
-          codepaste.remove_burns()
         end,
   
         noeffect = function()
@@ -4767,224 +4826,52 @@ if not next(svo.dict) then
         end
       },
       aff = {
-        oncompleted = function()
-          if ((defdefup[defs.mode].torch) or (conf.keepup and defkeepup[defs.mode].torch)) and 
+        oncompleted = function(level, lines)
+          if ((defdefup[defs.mode].torch) or (conf.keepup and defkeepup[defs.mode].torch)) and
           (svo.me.class == "fire Elemental Lord" or svo.me.class == "fire Elemental Lady") then
             defences.got('torch')
           else
-            codepaste.remove_burns('ablaze')
-            svo.addaffdict(svo.dict.ablaze)
+            codepaste.add_burn(level, lines)
           end
+        end,
+
+        -- the ignite lines of one paragraph, counted by svo.valid.simpleablaze
+        ignite = function(lines)
+          svo.dict.ablaze.aff.oncompleted(nil, lines)
         end,
       },
       gone = {
         oncompleted = function()
-          local currentburn = sk.current_burn()
-          svo.rmaff(currentburn)
+          svo.rmaff('ablaze')
           if defc.torch and (svo.me.class == "fire Elemental Lord" or svo.me.class == "fire Elemental Lady") then
             defences.lost('torch')
           end
         end,
   
-        -- used in blackout and passive curing where multiple levels could be cured at once
+        -- used in blackout and passive curing where several levels could be
+        -- cured at once: amount levels down, or one
         generic_reducelevel = function(amount)
-          -- if no amount is specified, find the current level and take it down a notch
-          if not amount then
-            local reduceto, currentburn = sk.previous_burn(), sk.current_burn()
-  
-            svo.rmaff(currentburn)
-            svo.addaffdict(svo.dict[reduceto])
-          else -- amount is specified
-            local reduceto, currentburn = sk.previous_burn(amount), sk.current_burn()
-            svo.rmaff(currentburn)
-  
-            if not reduceto then reduceto = 'ablaze' end
-            svo.addaffdict(svo.dict[reduceto])
-          end
-        end
-      }
-    },
-    severeburn = {
-      salve = {
-        irregular = true,
-  
-        isadvisable = function()
-          return (affs.severeburn and not codepaste.pyre_holds('severeburn')) or false
+          codepaste.reduce_burn(tonumber(amount) or 1)
         end,
-  
-        oncompleted = function()
-          svo.lostbal_salve()
-          svo.rmaff('severeburn')
-          svo.addaffdict(svo.dict.ablaze)
-        end,
-  
-        all = function()
-          svo.lostbal_salve()
-          codepaste.remove_burns()
-        end,
-  
-        noeffect = function()
-          svo.lostbal_salve()
-          empty.apply_mending()
-        end,
-  
-        empty = function()
-          svo.lostbal_salve()
-          empty.apply_mending()
-        end,
-  
-        applycure = {'mending'},
-        actions = {"apply mending to body", "apply mending"},
-        onstart = function()
-          svo.apply(svo.dict.severeburn.salve, " to body")
+
+        -- svo.removeafflevel's: amount levels down, and off below one, or
+        -- kept at the first when dontkeep isn't set. As a player's
+        -- instruction, it doesn't wait on GMCP, as reduce_burn does
+        general_cure = function(amount, dontkeep)
+          local count = (svo.dict.ablaze.count or 1) - (tonumber(amount) or 1)
+          if count < 1 and dontkeep then svo.rmaff('ablaze') return end
+          svo.dict.ablaze.count = math.max(count, 1)
+          svo.updateaffcount(svo.dict.ablaze)
         end
       },
-      aff = {
-        oncompleted = function()
-          codepaste.remove_burns('severeburn')
-          svo.addaffdict(svo.dict.severeburn)
-        end,
-      },
-      gone = {
-        oncompleted = function() svo.rmaff('severeburn') end,
-      }
-    },
-    extremeburn = {
-      salve = {
-        irregular = true,
-  
-        isadvisable = function()
-          return (affs.extremeburn and not codepaste.pyre_holds('extremeburn')) or false
-        end,
-  
-        oncompleted = function()
-          svo.lostbal_salve()
-          svo.rmaff('extremeburn')
-          svo.addaffdict(svo.dict.severeburn)
-        end,
-  
-        all = function()
-          svo.lostbal_salve()
-          codepaste.remove_burns()
-        end,
-  
-        noeffect = function()
-          svo.lostbal_salve()
-          empty.apply_mending()
-        end,
-  
-        empty = function()
-          svo.lostbal_salve()
-          empty.apply_mending()
-        end,
-  
-        applycure = {'mending'},
-        actions = {"apply mending to body", "apply mending"},
-        onstart = function()
-          svo.apply(svo.dict.extremeburn.salve, " to body")
-        end
-      },
-      aff = {
-        oncompleted = function()
-          codepaste.remove_burns('extremeburn')
-          svo.addaffdict(svo.dict.extremeburn)
-        end,
-      },
-      gone = {
-        oncompleted = function() svo.rmaff('extremeburn') end,
-      }
-    },
-    charredburn = {
-      salve = {
-        irregular = true,
-  
-        isadvisable = function()
-          return (affs.charredburn and not codepaste.pyre_holds('charredburn')) or false
-        end,
-  
-        oncompleted = function()
-          svo.lostbal_salve()
-          svo.rmaff('charredburn')
-          svo.addaffdict(svo.dict.extremeburn)
-        end,
-  
-        all = function()
-          svo.lostbal_salve()
-          codepaste.remove_burns()
-        end,
-  
-        noeffect = function()
-          svo.lostbal_salve()
-          empty.apply_mending()
-        end,
-  
-        empty = function()
-          svo.lostbal_salve()
-          empty.apply_mending()
-        end,
-  
-        applycure = {'mending'},
-        actions = {"apply mending to body", "apply mending"},
-        onstart = function()
-          svo.apply(svo.dict.charredburn.salve, " to body")
-        end
-      },
-      aff = {
-        oncompleted = function()
-          codepaste.remove_burns('charredburn')
-          svo.addaffdict(svo.dict.charredburn)
-        end,
-      },
-      gone = {
-        oncompleted = function() svo.rmaff('charredburn') end,
-      }
-    },
-    meltingburn = {
-      salve = {
-        irregular = true,
-  
-        isadvisable = function()
-          return (affs.meltingburn and not codepaste.pyre_holds('meltingburn')) or false
-        end,
-  
-        oncompleted = function()
-          svo.lostbal_salve()
-          svo.rmaff('meltingburn')
-          svo.addaffdict(svo.dict.charredburn)
-        end,
-  
-        all = function()
-          svo.lostbal_salve()
-          codepaste.remove_burns()
-        end,
-  
-        noeffect = function()
-          svo.lostbal_salve()
-          empty.apply_mending()
-        end,
-  
-        empty = function()
-          svo.lostbal_salve()
-          empty.apply_mending()
-        end,
-  
-        applycure = {'mending'},
-        actions = {"apply mending to body", "apply mending"},
-        onstart = function()
-          svo.apply(svo.dict.meltingburn.salve, " to body")
-        end
-      },
-      aff = {
-        oncompleted = function()
-          codepaste.remove_burns('meltingburn')
-          svo.addaffdict(svo.dict.meltingburn)
-  
-          sk.warn 'golemdestroyable'
-        end,
-      },
-      gone = {
-        oncompleted = function() svo.rmaff('meltingburn') end,
-      }
+      -- having it at all is level 1, whichever way it was added, and GMCP
+      -- sets its own level straight after
+      onadded = function()
+        if (svo.dict.ablaze.count or 0) < 1 then svo.dict.ablaze.count = 1 end
+      end,
+      onremoved = function()
+        svo.dict.ablaze.count = 0
+      end,
     },
     selarnia = {
       salve = {
@@ -5161,6 +5048,46 @@ if not next(svo.dict) then
       end,
       onremoved = function()
         if svo.actions.scalded_waitingfor then svo.killaction(svo.dict.scalded.waitingfor) end
+      end,
+    },
+    -- Nothing cures condemned; it wears off after 40 seconds (AFFLICTION SHOW,
+    -- 2026-10-20). While it lasts, ablaze can't be cured, so the burn salves
+    -- wait on it. The game prints no line when it's given, so GMCP or DIAGNOSE
+    -- adds it.
+    condemned = {
+      waitingfor = {
+        customwait = 40,
+
+        isadvisable = function()
+          return false
+        end,
+
+        onstart = function() end,
+
+        ontimeout = function()
+          svo.rmaff('condemned')
+        end,
+
+        oncompleted = function()
+          svo.rmaff('condemned')
+          svo.make_gnomes_work()
+        end
+      },
+      aff = {
+        oncompleted = function()
+          svo.addaffdict(svo.dict.condemned)
+        end,
+      },
+      gone = {
+        oncompleted = function() svo.rmaff('condemned') end,
+      },
+      -- onadded and not aff.oncompleted, because GMCP adds it with addaffdict
+      -- and never runs the aff action.
+      onadded = function()
+        if not svo.actions.condemned_waitingfor then svo.doaction(svo.dict.condemned.waitingfor) end
+      end,
+      onremoved = function()
+        if svo.actions.condemned_waitingfor then svo.killaction(svo.dict.condemned.waitingfor) end
       end,
     },
     numbedleftarm = {
@@ -5648,7 +5575,11 @@ if not next(svo.dict) then
   
         oncompleted = function()
           svo.rmaff('sleep')
-  
+          -- awake, so not in a deepsleep either: one that ended in blackout,
+          -- which GMCP couldn't say, goes here. While GMCP still reports it,
+          -- the removal gate keeps it
+          svo.rmaff('deepsleep')
+
           -- reset sleep so we try waking up again after being awoken and slept at once (like in a dsl or a delph snipe)
           if svo.actions.sleep_misc then
             svo.killaction(svo.dict.sleep.misc)
@@ -5666,7 +5597,7 @@ if not next(svo.dict) then
         uncurable = true,
   
         isadvisable = function()
-          if affs.bleeding and not svo.doingaction('bleeding') and not affs.bleeding.spammingbleed and not affs.haemophilia and not affs.sleep and svo.can_usemana() and conf.clot then
+          if affs.bleeding and not svo.doingaction('bleeding') and not affs.bleeding.spammingbleed and not affs.haemophilia and not affs.sleep and not affs.deepsleep and svo.can_usemana() and conf.clot then
             if (not affs.corrupted and svo.dict.bleeding.count >= conf.bleedamount) then
               return true
             elseif (affs.corrupted and svo.dict.bleeding.count >= conf.manableedamount) then
@@ -5767,7 +5698,7 @@ if not next(svo.dict) then
         uncurable = true,
   
         isadvisable = function()
-          if not next(affs) or not bals.tree or svo.doingaction('touchtree') or affs.sleep or not conf.tree or affs.stun
+          if not next(affs) or not bals.tree or svo.doingaction('touchtree') or affs.sleep or affs.deepsleep or not conf.tree or affs.stun
            or affs.unconsciousness or affs.numbedrightarm or affs.numbedleftarm or affs.paralysis or affs.webbed
             or affs.bound or affs.transfixed or affs.roped or affs.impale or affs.daeggerimpale or ((affs.crippledleftarm or affs.mangledleftarm
              or affs.mutilatedleftarm) and (affs.crippledrightarm or affs.mangledrightarm or affs.mutilatedrightarm))
@@ -5785,20 +5716,14 @@ if not next(svo.dict) then
           -- small heuristic - shivering can be upgraded to frozen
           if aff == 'shivering' and not affs.shivering and affs.frozen then
             svo.rmaff('frozen')
-          -- handle levels of burns
+          -- burning: a touch takes it down a level (the user, 2026-10-31), and
+          -- "goes out" ends it
   
           elseif aff == "all burns" then
-            codepaste.remove_burns()
+            svo.rmaff('ablaze')
   
           elseif aff == 'burn' then
-            local previousburn, currentburn = sk.previous_burn(), sk.current_burn()
-  
-            if not currentburn then
-              codepaste.remove_burns()
-            else
-              svo.rmaff(currentburn)
-              svo.addaffdict(svo.dict[previousburn])
-            end
+            codepaste.reduce_burn(1)
   
           elseif aff == 'skullfractures' then
             svo.updateaffcount(svo.dict.skullfractures)
@@ -6122,7 +6047,7 @@ if not next(svo.dict) then
         isadvisable = function()
           return (affs.prone and (not affs.paralysis or svo.doingaction'paralysis')
             and (svo.haveskillset('weaponmastery') and (sk.didfootingattack or (bals.balance and bals.equilibrium and bals.leftarm and bals.rightarm)) or (bals.balance and bals.equilibrium and bals.leftarm and bals.rightarm))
-            and not svo.doingaction('prone') and not affs.sleep
+            and not svo.doingaction('prone') and not affs.sleep and not affs.deepsleep
             and not affs.impale and not affs.daeggerimpale
             and not affs.transfixed
             and not affs.webbed and not affs.bound and not affs.roped
@@ -6168,7 +6093,7 @@ if not next(svo.dict) then
       misc = {
         isadvisable = function()
           return (affs.disrupt and not svo.doingaction('disrupt')
-            and not affs.confusion and not affs.sleep) or false
+            and not affs.confusion and not affs.sleep and not affs.deepsleep) or false
         end,
   
         oncompleted = function() svo.rmaff('disrupt') end,
@@ -7357,7 +7282,7 @@ if not next(svo.dict) then
         -- lets it through. So it waits while a focus would be punished, the
         -- same as check_focus does.
         isadvisable = function()
-          return (svo.affsp.impatience and not affs.sleep and bals.focus and conf.focus
+          return (svo.affsp.impatience and not affs.sleep and not affs.deepsleep and bals.focus and conf.focus
             and not svo.focus_would_hurt()) or false
         end,
   
@@ -7506,7 +7431,7 @@ if not next(svo.dict) then
         uncurable = true,
   
         isadvisable = function()
-          return (svo.affsp.hypersomnia and not affs.sleep) or false
+          return (svo.affsp.hypersomnia and not affs.sleep and not affs.deepsleep) or false
         end,
   
         oncompleted = function() end,
@@ -7597,7 +7522,7 @@ if not next(svo.dict) then
         if svo.paragraph_length > 2 then
             svo.dict.stun.aff.oncompleted()
             svo.killaction(svo.dict.checkstun.misc)
-          elseif not affs.sleep and not conf.paused then -- let autodetection take care of after we wake up. otherwise, a well timed stun & stun symptom on awake can trick us. if paused, let it through as well, because we don't want to kill affs
+          elseif not affs.sleep and not affs.deepsleep and not conf.paused then -- let autodetection take care of after we wake up. otherwise, a well timed stun & stun symptom on awake can trick us. if paused, let it through as well, because we don't want to kill affs
             svo.affsp.stun = true
             svo.dict.checkstun.time = num
             svo.dict.checkstun.templifevision = deepcopy(svo.lifevision.l)
@@ -7870,6 +7795,139 @@ if not next(svo.dict) then
         end,
       }
     },
+    -- Vines that slow writhing, until time frees you: 30 seconds by default
+    -- (AFFLICTION SHOW, captured 2026-10-20). Not entanglement, which is
+    -- writhed out of
+    constricted = {
+      waitingfor = {
+        customwait = 30, -- AFFLICTION SHOW's default time
+
+        isadvisable = function()
+          return false
+        end,
+
+        onstart = function() end,
+
+        ontimeout = function()
+          svo.rmaff('constricted')
+          svo.make_gnomes_work()
+        end,
+
+        oncompleted = function()
+          svo.rmaff('constricted')
+          svo.make_gnomes_work()
+        end
+      },
+      aff = {
+        oncompleted = function()
+          svo.addaffdict(svo.dict.constricted)
+        end
+      },
+      gone = {
+        oncompleted = function() svo.rmaff('constricted') end,
+      },
+      -- onadded and not aff.oncompleted, because GMCP adds it with addaffdict
+      -- and never runs the aff action
+      onadded = function()
+        if not svo.actions.constricted_waitingfor then svo.doaction(svo.dict.constricted.waitingfor) end
+      end,
+      onremoved = function()
+        if svo.actions.constricted_waitingfor then svo.killaction(svo.dict.constricted.waitingfor) end
+      end,
+    },
+    -- A rope trap about the ankles, until time frees you: 20 seconds by
+    -- default (AFFLICTION SHOW, captured 2026-10-20)
+    snared = {
+      waitingfor = {
+        customwait = 20, -- AFFLICTION SHOW's default time
+
+        isadvisable = function()
+          return false
+        end,
+
+        onstart = function() end,
+
+        ontimeout = function()
+          svo.rmaff('snared')
+          svo.make_gnomes_work()
+        end,
+
+        oncompleted = function()
+          svo.rmaff('snared')
+          svo.make_gnomes_work()
+        end
+      },
+      aff = {
+        oncompleted = function()
+          svo.addaffdict(svo.dict.snared)
+        end
+      },
+      gone = {
+        oncompleted = function() svo.rmaff('snared') end,
+      },
+      -- as constricted's
+      onadded = function()
+        if not svo.actions.snared_waitingfor then svo.doaction(svo.dict.snared.waitingfor) end
+      end,
+      onremoved = function()
+        if svo.actions.snared_waitingfor then svo.killaction(svo.dict.snared.waitingfor) end
+      end,
+    },
+    -- A Viridian's flailing vines, which keep you from parrying their thorn
+    -- rends, until they recede: 20 seconds by default (AFFLICTION SHOW,
+    -- captured 2026-10-20)
+    vinewreathed = {
+      waitingfor = {
+        customwait = 20, -- AFFLICTION SHOW's default time
+
+        isadvisable = function()
+          return false
+        end,
+
+        onstart = function() end,
+
+        ontimeout = function()
+          svo.rmaff('vinewreathed')
+          svo.make_gnomes_work()
+        end,
+
+        oncompleted = function()
+          svo.rmaff('vinewreathed')
+          svo.make_gnomes_work()
+        end
+      },
+      aff = {
+        oncompleted = function()
+          svo.addaffdict(svo.dict.vinewreathed)
+        end
+      },
+      gone = {
+        oncompleted = function() svo.rmaff('vinewreathed') end,
+      },
+      -- as constricted's
+      onadded = function()
+        if not svo.actions.vinewreathed_waitingfor then svo.doaction(svo.dict.vinewreathed.waitingfor) end
+      end,
+      onremoved = function()
+        if svo.actions.vinewreathed_waitingfor then svo.killaction(svo.dict.vinewreathed.waitingfor) end
+      end,
+    },
+    -- A sleep you never wake from on your own (AFFLICTION SHOW, captured
+    -- 2026-10-20): you can do nothing in it, as in sleep, but svof doesn't
+    -- try to wake you, which sleep's misc action would. GMCP's deepsleep
+    -- used to be read as sleep
+    deepsleep = {
+      aff = {
+        oncompleted = function()
+          svo.addaffdict(svo.dict.deepsleep)
+        end
+      },
+      gone = {
+        oncompleted = function()
+          svo.rmaff('deepsleep')
+        end,
+      }
+    },
     pinshot = {
       waitingfor = {
         customwait = 21, -- AFFLICTION SHOW's default time
@@ -8050,41 +8108,6 @@ if not next(svo.dict) then
         end,
       }
     },
-    mucous = {
-      waitingfor = {
-        customwait = 6,
-  
-        isadvisable = function()
-          return false
-        end,
-  
-        onstart = function() end,
-  
-        oncompleted = function() svo.rmaff('mucous') end,
-  
-        ontimeout = function()
-          svo.rmaff('mucous')
-          svo.make_gnomes_work()
-        end
-      },
-      aff = {
-        oncompleted = function()
-          svo.addaffdict(svo.dict.mucous)
-          if not svo.actions.mucous_waitingfor then svo.doaction(svo.dict.mucous.waitingfor) end
-  
-          local r = svo.findbybal('smoke')
-          if r then
-            svo.killaction(svo.dict[r.action_name].smoke)
-          end
-        end
-      },
-      gone = {
-        oncompleted = function()
-          svo.rmaff('mucous')
-          svo.killaction(svo.dict.mucous.waitingfor)
-        end,
-      }
-    },
     phlogistication = {
       waitingfor = {
         customwait = 999, -- time increases
@@ -8178,9 +8201,8 @@ if not next(svo.dict) then
     -- are NOT precedent for it. The game calls all four *fisted and svof
     -- declines that name for the other three (airfisted is galed, icefisted
     -- is icing, voidfisted is voided), so this is now the only one of the
-    -- four whose svof name matches the game's. Nothing here belongs to the
-    -- ablaze burn escalation (severeburn -> meltingburn), which is
-    -- untouched.
+    -- four whose svof name matches the game's. Nothing here belongs to
+    -- ablaze, the game's burning.
     flamefisted = {
       waitingfor = {
         customwait = 15, -- AFFLICTION SHOW's default time
@@ -8923,6 +8945,10 @@ if not next(svo.dict) then
       aff = {
         oncompleted = function (number)
           svo.addaffdict(svo.dict.unweavingbody)
+          -- DIAGNOSE gives the level of one svof didn't have, and the gain line none: having it at all is level 1.
+          -- A higher level GMCP set is kept, and one GMCP refused is left at 0
+          local level = tonumber(number) or 1
+          if affs.unweavingbody and svo.dict.unweavingbody.count < level then svo.dict.unweavingbody.count = level end
           svo.updateaffcount(svo.dict.unweavingbody)
         end
       },
@@ -8979,6 +9005,10 @@ if not next(svo.dict) then
       aff = {
         oncompleted = function (number)
           svo.addaffdict(svo.dict.unweavingmind)
+          -- DIAGNOSE gives the level of one svof didn't have, and the gain line none: having it at all is level 1.
+          -- A higher level GMCP set is kept, and one GMCP refused is left at 0
+          local level = tonumber(number) or 1
+          if affs.unweavingmind and svo.dict.unweavingmind.count < level then svo.dict.unweavingmind.count = level end
           svo.updateaffcount(svo.dict.unweavingmind)
         end
       },
@@ -9035,6 +9065,10 @@ if not next(svo.dict) then
       aff = {
         oncompleted = function (number)
           svo.addaffdict(svo.dict.unweavingspirit)
+          -- DIAGNOSE gives the level of one svof didn't have, and the gain line none: having it at all is level 1.
+          -- A higher level GMCP set is kept, and one GMCP refused is left at 0
+          local level = tonumber(number) or 1
+          if affs.unweavingspirit and svo.dict.unweavingspirit.count < level then svo.dict.unweavingspirit.count = level end
           svo.updateaffcount(svo.dict.unweavingspirit)
         end
       },
@@ -9354,6 +9388,10 @@ if not next(svo.dict) then
       aff = {
         oncompleted = function (number)
           svo.addaffdict(svo.dict.crescendo)
+          -- DIAGNOSE gives the level of one svof didn't have, and the gain line none: having it at all is level 1.
+          -- A higher level GMCP set is kept, and one GMCP refused is left at 0
+          local level = tonumber(number) or 1
+          if affs.crescendo and svo.dict.crescendo.count < level then svo.dict.crescendo.count = level end
           svo.updateaffcount(svo.dict.crescendo)
         end
       },
@@ -9536,6 +9574,53 @@ if not next(svo.dict) then
   
         oncancel = function()
           svo.dict.gotbalance.happened.tempmap = {}
+        end
+      }
+    },
+    -- Mucous in your lungs, a tempered phlegmatic humour's effect on smoking
+    -- (svo.dict.phlegmatichumour, the game's temperedphlegmatic). It's not an
+    -- affliction: the game doesn't list it, and GMCP never reports it. HELP
+    -- HUMOURISM: "Smoking will have a chance of filling your lungs with
+    -- phlegm, increasing your lungs recovery time." So svof takes smoke
+    -- balance for longer than a smoke's usual recovery, and the smoke counts
+    -- as failed, so svof smokes for the same thing again later. The lines go
+    -- through lifevision (svo.valid.got_mucous), so nothing changes before the
+    -- prompt, and a paragraph found to be an illusion changes nothing.
+    --
+    -- Neither of those two is confirmed: how much longer recovery takes was
+    -- never measured, and nothing says whether the smoke's cure still lands.
+    -- recovery is the 6 seconds svof's old mucous affliction waited.
+    mucouslungs = {
+      happened = {
+        recovery = 6,
+
+        -- "As you attempt to inhale the smoke, your lungs fill with a thick
+        -- mucous." or "Your lungs are too clogged with mucous for you to
+        -- attempt smoking."
+        oncompleted = function()
+          local r = svo.findbybal('smoke')
+          if r and r.action_name ~= 'checkasthma' then svo.killaction(svo.dict[r.action_name].smoke) end
+          svo.lostbal_smoke(svo.dict.mucouslungs.happened.recovery)
+          sk.mucous_smoketick = sk.smoketick
+        end,
+
+        -- "You manage to cough away the mucous filling your lungs." The lungs
+        -- are clear, so the recovery mucous started ends early. If they
+        -- aren't, the next smoke's "too clogged" line takes smoke balance
+        -- again. Only that recovery: one a smoke started isn't mucous's to end
+        coughed = function()
+          if not svo.lungs_clogged() then return end
+          sk.mucous_smoketick = nil
+          bals.smoke = true
+          raiseEvent("svo got balance", 'smoke')
+          svo.endbalancewatch('smoke')
+        end,
+
+        -- both lines in one paragraph, the clog first: the smoke failed, and
+        -- the recovery is already over
+        clogged_then_coughed = function()
+          svo.dict.mucouslungs.happened.oncompleted()
+          svo.dict.mucouslungs.happened.coughed()
         end
       }
     },
@@ -10759,8 +10844,10 @@ if not next(svo.dict) then
       claustrophobia = 'claustrophobia',
       clumsiness = 'clumsiness',
       concussion = 'mangledhead',
+      condemned = 'condemned',
       conflagration = false,
       confusion = 'confusion',
+      constricted = 'constricted',
       corruption = 'corrupted',
       crackedribs = 'crackedribs',
       crescendo = 'crescendo',
@@ -10776,7 +10863,7 @@ if not next(svo.dict) then
       dazzled = false,
       deadening = 'deadening',
       deafness = false,
-      deepsleep = 'sleep',
+      deepsleep = 'deepsleep',
       degenerate = 'degenerate',
       dehydrated = 'dehydrated',
       dementia = 'dementia',
@@ -10879,6 +10966,7 @@ if not next(svo.dict) then
       sleeping = 'sleep',
       slickness = 'slickness',
       slimeobscure = 'ninkharsag',
+      snared = 'snared',
       spiritburn = 'spiritburn',
       stupidity = 'stupidity',
       stuttering = 'stuttering',
@@ -10898,7 +10986,7 @@ if not next(svo.dict) then
       unweavingmind = 'unweavingmind',
       unweavingspirit = 'unweavingspirit',
       vertigo = 'vertigo',
-      vinewreathed = false,
+      vinewreathed = 'vinewreathed',
       vitiated = false,
       vitrified = 'vitrification',
       voidfisted = 'voided',
@@ -13468,7 +13556,7 @@ if not next(svo.dict) then
         balanceless_act = true,
   
         isadvisable = function()
-          if not next(affs) or not bals.shrugging or affs.sleep or not conf.shrugging or affs.stun or affs.unconsciousness or affs.weakness or codepaste.nonstdcure() or defc.dragonform then return false end
+          if not next(affs) or not bals.shrugging or affs.sleep or affs.deepsleep or not conf.shrugging or affs.stun or affs.unconsciousness or affs.weakness or codepaste.nonstdcure() or defc.dragonform then return false end
   
           for name, func in pairs(svo.shrugging) do
             if not me.disabledshruggingfunc[name] then

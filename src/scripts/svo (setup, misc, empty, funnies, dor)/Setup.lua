@@ -118,6 +118,7 @@ svo.dragonheal       = svo.dragonheal or {} -- stores dragonheal curing strats
 svo.lifep            = svo.lifep or {}
 svo.lifevision.l     = svo.lifevision.l or pl.OrderedMap()
 svo.paragraph_length = 0
+svo.paragraph_lines  = {}
 svo.restore          = svo.restore or {}
 svo.shrugging        = svo.shrugging or {} -- stores shrugging curing strats
 svo.sp               = svo.sp or {} -- parry
@@ -323,6 +324,13 @@ signals.gmcpcharvitals:connect(function()
       else
         local bleed = val:match("^Bleed: (%d+)$")
         if bleed then
+          -- the game's amount for this paragraph, which sanguinehumour's
+          -- inundated leaves alone. Vitals stops in blackout, so without one
+          -- inundated works the amount out. Cleared on the next prompt
+          sk.gmcp_bleed_seen = true
+          sk.onprompt_beforeaction_add('gmcpbleedseen', function()
+            sk.gmcp_bleed_seen = nil
+          end)
           if bleed == '0' then
             svo.rmaff('bleeding')
           else
@@ -1126,6 +1134,16 @@ signals.gmcpcharafflictionsremove:connect(function()
   sk.gmcp_unconfirmed[thisaff] = nil
   if conf.gmcpaffechoes then svo.echof("Cured aff %s", thisaff) end
 
+  -- An affliction with two game names (seriousconcussion: concussion,
+  -- mangledhead) isn't gone while the game still lists the other one. Only
+  -- another name counts, so a levelled entry of this one changes nothing
+  if svoaffkey then
+    for other in pairs(gaffl) do
+      local othername = parseaffname(other)
+      if othername ~= affname and svo.dict.sstosvoa[othername] == svoaffkey then svoaffkey = nil break end
+    end
+  end
+
   -- "A real affliction was cured that svof wasn't tracking" means one of the
   -- unknowns is accounted for. That is only true when the GMCP name
   -- resolves to a real svof affliction and svof was not already tracking it
@@ -1472,6 +1490,16 @@ signals.svogotaff:connect(function(aff)
   if aff ~= 'blackout' then return end
   for rawaff in pairs(gaffl) do sk.gmcp_unconfirmed[rawaff] = true end
 end, 'gmcp affs unconfirmed after blackout')
+-- Deepsleep has no cure and no line of its own ending, so only GMCP says it
+-- ended, and it can't in blackout. svof doesn't try to wake you from it, but
+-- when blackout ends with deepsleep held and GMCP not saying it again yet, it
+-- tries once: awake, "You already are awake." clears it (curingsleep). Still
+-- in deepsleep, the wake fails, and svof doesn't try again until the next
+-- blackout ends (the user, 2026-11-07)
+signals.svolostaff:connect(function(aff)
+  if aff ~= 'blackout' or not affs.deepsleep or svo.gmcp_reports('deepsleep') or svo.conf.paused then return end
+  send('wake up', svo.conf.commandecho)
+end, 'try waking once from a deepsleep blackout may have hidden the end of')
 -- and the same for defences, which have a List of their own
 signals.connected:connect(function() sk.gmcp_defs_listed = false end, 'gmcp defs untrusted until the login List')
 signals.svogotaff:connect(function(aff)
