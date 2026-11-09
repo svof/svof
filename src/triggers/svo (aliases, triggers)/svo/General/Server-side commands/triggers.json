@@ -338,6 +338,24 @@
     ]
   },
   {
+    "name": "Curing priority spam limit",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You have exceeded the spam threshold for curing priority. Please see Announce #5450 for details.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
     "name": "Defence list reset",
     "isActive": "yes",
     "isFolder": "no",

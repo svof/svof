@@ -9,9 +9,13 @@ Static test of two afflictions svof filed under the wrong name.
   * homunculusmercury is svof's swellskin: the game's cure and DIAGNOSE lines
     for it are the ones svof's swellskin triggers read. GMCP's name was
     mapped to false, so GMCP never added or removed swellskin.
+  * deepsleep is its own entry, not sleep, and svof doesn't wake you from
+    it. Only GMCP says it ended, so when blackout ends with it held, svof
+    tries waking once, and a wake line clears it.
 
 This reads the real sources and checks the entry, the GMCP map, the
-enmeshment handler and the triggers.
+enmeshment handler and the triggers, and runs the deepsleep cases through
+tools/svof_world.lua.
 
 Run: lua tools/test_affliction_names.lua
 Exits 0 and prints "ALL PASS" on success, exits 1 and prints failures.
@@ -42,7 +46,8 @@ local function entry(name)
   -- an entry's line can carry a comment, as swellskin's does
   local s = dict:find("\n    " .. name .. " = {[^\n]*\n")
   if not s then return nil end
-  local e = dict:find("\n    [%w_]+ = {\n", s + 1) or #dict
+  -- to its own closing brace, so the comment above the next entry isn't read
+  local e = dict:find("\n    }", s + 1, true) or #dict
   return dict:sub(s, e)
 end
 
@@ -92,6 +97,162 @@ end
 -- homunculusmercury
 check("GMCP's homunculusmercury is svof's swellskin", mapped("homunculusmercury"), "'swellskin'")
 check("svof has a swellskin entry", entry("swellskin") ~= nil, true)
+
+-- constricted, snared and vinewreathed: time-cured, with the default times,
+-- cure and expire lines and DIAGNOSE lines AFFLICTION SHOW gives
+for _, t in ipairs({
+  { "constricted", 30, "You manage to wrestle the vines away from your limbs.", "being constricted by vines." },
+  { "snared", 20, "You manage to disentangle yourself from the rope trap which had snared your ankles.", "tangled up by a rope snare." },
+  { "vinewreathed", 20, "The vines flailing about your form recede.", "wreathed in flailing vines." },
+}) do
+  local name = t[1]
+  local body = entry(name) or ""
+  check(name .. " has an entry", body ~= "", true)
+  check(name .. " waits the game's default time", body:match("customwait = (%d+)"), tostring(t[2]))
+  check(name .. "'s wait running out ends it", body:find("ontimeout = function()\n          svo.rmaff('" .. name .. "')", 1, true) ~= nil, true)
+  check(name .. " is not writhed", body:find("writhe", 1, true), nil)
+  check("GMCP's " .. name .. " is svof's", mapped(name), "'" .. name .. "'")
+  check("svo.valid." .. name .. "_woreoff is generated", afflist:find("'" .. name .. "'", 1, true) ~= nil, true)
+  for _, tr in ipairs({
+    { "svo " .. name .. " woreoff", t[3], "svo.valid." .. name .. "_woreoff()" },
+    { name, t[4], "svo.valid.diag('" .. name .. "')" },
+  }) do
+    local item = trigger("General", tr[1])
+    check(tr[1] .. " matches its line exactly", item:find('"pattern": "' .. tr[2]:gsub("%p", "%%%0") .. '",\n%s*"type": "exactMatch"') ~= nil, true)
+    check(tr[1] .. " is active", item:find('"isActive": "yes"', 1, true) ~= nil, true)
+    check(tr[1] .. "'s script", script("General", tr[1]), tr[3])
+  end
+
+  -- GMCP adds it without the aff action, and its wait has to start all the
+  -- same: the wear-off can come in blackout, which stops GMCP's Remove
+  local function added_by_gmcp()
+    local w = dofile("tools/svof_world.lua").new()
+    w.env.gmcp.Char.Afflictions.List = {}
+    w.svo.signals.gmcpcharafflictionslist:emit()
+    w.env.gmcp.Char.Afflictions.Add = { name = name, cure = "", desc = "" }
+    w.svo.signals.gmcpcharafflictionsadd:emit()
+    return w
+  end
+
+  local w = added_by_gmcp()
+  check("GMCP adds " .. name, w.svo.affs[name] ~= nil, true)
+  check("and starts its wait", w.inflight(), name .. "_waitingfor")
+  w.advance(t[2] + 1)
+  check("while GMCP still reports " .. name .. ", its time doesn't take it off", w.svo.affs[name] ~= nil, true)
+  check("and its wait is over", w.inflight(), "")
+
+  w = added_by_gmcp()
+  w.svo.addaffdict(w.svo.dict.blackout)
+  w.advance(t[2] - 1)
+  check(name .. " lasts until its time in blackout", w.svo.affs[name] ~= nil, true)
+  w.advance(2)
+  check(name .. " ends with its time in blackout, with no Remove", w.svo.affs[name], nil)
+end
+
+-- deepsleep: its own entry, not sleep. You never wake from it on your own,
+-- so svof mustn't try to wake you, which sleep's misc action does
+local deepsleep = entry("deepsleep") or ""
+check("deepsleep has an entry", deepsleep ~= "", true)
+check("GMCP's deepsleep is svof's deepsleep", mapped("deepsleep"), "'deepsleep'")
+check("GMCP's sleeping is still sleep", mapped("sleeping"), "'sleep'")
+check("deepsleep has no action to wake", deepsleep:find("misc = {", 1, true), nil)
+check("nor a wait to time out", deepsleep:find("waitingfor", 1, true), nil)
+check("nor sends anything", deepsleep:find("send(", 1, true), nil)
+
+-- and wherever svof's curing holds back for sleep, it holds back for
+-- deepsleep. The exceptions only make sense for sleep itself: sleep's own
+-- entry, which wakes you, and the misc check letting that wake through
+-- (it returns early for deepsleep instead)
+local SKELETON = "src/scripts/svo (curing skeleton, controllers, action system)/Curing_skeleton.lua"
+local sleep_entry = entry("sleep") or ""
+local outside_sleep = dict:gsub(sleep_entry:gsub("%p", "%%%0"), "", 1)
+check("sleep's entry is found to leave out", #outside_sleep < #dict, true)
+local SLEEP_ONLY = { "(not affs.sleep or j.p.misc.action_name == 'sleep')" }
+for path, src in pairs({ [DICT] = outside_sleep, [SKELETON] = read_file(SKELETON) }) do
+  -- a gate can run over several lines, so look at the statement around it
+  for at in src:gmatch("()affs%.sleep") do
+    local s = at
+    while s > 1 and not src:sub(s - 1, s - 1):find("[\n]") do s = s - 1 end
+    local line = src:sub(s, (src:find("\n", at, true) or #src))
+    local around = src:sub(math.max(1, s - 200), (src:find("\n", at, true) or #src) + 200)
+    local only = false
+    for _, ok in ipairs(SLEEP_ONLY) do if line:find(ok, 1, true) then only = true end end
+    if not only and not line:find("^%s*%-%-") then
+      check(path:match("[^/]+$") .. ": holds back for deepsleep where it does for sleep: " .. line:gsub("^%s+", ""):sub(1, 60),
+        line:find("affs.deepsleep", 1, true) ~= nil, true)
+    end
+  end
+end
+local misc_check = read_file(SKELETON):match("\nsvo%.check_misc = function%(sync_mode, onlyamnesia%)\n(.-)\n  end\n") or ""
+check("the misc check returns early in deepsleep", misc_check:find("if affs.stun or affs.unconsciousness or affs.deepsleep then", 1, true) ~= nil, true)
+
+-- Only GMCP says deepsleep ended, and it can't in blackout, so a deepsleep that
+-- ended there stayed and svof cured nothing (review of #881). When blackout
+-- ends with deepsleep held and unconfirmed, svof tries waking once, and "You
+-- already are awake." clears it (the user, 2026-11-07)
+do
+  local function world_with(names)
+    local w = dofile("tools/svof_world.lua").new({ paused = false })
+    local svo = w.svo
+    local function gmcp(kind, name)
+      if kind == "add" then
+        w.env.gmcp.Char.Afflictions.Add = { name = name, cure = "", desc = "" }
+        svo.signals.gmcpcharafflictionsadd:emit()
+      else
+        w.env.gmcp.Char.Afflictions.Remove = { name }
+        svo.signals.gmcpcharafflictionsremove:emit()
+      end
+      w.prompt()
+    end
+    w.env.gmcp.Char.Afflictions.List = {}
+    svo.signals.gmcpcharafflictionslist:emit()
+    for _, name in ipairs(names) do gmcp("add", name) end
+    return w, svo, gmcp
+  end
+  local function wakes(w)
+    local n = 0
+    for _, c in ipairs(w.sent) do if c == "wake up" then n = n + 1 end end
+    return n
+  end
+
+  local w, svo, gmcp = world_with({ "deepsleep" })
+  gmcp("add", "blackout")
+  w.sent = {}
+  gmcp("remove", "blackout")
+  check("blackout ends with deepsleep held: svof tries waking once", wakes(w), 1)
+  svo.make_gnomes_work()
+  w.prompt()
+  check("and only once", wakes(w), 1)
+  check("deepsleep is held until the game answers", svo.affs.deepsleep ~= nil, true)
+  svo.valid.wake_done()
+  w.prompt()
+  check("\"You already are awake.\" then clears it", svo.affs.deepsleep, nil)
+
+  w, svo, gmcp = world_with({ "deepsleep" })
+  w.sent = {}
+  svo.valid.wake_done()
+  w.prompt()
+  check("outside blackout, GMCP still reporting deepsleep keeps it", svo.affs.deepsleep ~= nil, true)
+  check("and svof sends no wake", wakes(w), 0)
+
+  w, svo, gmcp = world_with({ "blackout" })
+  w.sent = {}
+  gmcp("remove", "blackout")
+  check("blackout ending without deepsleep sends no wake", wakes(w), 0)
+
+  -- a deepsleep's own lines: the refusal is the deepsleep's, not a sleep to
+  -- wake from, and a bind shows as it does in sleep
+  -- in blackout, where GMCP can't refuse what a line claims
+  w, svo, gmcp = world_with({ "deepsleep", "blackout" })
+  svo.conf.aillusion = true
+  svo.paragraph_length = 1
+  svo.valid.symp_asleep()
+  w.prompt()
+  check("in deepsleep, the asleep refusal adds no sleep", svo.affs.sleep, nil)
+  svo.valid.subterfuge_bind()
+  w.prompt()
+  check("in deepsleep, a bind with anti-illusion on is believed, as in sleep", svo.affs.bound ~= nil, true)
+end
 
 print(string.format("%d checks, %d failures", checks, #failures))
 if #failures > 0 then

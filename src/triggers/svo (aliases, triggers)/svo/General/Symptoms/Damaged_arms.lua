@@ -1,5 +1,5 @@
 -- see if it's arm numbness
-local previousline = getLines(getLineNumber()-1, getLineNumber())[1]
+local previousline = svo.previous_paragraph_line()
 if previousline == "You try to use your right hand but it is still too numb."
   or previousline == "You try to use your left hand but it is still too numb." then return end
 
