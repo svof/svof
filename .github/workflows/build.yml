@@ -172,15 +172,16 @@ jobs:
         run: lua tools/test_lifevision_validate.lua
 
 
-      # Gate 1.7. codepaste.pyre_holds() - the pyre/burn ladder gating the five
-      # burn salves. Same extract-the-real-function approach again. Pins the
-      # rung thresholds (they were one too permissive at every level, so svof
-      # salved burns pyre restored immediately), the field the level is read
-      # from (affs.pyre.count is nil - the entries are {p=, sw=} - and the
-      # comparison raised out of an unprotected isadvisable, aborting the whole
-      # prompt), and the presence floor for players without GMCP levels.
-      - name: test pyre ladder
-        run: lua tools/test_pyre_ladder.lua
+      # Gate 1.7. Burning as one counted affliction, ablaze: GMCP's level,
+      # catching fire again and the escalation lines a level up each,
+      # DIAGNOSE's rung lines, mending and a tree touch a level down each, the
+      # line that ends it, and codepaste.pyre_holds() against the count -
+      # pyre keeps ablaze from being cured below its own level. Pins the
+      # field the level is read from (affs.pyre.count is nil - the entries are
+      # {p=, sw=}) and the presence floor for players without GMCP levels.
+      # Runs the real loaders (tools/svof_world.lua).
+      - name: test burning
+        run: lua tools/test_burning.lua
 
 
       # Gate 1.23. presume_cured() - the GMCP gate on the empty-cure sweeps.
@@ -370,6 +371,92 @@ jobs:
       # (tools/svof_world.lua).
       - name: test cure lines
         run: lua tools/test_cure_lines.lua
+
+      # Gate 1.9995. No transmutation cures: no applycure, sipcure or actions
+      # list names one, rift.vial_conversions is gone, and defstrip no longer
+      # reads density as mass. Read from the real sources.
+      - name: test transmutation
+        run: lua tools/test_transmutation.lua
+
+      # Gate 1.9994. Two handlers that checked a key named asleep, which svof
+      # never had: a refused command while asleep clears what was in flight,
+      # and a transfixed refusal takes sleep off in blackout. Runs the real
+      # loaders (tools/svof_world.lua).
+      - name: test asleep
+        run: lua tools/test_asleep.lua
+
+      # Gate 1.9993. The Blademaster slash lookback: its pattern, read from
+      # the real source as Lua 5.1 reads the string, matches the captured
+      # line beside it.
+      - name: test blademaster slash
+        run: lua tools/test_blademaster_slash.lua
+
+      # Gate 1.9991. The head afflictions under the game's names: damagedhead
+      # and mangledhead, which were mildconcussion and seriousconcussion, and
+      # a saved priority list and ignore list that still name them the old
+      # way. Runs the real loaders (tools/svof_world.lua).
+      - name: test head renames
+        run: lua tools/test_head_renames.lua
+
+      # Gate 1.9992. concussion, the game's third head affliction: GMCP's
+      # name, its gain line, the cure line it shares with damagedhead,
+      # DIAGNOSE, command doubling, the pulp warning, and calcified skull
+      # taking the head's damage up a level. Runs the real loaders
+      # (tools/svof_world.lua).
+      - name: test concussion
+        run: lua tools/test_concussion.lua
+
+      # Gate 1.999. condemned: GMCP's name, its 40 seconds, its wore-off
+      # line and DIAGNOSE, and that no burn salve is advisable while it
+      # lasts. Runs the real loaders (tools/svof_world.lua).
+      - name: test condemned
+        run: lua tools/test_condemned.lua
+
+      # Gate 1.998. The paragraph lookbacks search the lines the game sent,
+      # saved by the Prompt trigger's condition, not Mudlet's buffer, where
+      # svof's warning suffix and the wrap cut made exact lookbacks miss.
+      # Runs the real condition and lookbacks over a buffer stand-in, with
+      # the getLines() versions as controls.
+      - name: test paragraph lookbacks
+        run: lua tools/test_paragraph_lookbacks.lua
+
+      # Gate 1.997. The bleeding an inundated sanguine humour gives: with
+      # GMCP's Bleed: in the paragraph's Char.Vitals, inundated leaves that
+      # amount alone, and without one, as in blackout, it works the amount
+      # out from the level. Read from the real sources.
+      - name: test sanguine bleed
+        run: lua tools/test_sanguine_bleed.lua
+
+      # Gate 1.994. A class change clears the old class's priorities from
+      # both serverside curingsets, normal and slowcuring, in and out of
+      # aeon, and the next resync reaches both. Runs the real loaders
+      # (tools/svof_world.lua) and replays what svof sends through a model
+      # of the curingsets.
+      - name: test class change curingsets
+        run: lua tools/test_classchange_curingsets.lua
+      - name: test curing priority limit
+        run: lua tools/test_prio_spam_limit.lua
+
+      # Gate 1.996. Counted afflictions gained from text: the gain line and
+      # DIAGNOSE give no level, so each counted affliction's aff handler
+      # records it at count 1, keeps a level GMCP set, and leaves a refused
+      # add at 0. Also fails on a counted entry that neither has that floor
+      # nor is listed as setting its own count.
+      - name: test counted floor
+        run: lua tools/test_counted_floor.lua
+
+      # Gate 1.995. Every affliction svof can show on the prompt has a short
+      # tag in @affs, and every tag names an affliction, in every class.
+      - name: test prompt tags
+        run: lua tools/test_prompt_tags.lua
+
+      # Gate 1.99996. Mucous in your lungs, a longer smoke recovery and not an
+      # affliction: its lines act at the prompt, an illusion's paragraph
+      # changes nothing, the cough line ends only mucous's recovery, and the
+      # aeon strategies count clogged lungs. Runs the real loaders
+      # (tools/svof_world.lua).
+      - name: test mucous
+        run: lua tools/test_mucous.lua
 
       - uses: actions/setup-java@v4
         with:

@@ -300,7 +300,10 @@ svo.sp_checksp = function ()
     local alreadyset
     for i = 1, #prios do
       local limb = prios[i]
-      if not alreadyset and type(sp_config.parry_actionlevel[limb]) == 'number' and (affs['mangled'..limb] or (limb == 'head' and (affs.serioustrauma or affs.mildtrauma)) or (limb == 'torso' and (affs.mildconcussion or affs.seriousconcussion))) then
+      -- the limbs are named with a space, as "right arm", and the
+      -- afflictions without, as mangledrightarm
+      local name = (limb:gsub(' ', ''))
+      if not alreadyset and type(sp_config.parry_actionlevel[limb]) == 'number' and (affs['mangled'..name] or affs['mutilated'..name] or (limb == 'head' and affs.damagedhead) or (limb == 'torso' and (affs.mildtrauma or affs.serioustrauma))) then
         sp_config.parry_shouldbe[limb] = true
         alreadyset = true
       else

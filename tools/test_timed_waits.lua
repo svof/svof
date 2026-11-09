@@ -24,6 +24,7 @@ Exits 0 and prints "ALL PASS" on success, exits 1 and prints failures.
 local DICT = "src/scripts/svo (actions dictionary)/Dictionary_of_actions_(affs-defs-misc).lua"
 
 local GAME_TIME = {
+  condemned = 40,
   flamefisted = 15,
   galed = 15,       -- the game's airfisted
   icing = 15,       -- icefisted
