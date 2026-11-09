@@ -1304,6 +1304,22 @@ function svo.valid.proper_sensitivity()
   lifevision.add(actions.sensitivity_aff.p, 'checkdeaf')
 end
 
+-- A jester's puppet ties your tongue with two lines: the attack naming you,
+-- and the game's gain line. GMCP reports tonguetied, so outside blackout a
+-- claim stands only if GMCP agrees. In blackout GMCP is silent and either line
+-- could be an illusion, so with anti-illusion on it takes both in one
+-- paragraph. The attack alone never counts, as it can fail. Whichever line
+-- comes second makes the claim, as no capture shows their order.
+local tongue_lines = {}
+function svo.valid.tonguetied_line(which)
+  tongue_lines[which] = true
+  sk.onprompt_beforeaction_add('tonguetied lines', function() tongue_lines = {} end)
+
+  if tongue_lines.gain and (tongue_lines.puppet or not (conf.aillusion and affs.blackout)) then
+    valid.simpletonguetied()
+  end
+end
+
 function svo.valid.webbed_buckawns()
   if conf.buckawns then return
   else

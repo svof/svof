@@ -88,7 +88,7 @@
     "highlightBG": "#ffff00",
     "patterns": [
       {
-        "pattern": "^\\w+ swings \\w+ quarterstaff with all \\w+ might, generating a great wind\\.$",
+        "pattern": "^(\\w+) swings \\w+ quarterstaff with all \\w+ might, generating a great wind\\.$",
         "type": "regex"
       },
       {

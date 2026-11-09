@@ -365,6 +365,14 @@ jobs:
       - name: test affliction names
         run: lua tools/test_affliction_names.lua
 
+      # Gate 1.99995. Small fixes to triggers and scripts with no test file of
+      # their own, each section saying what it pins. The trigger sections read
+      # the patterns and flags from the real triggers.json, match them against
+      # real game lines and run the real scripts, modelling what Mudlet gives
+      # a multiline trigger and any other. The rest run the real loaders.
+      - name: test small fixes
+        run: lua tools/test_small_fixes.lua
+
       # Gate 1.9999. Bard after the class's rework: the skillsets, the dances
       # and tempos, what svof tracks and doesn't raise, and what the rework
       # removed staying gone. Runs the real loaders as a Bard.
