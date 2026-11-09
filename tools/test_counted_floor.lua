@@ -52,7 +52,8 @@ local FLOORED = {
 -- Counted entries whose aff handler sets the count itself, so the floor
 -- doesn't apply
 local OWN_AMOUNT = {
-  bleeding = "adds the amount it's given, or 200",
+  ablaze = "codepaste.add_burn sets it, at least 1",
+  bleeding ="adds the amount it's given, or 200",
   paradox = "sets 5",
   unknownany = "adds from 1",
   unknownmental = "adds from 1",
