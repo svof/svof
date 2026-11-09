@@ -208,11 +208,9 @@ for _, affname in ipairs({'skullfractures', 'crackedribs', 'wristfractures', 'to
 
     svo.checkaction(svo.dict[affname].aff, true)
 
-    if lifevision.l[affname..'_aff'] then
-      lifevision.add(actions[affname..'_aff'].p, nil, (number or 1) +(lifevision.l[affname..'_aff'].arg or 1))
-    else
-      lifevision.add(actions[affname..'_aff'].p, nil, (number or 1))
-    end
+    -- a level only when the caller gives one: the aff handler takes it as the
+    -- level, and a hit's line can't say it, nor two hits in a paragraph
+    lifevision.add(actions[affname..'_aff'].p, nil, number)
   end
 end
 
