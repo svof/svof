@@ -473,6 +473,11 @@
       "text": "Trigger  svo (aliases, triggers) svo/Poisons + Generic lines/Revealed by star sigil [only in the package]"
     },
     {
+      "id": "added|Trigger|svo (aliases, triggers)|svo/Vodun & Puppetry/tonguetied gain",
+      "digest": "32e8bc48aa48728f",
+      "text": "Trigger  svo (aliases, triggers) svo/Vodun & Puppetry/tonguetied gain [only in the package]"
+    },
+    {
       "id": "count|Alias|svo (aliases, triggers)|svo",
       "digest": "54fafd06c004bb94",
       "text": "Alias    svo (aliases, triggers) / 'svo': 121 items originally, 123 in merged"
@@ -489,8 +494,8 @@
     },
     {
       "id": "count|Trigger|svo (aliases, triggers)|svo",
-      "digest": "d863235624435d94",
-      "text": "Trigger  svo (aliases, triggers) / 'svo': 2533 items originally, 2526 in merged"
+      "digest": "f1eaa19c2bf34259",
+      "text": "Trigger  svo (aliases, triggers) / 'svo': 2533 items originally, 2527 in merged"
     },
     {
       "id": "gone|Script|svo (install me in module manager)|Check for system updates/svo_downloaded_file",
@@ -994,7 +999,7 @@
     },
     {
       "id": "item|Script|svo (actions dictionary)|Dictionary of actions (affs-defs-misc)|script",
-      "digest": "d95c039801bb3a9d",
+      "digest": "66d47b2f37409490",
       "text": "Script   svo (actions dictionary) Dictionary of actions (affs-defs-misc) [script]"
     },
     {
@@ -1159,7 +1164,7 @@
     },
     {
       "id": "item|Script|svo (install, config, pipes, rift, parry, prios)|Install system|script",
-      "digest": "e1ba5483c908e517",
+      "digest": "d4d91dfd64709029",
       "text": "Script   svo (install, config, pipes, rift, parry, prios) Install system [script]"
     },
     {
@@ -1189,7 +1194,7 @@
     },
     {
       "id": "item|Script|svo (limbcounter)|svo (limbcounter)/svo limbcounter|script",
-      "digest": "61d50f9fe357ffa6",
+      "digest": "2def4a8340598def",
       "text": "Script   svo (limbcounter) svo (limbcounter)/svo limbcounter [script]"
     },
     {
@@ -1259,7 +1264,7 @@
     },
     {
       "id": "item|Script|svo (setup, misc, empty, funnies, dor)|Miscellaneous functions|script",
-      "digest": "74205682c2564b56",
+      "digest": "3038094e0787f65a",
       "text": "Script   svo (setup, misc, empty, funnies, dor) Miscellaneous functions [script]"
     },
     {
@@ -1279,7 +1284,7 @@
     },
     {
       "id": "item|Script|svo (trigger functions)|Main trigger functions|script",
-      "digest": "3509a7e58d3b8f8e",
+      "digest": "10fc07646d1638d6",
       "text": "Script   svo (trigger functions) Main trigger functions [script]"
     },
     {
@@ -3088,6 +3093,16 @@
       "text": "Trigger  svo (aliases, triggers) svo/Generic illusions/Doublestab, single aff [script]"
     },
     {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/Groves/Staff swing|patterns",
+      "digest": "5b8d3832cac6e0d2",
+      "text": "Trigger  svo (aliases, triggers) svo/Groves/Staff swing [patterns]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/Groves/Staff swing|script",
+      "digest": "465da1b2afa25aa9",
+      "text": "Trigger  svo (aliases, triggers) svo/Groves/Staff swing [script]"
+    },
+    {
       "id": "item|Trigger|svo (aliases, triggers)|svo/Herb tracker/Capture inv|colorTrigger",
       "digest": "13c33f87153efd9e",
       "text": "Trigger  svo (aliases, triggers) svo/Herb tracker/Capture inv [colorTrigger]"
@@ -3168,6 +3183,16 @@
       "text": "Trigger  svo (aliases, triggers) svo/Poisons + Generic lines/Severe burn [script]"
     },
     {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/Pranks/Jack-in-the-Box two|script",
+      "digest": "04545bdf3e866256",
+      "text": "Trigger  svo (aliases, triggers) svo/Pranks/Jack-in-the-Box two [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/Psionics/Lightbind|patterns",
+      "digest": "26bc8be53fe06ee0",
+      "text": "Trigger  svo (aliases, triggers) svo/Psionics/Lightbind [patterns]"
+    },
+    {
       "id": "item|Trigger|svo (aliases, triggers)|svo/Sculpting/Calcified Skull Concussion|script",
       "digest": "8016b9f91e21d4a8",
       "text": "Trigger  svo (aliases, triggers) svo/Sculpting/Calcified Skull Concussion [script]"
@@ -3188,6 +3213,16 @@
       "text": "Trigger  svo (aliases, triggers) svo/Vodun & Puppetry/Concussion [script]"
     },
     {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/Vodun & Puppetry/tonguetied|patterns",
+      "digest": "f5692ba183bac122",
+      "text": "Trigger  svo (aliases, triggers) svo/Vodun & Puppetry/tonguetied [patterns]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/Vodun & Puppetry/tonguetied|script",
+      "digest": "95a2d8014d3910cb",
+      "text": "Trigger  svo (aliases, triggers) svo/Vodun & Puppetry/tonguetied [script]"
+    },
+    {
       "id": "item|Trigger|svo (aliases, triggers)|svo/Weaponmastery/Dual Blunt/Assault head/Mild head trauma|script",
       "digest": "146212300b9a3ed9",
       "text": "Trigger  svo (aliases, triggers) svo/Weaponmastery/Dual Blunt/Assault head/Mild head trauma [script]"
@@ -3196,6 +3231,16 @@
       "id": "item|Trigger|svo (aliases, triggers)|svo/Weaponmastery/Dual Blunt/Assault head/Serious head trauma|script",
       "digest": "2b468f77e55f04f3",
       "text": "Trigger  svo (aliases, triggers) svo/Weaponmastery/Dual Blunt/Assault head/Serious head trauma [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/Zeal/Judgement three|multiline",
+      "digest": "78c0a994a5e7be76",
+      "text": "Trigger  svo (aliases, triggers) svo/Zeal/Judgement three [multiline]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/Zeal/Judgement two|multiline",
+      "digest": "78c0a994a5e7be76",
+      "text": "Trigger  svo (aliases, triggers) svo/Zeal/Judgement two [multiline]"
     },
     {
       "id": "item|Trigger|svo (aliases, triggers)|svo/Zeal/Tenderskin|script",
@@ -3284,7 +3329,7 @@
     },
     {
       "id": "item|Trigger|svo (offering)|Shrine full-gone|script",
-      "digest": "11100580842989ba",
+      "digest": "5d7632a9fc519cb9",
       "text": "Trigger  svo (offering) Shrine full-gone [script]"
     },
     {
