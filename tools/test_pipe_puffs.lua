@@ -134,6 +134,172 @@ do -- the trigger that reads the server's line
   eq(script, "svo.pipe_filling(matches[2])", "and passes the pipe's number")
 end
 
+-- the player's own smokes and tap-outs, from the live run: svof held 9 puffs
+-- after 9 smokes had emptied the pipe, and 10 on a tapped-out one
+-- The Smoke trigger is multiline and ends in a one-line spacer, so Mudlet runs
+-- its script and its children on the line after the drag line, with the drag
+-- line as its first match (review of #906)
+local PROMPT = "4926h, 4926m, 21200e, 22106w  exckdb---"
+local function smoke_trigger(w, drag)
+  w.env.line = PROMPT
+  w.env.multimatches = { { drag }, {} }
+  w.svo.pipe_smoke_line()
+end
+local function smoke(w, drag, ...)
+  w.env.lastCommands = { ... }
+  smoke_trigger(w, drag)
+  w.svo.valid.smoke1()
+  w.svo.valid.smoke2()
+end
+local DRAG = "You take a long drag of valerian off your pipe."
+local function two_valerian(svo, t)
+  local base = { id = 101, id2 = 102, puffs = 5, puffs2 = 5, filledwith = 'valerian', filledwith2 = 'realgar' }
+  for k, v in pairs(t or {}) do base[k] = v end
+  return set_pipe(svo, 'valerian', base)
+end
+
+do -- by ID: that pipe, in either place
+  local w = world.new()
+  local pipe = two_valerian(w.svo, { filledwith2 = 'valerian' })
+  smoke(w, DRAG, "smoke 101")
+  eq(pipe.puffs, 4, "own smoke: the pipe it named")
+  eq(pipe.puffs2, 5, "own smoke: and not the other")
+  smoke(w, DRAG, "smoke 102")
+  eq(pipe.puffs2, 4, "own smoke: the second, when that's what it named")
+  eq(pipe.puffs, 4, "own smoke: leaving the first")
+  for _ = 1, 6 do smoke(w, DRAG, "smoke 101") end
+  eq(pipe.puffs, 0, "own smoke: stops at 0")
+end
+
+do -- by name: what the line says was smoked
+  local w = world.new()
+  local pipe = two_valerian(w.svo)
+  smoke(w, "You take a long drag of realgar off your pipe.", "smoke realgar")
+  eq(pipe.puffs2, 4, "by name: the pipe holding what the line names")
+  eq(pipe.puffs, 5, "by name: not the other")
+  smoke(w, DRAG)
+  eq(pipe.puffs, 4, "with nothing sent: still the line's")
+end
+
+do -- an older SMOKE <id> of the same herb's other pipe doesn't decide either,
+   -- when the pipes hold different things and the line names one
+  local w = world.new()
+  local pipe = two_valerian(w.svo)
+  smoke(w, DRAG, "look", "kill rat", "smoke 102")
+  eq(pipe.puffs, 4, "stale ID of the herb's other pipe: the pipe holding what the line names")
+  eq(pipe.puffs2, 5, "stale ID of the herb's other pipe: not the pipe it named")
+end
+
+do -- an older SMOKE <id> of another herb doesn't decide
+  local GURGLE = "Your draw is accompanied by a deep gurgling sound before a series of shining bubbles erupt from the bowl of your pipe."
+  local w = world.new()
+  local pipe = two_valerian(w.svo)
+  local elm = set_pipe(w.svo, 'elm', { id = 201, puffs = 7, filledwith = 'elm' })
+  smoke(w, "You take a long drag of slippery elm off your pipe.", "smoke 101")
+  eq(elm.puffs, 6, "stale ID: the line's herb is charged")
+  eq(pipe.puffs, 5, "stale ID: not the pipe it named")
+  -- nor which of the line's herb's pipes it charges
+  smoke(w, "You take a long drag of slippery elm off your pipe.", "smoke 102")
+  eq(elm.puffs, 5, "stale ID of a second pipe: still the line's herb's first")
+  eq(pipe.puffs2, 5, "stale ID of a second pipe: not the pipe it named")
+  -- the line names no herb, so the command does
+  smoke(w, GURGLE, "smoke 201")
+  eq(elm.puffs, 4, "a line with no herb: the pipe the command named")
+  smoke(w, GURGLE, "smoke 999")
+  eq(elm.puffs, 4, "a line with no herb and an unknown pipe: nothing")
+  -- a pipe svof doesn't track, though the line names a herb it does
+  smoke(w, "You take a long drag of slippery elm off your pipe.", "smoke 999")
+  eq(elm.puffs, 4, "a line with a herb and an unknown pipe: nothing")
+  eq(pipe.puffs + pipe.puffs2, 10, "a line with a herb and an unknown pipe: nor any other pipe")
+end
+
+do -- the drag line comes from the trigger's match, not the line it runs on
+  local w = world.new()
+  local elm = set_pipe(w.svo, 'elm', { id = 201, puffs = 7, filledwith = 'elm' })
+  smoke(w, "You take a long drag of slippery elm off your pipe.", "smoke elm")
+  eq(elm.puffs, 6, "by name with nothing else to go on: the line's herb")
+  w.env.multimatches = {}
+  w.env.line = "You take a long drag of slippery elm off your pipe."
+  w.svo.pipe_smoke_line()
+  w.svo.valid.smoke1()
+  w.svo.valid.smoke2()
+  eq(elm.puffs, 6, "with no match to read, nothing is counted")
+end
+
+do -- counted once
+  local w = world.new()
+  local svo = w.svo
+  local pipe = two_valerian(svo)
+  smoke(w, DRAG, "smoke 101")
+  svo.valid.smoke1()
+  svo.valid.smoke2()
+  eq(pipe.puffs, 4, "the children running again count nothing more")
+
+  -- a cure answered it, so its action counts it, not this
+  w.env.lastCommands = { "smoke 101" }
+  smoke_trigger(w, DRAG)
+  svo.smoke_cure = true
+  svo.valid.smoke2()
+  eq(pipe.puffs, 4, "a cure answered it: nothing here")
+
+  svo.conf.arena = true
+  smoke(w, DRAG, "smoke 101")
+  eq(pipe.puffs, 4, "the arena counts nothing")
+end
+
+do -- a smoke of svof's in flight isn't the player's
+  local w = world.new()
+  local svo = w.svo
+  local pipe = set_pipe(svo, 'elm', { id = 201, puffs = 7, filledwith = 'elm' })
+  svo.doaction(svo.dict.aeon.smoke)
+  eq(svo.actions.aeon_smoke ~= nil, true, "svof's smoke is in flight")
+  smoke(w, "You take a long drag of slippery elm off your pipe.", "smoke 201")
+  eq(pipe.puffs, 7, "svof's own smoke doesn't count here")
+end
+
+do -- tap-outs
+  local w = world.new()
+  local svo = w.svo
+  local pipe = two_valerian(svo)
+  w.env.lastCommands = { "empty 102" }
+  svo.valid.pipe_emptied()
+  eq(pipe.puffs2, 0, "tap-out: the pipe EMPTY named")
+  eq(pipe.puffs, 5, "tap-out: not the other")
+  w.env.lastCommands = { "look", "empty 101" }
+  svo.valid.pipe_emptied()
+  eq(pipe.puffs, 0, "tap-out: the first, when that's what it named")
+
+  pipe.puffs, pipe.puffs2 = 5, 5
+  w.env.lastCommands = { "empty 999" }
+  svo.valid.pipe_emptied()
+  eq(pipe.puffs + pipe.puffs2, 10, "tap-out of an untracked pipe: nothing")
+  w.env.lastCommands = { "empty pipe", "empty 101" }
+  svo.valid.pipe_emptied()
+  eq(pipe.puffs, 5, "the latest EMPTY names no pipe, so an older one doesn't decide")
+  w.env.lastCommands = { "smoke 101" }
+  svo.valid.pipe_emptied()
+  eq(pipe.puffs, 5, "no EMPTY sent: nothing")
+end
+
+do -- a fill after a tap-out goes in the empty pipe, whatever the other holds
+  local w = world.new()
+  local svo = w.svo
+  svo.conf.serverside = true
+  local pipe = two_valerian(svo, { puffs = 10, puffs2 = 0, filledwith2 = 'realgar' })
+  w.env.line = FILLS.valerian[1]
+  svo.valid.fillvalerian()
+  eq(pipe.puffs2, 10, "own fill: the empty pipe")
+  eq(pipe.filledwith2, "valerian", "own fill: holding what the line names")
+  eq(pipe.puffs, 10, "own fill: the other is as it was")
+end
+
+do -- the Smoke trigger keeps its line for its children
+  local f = assert(io.open("src/triggers/svo (aliases, triggers)/svo/General/Smoke.lua", "r"))
+  local script = f:read("*a")
+  f:close()
+  eq(script:find("svo.pipe_smoke_line()", 1, true) ~= nil, true, "the Smoke trigger keeps its line")
+end
+
 do -- not serverside, and nothing of svof's in flight: not a fill of svof's
   local w = world.new()
   local svo = w.svo

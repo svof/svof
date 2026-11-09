@@ -2417,6 +2417,8 @@ function svo.valid.smoke2()
       lifevision.add(actions[r.name].p, 'empty')
     elseif actions.checkasthma_smoke then
       lifevision.add(actions.checkasthma_smoke.p, 'onclear')
+    else
+      svo.pipe_smoked()
     end
   end
 
@@ -2758,7 +2760,7 @@ end
 function svo.valid.pipe_emptied()
   local r = svo.checkany(svo.dict.fillskullcap.physical, svo.dict.fillelm.physical, svo.dict.fillvalerian.physical)
 
-  if not r then return end
+  if not r then return svo.pipe_tapped_out() end
 
   if svo.dict[r.action_name].fillingid == pipes[svo.dict[r.action_name].physical.herb].id then
     pipes[svo.dict[r.action_name].physical.herb].puffs = 0
