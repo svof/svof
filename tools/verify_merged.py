@@ -129,9 +129,10 @@ ITEM_MOVE = {}
 # package doesn't have is structural.
 TOP_LEVEL_ADDED = {
     "Script": {
-        # the afflictions a player defines (vcustomaff). It loads straight
-        # after the defences, before the saved priorities are read
-        "Custom afflictions": ("svo (alias and defence functions)", "Defences"),
+        # what a player defines: the defences (vcustomdef) and afflictions
+        # (vcustomaff), a script each. They load straight after the
+        # defences, before the saved priorities are read
+        "Custom definitions": ("svo (alias and defence functions)", "Defences"),
     },
 }
 
