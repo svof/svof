@@ -1049,7 +1049,7 @@
     },
     {
       "id": "item|Script|svo (custom prompt, serverside)|Serverside|script",
-      "digest": "8b7df2152b4e15d9",
+      "digest": "66bf50604c6b30d7",
       "text": "Script   svo (custom prompt, serverside) Serverside [script]"
     },
     {
@@ -1164,7 +1164,7 @@
     },
     {
       "id": "item|Script|svo (install, config, pipes, rift, parry, prios)|Config system|script",
-      "digest": "42b36a13119af836",
+      "digest": "16351a4e69d0bb1d",
       "text": "Script   svo (install, config, pipes, rift, parry, prios) Config system [script]"
     },
     {
@@ -1274,7 +1274,7 @@
     },
     {
       "id": "item|Script|svo (setup, misc, empty, funnies, dor)|Setup|script",
-      "digest": "8f337d46e32cae44",
+      "digest": "9d4c4a2272be75b3",
       "text": "Script   svo (setup, misc, empty, funnies, dor) Setup [script]"
     },
     {

@@ -399,9 +399,10 @@ do
 
   -- As of 2026-11-09. A name leaves this list when svof gains an action for
   -- it, or a gamename or sstosvoa entry that names it; a name joining it
-  -- means a rename lost one. blindness and deafness are here because the
-  -- actions' gamename is blind and deaf.
-  local UNMAPPED = "blindness, dazed, deafness, diminished, fratricide, frostbite, grievouswounds, icebound, "
+  -- means a rename lost one. blindness and deafness aren't here although the
+  -- actions' gamename is blind and deaf: sk.serverlistnames has the names
+  -- the game lists them under.
+  local UNMAPPED = "dazed, diminished, fratricide, frostbite, grievouswounds, icebound, "
     .. "internalbleeding, kkractlebrand, stridulating"
   g.lines(LIST_STACK)
   eq(table.concat(g.sk.serverunmapped("normal"), ", "), UNMAPPED, "the list's names svof has no action for")
@@ -411,6 +412,8 @@ do
   eq(toserver.unweavingmind, "unweavingmind", "an action's name on the list")
   eq(toserver.ablaze, "burning", "an action the game names another way")
   eq(toaction.burning, "ablaze", "and back")
+  eq(toserver.blindaff, "blindness", "an action svof sends under a name the game lists otherwise")
+  eq(toaction.blindness, "blindaff", "and back")
   eq(toaction.icebound, nil, "a name svof has no action for")
 end
 

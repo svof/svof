@@ -509,6 +509,17 @@ jobs:
       - name: test server priority list
         run: lua tools/test_server_priority_list.lua
 
+      # Gate 1.99998. vconfig serverprios custom, the player's own serverside
+      # affliction priorities: the switch reads both curingsets and changes
+      # no number the game has right, the sync sends no affliction number
+      # and still sends defence numbers, a change made in game is kept, svof
+      # keeps at 26 what it cures or ignores and gives the number back, and
+      # a reset in game, a class change, serverside going on and the switch
+      # back to auto each do what they should. Runs the real loaders
+      # (tools/svof_world.lua) on the captured lists.
+      - name: test custom server priorities
+        run: lua tools/test_server_priority_custom.lua
+
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
