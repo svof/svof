@@ -998,6 +998,16 @@
       "text": "Alias    svo (aliases, triggers) svo/(vversion) Show system version [script]"
     },
     {
+      "id": "item|Alias|svo (aliases, triggers)|svo/Ignore things/Toggle ignore things|regex",
+      "digest": "50ab33394bc37702",
+      "text": "Alias    svo (aliases, triggers) svo/Ignore things/Toggle ignore things [regex]"
+    },
+    {
+      "id": "item|Alias|svo (aliases, triggers)|svo/Ignore things/Toggle ignore things|script",
+      "digest": "ce94c95f1c408403",
+      "text": "Alias    svo (aliases, triggers) svo/Ignore things/Toggle ignore things [script]"
+    },
+    {
       "id": "item|Alias|svo (aliases, triggers)|svo/Show hidelist|regex",
       "digest": "1eb8d9a5a673bd5a",
       "text": "Alias    svo (aliases, triggers) svo/Show hidelist [regex]"
@@ -1024,7 +1034,7 @@
     },
     {
       "id": "item|Script|svo (alias and defence functions)|Alias functions|script",
-      "digest": "8014017d2ec6951b",
+      "digest": "b46af0ddaa336021",
       "text": "Script   svo (alias and defence functions) Alias functions [script]"
     },
     {
@@ -1064,7 +1074,7 @@
     },
     {
       "id": "item|Script|svo (custom prompt, serverside)|Serverside|script",
-      "digest": "e48c9168082508b9",
+      "digest": "c9c54d3738de91ca",
       "text": "Script   svo (custom prompt, serverside) Serverside [script]"
     },
     {

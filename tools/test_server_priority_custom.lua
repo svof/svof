@@ -29,6 +29,9 @@ This covers:
   on, kept across a login, and never taken as the player's numbers
 - autoslick putting asthma first in the server's numbers, and giving its
   number back
+- vignore <aff> <count>: its refusals, one stack at 26 apart from the whole
+  ignore, the stack entry svof makes following the plain one, the game's
+  stack limit, and the switch to auto
 
 It runs the real loaders through tools/svof_world.lua and feeds the game's
 lines to the handlers the trigger and the list's reader call. The lists are
@@ -749,6 +752,147 @@ do
   -- asthma ties with aeon at 1, but paralysis and impatience are after it
   eq(any_affliction(g.sent()), nil, "asthma before paralysis and impatience needs nothing")
   eq(next(sk.serverslick), nil, "and autoslick stays off")
+end
+
+-- ===== one stack ignored: vignore <aff> <count> =====
+
+-- runs the vignore alias as Mudlet would, with what its pattern matched
+local VIGNORE
+do
+  local f = assert(io.open("src/aliases/svo (aliases, triggers)/svo/Ignore things/Toggle_ignore_things.lua", "r"))
+  VIGNORE = f:read("*a")
+  f:close()
+  local j = assert(io.open("src/aliases/svo (aliases, triggers)/svo/Ignore things/aliases.json", "r"))
+  local json = j:read("*a")
+  j:close()
+  check("vignore's pattern takes a count", json:find('"regex": "^vignore (\\\\w+)(?: (\\\\d+))?$"', 1, true) ~= nil)
+end
+local function vignore(g, aff, count)
+  g.w.env.matches = { "vignore " .. aff .. (count and (" " .. count) or ""), aff, count and tostring(count) or nil }
+  g.w.run(VIGNORE, "vignore")
+end
+
+do
+  local g = new_game()
+  g.sent()
+  vignore(g, "unweavingmind", 2)
+  eq(any_affliction(g.sent()), nil, "auto: a stack can't be ignored")
+  check("and svof says only custom mode does it", g.echoed("Only serverside can ignore one stack"))
+end
+
+do
+  local g = new_custom()
+  local svo, sk = g.svo, g.sk
+  local function N() return svo.serverprios.normal end
+  check("this test's premise: the server cures unweavingmind", svo.serverignore.unweavingmind == true)
+  eq(N()["unweavingmind(2)"], nil, "and the game has no number for its stack 2")
+
+  vignore(g, "paralysis", 2)
+  check("an affliction svof doesn't count is refused", g.echoed("Svof doesn't count stacks of paralysis"))
+  vignore(g, "unweavingmind", 1)
+  check("stack 1 is refused, being the plain entry", g.echoed("Stack 1 is unweavingmind's plain entry"))
+  svo.serverignore.unweavingmind = false
+  vignore(g, "unweavingmind", 2)
+  check("one svof cures itself is refused", g.echoed("Svof cures unweavingmind itself"))
+  svo.serverignore.unweavingmind = true
+  eq(any_affliction(g.sent()), nil, "and none of those sends anything")
+
+  vignore(g, "unweavingmind", 2)
+  local sent = g.sent()
+  check("vignore with a count puts that stack at 26", sets(sent, "unweavingmind2", 26), sent)
+  check("in both sets", select(2, sent:gsub(" unweavingmind2 26", "")) == 2, sent)
+  check("and leaves the plain entry", not sent:find(" unweavingmind ", 1, true), sent)
+  eq(svo.ignore.unweavingmind, nil, "it isn't an ignore of the whole affliction")
+  g.model.apply(sent)
+  g.confirm("unweavingmind(2)", 26)
+  eq(N()["unweavingmind(2)"], nil, "svof's 26 isn't the player's number")
+
+  svo.show_ignore()
+  check("vshow ignore lists it", g.echoed("unweavingmind (stack 2)"))
+  check("with a link to remove it", g.linked('svo.sk.serverprios_stackignore("unweavingmind", 2)'))
+
+  -- the plain entry changes while the stack is ignored
+  g.confirm("unweavingmind", 9)
+  g.model.sets.normal.unweavingmind = 9
+  eq(N().unweavingmind, 9, "an edit of the plain entry is the player's")
+  eq(any_affliction(g.sent()), nil, "and the ignored stack stays at 26")
+
+  -- the whole affliction ignored as well, and then not
+  svo.setignore("unweavingmind", true)
+  svo.signals["svo ignore changed"]:emit("unweavingmind")
+  sent = g.sent()
+  check("a whole ignore puts the plain entry at 26 too", sets(sent, "unweavingmind", 26), sent)
+  g.model.apply(sent)
+  g.confirm("unweavingmind", 26)
+  svo.unsetignore("unweavingmind")
+  svo.signals["svo ignore changed"]:emit("unweavingmind")
+  sent = g.sent()
+  check("off again, the plain entry gets its number", sets(sent, "unweavingmind", 9), sent)
+  check("and the stack ignore holds", not sent:find("unweavingmind2", 1, true), sent)
+  g.model.apply(sent)
+  g.confirm("unweavingmind", 9)
+
+  -- the login check expects the ignored stack
+  g.login()
+  g.sent(true)
+  g.answer(g.model.list("slowcuring"), g.model.list("normal"))
+  check("the login check expects an ignored stack", not g.echoed("aren't the ones Svof has"))
+
+  vignore(g, "unweavingmind", 2)
+  sent = g.sent()
+  check("vignore again gives the stack the plain entry's number", sets(sent, "unweavingmind2", 9), sent)
+  check("and says so", g.echoed("The server cures unweavingmind at 2 stacks again"))
+  g.model.apply(sent)
+  g.confirm("unweavingmind(2)", 9)
+  eq(N()["unweavingmind(2)"], nil, "the entry svof made still isn't the player's")
+
+  g.confirm("unweavingmind", 11)
+  g.model.sets.normal.unweavingmind = 11
+  sent = g.sent()
+  check("the entry svof made follows the plain one", sets(sent, "unweavingmind2", 11), sent)
+  g.model.apply(sent)
+
+  -- a list read doesn't take the entry svof made as the player's
+  g.lines(g.model.list("normal"))
+  eq(N()["unweavingmind(2)"], nil, "a list read leaves the entry svof made out of the table")
+  g.w.echoes = {}
+  g.login()
+  g.sent(true)
+  g.answer(g.model.list("slowcuring"), g.model.list("normal"))
+  check("and the login check still matches", not g.echoed("aren't the ones Svof has"))
+end
+
+do
+  -- a stack the player gave a number, and the game's limit
+  local g = new_custom()
+  local svo = g.svo
+  g.confirm("unweavingmind(2)", 6)
+  g.sent()
+  vignore(g, "unweavingmind", 2)
+  local sent = g.sent()
+  check("a stack with the player's number goes to 26", sets(sent, "unweavingmind2", 26), sent)
+  vignore(g, "unweavingmind", 2)
+  sent = g.sent()
+  check("and gets the player's number back", sets(sent, "unweavingmind2", 6), sent)
+
+  vignore(g, "unweavingmind", 9)
+  g.sent()
+  g.line("The unweavingmind affliction can only have up to 5 stacks.")
+  eq(svo.serverprios.stackignore, nil, "a stack past the game's limit stops being ignored")
+  check("and svof says why", g.echoed("can only have up to 5 stacks, so Svof stopped ignoring stack 9"))
+  vignore(g, "unweavingmind", 7)
+  check("then a stack past it is refused", g.echoed("unweavingmind can only have up to 5 stacks."))
+  eq(svo.serverprios.stackignore, nil, "without being ignored")
+
+  -- the switch to auto
+  vignore(g, "unweavingmind", 3)
+  g.sent()
+  g.mode("auto")
+  sent = g.sent()
+  eq(svo.serverprios.stackignore, nil, "auto mode drops the stack ignores")
+  check("and gives the set that isn't reset the plain entry's number",
+    sent:find("curingset switch slowcuring\ncuring priority[^\n]* unweavingmind3 25", 1) ~= nil, sent)
+  check("and says the server cures every stack again", g.echoed("the server cures every stack again"))
 end
 
 -- ===== the game never lists =====
