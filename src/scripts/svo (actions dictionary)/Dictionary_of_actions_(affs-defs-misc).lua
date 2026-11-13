@@ -3115,6 +3115,11 @@ if not next(svo.dict) then
     },
     -- valerian cures
     slickness = {
+      -- svof cures slickness on herb or smoke, whichever balance is free,
+      -- each at its own place in that balance's list. Serverside keeps one
+      -- priority per affliction and picks bloodroot or valerian itself, so
+      -- in auto mode the herb place is the one sent
+      serverpriobalance = 'herb',
       smoke = {
         isadvisable = function()
           return (affs.slickness and codepaste.smoke_valerian_pipe() and not svo.doingaction'slickness') or false

@@ -85,6 +85,7 @@ NO_PRIORITY = {"aff", "gone", "waitingfor", "boosted", "weakened"}
 # the single-source work puts its new facts here rather than in a nested table.
 FIELDS = {
     "gamename":           "what serverside calls this",
+    "serverpriobalance":  "the balance whose place serverside gets, for an affliction on several",
     "name":               "the entry's own name, usually filled in by dict_setup",
     "count":              "how many of this affliction are stacked",
     "description":        "free text, shown by vaff and friends",
