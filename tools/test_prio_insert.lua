@@ -252,6 +252,9 @@ local function new_svof(opts)
   }
   -- Serverside ignores nothing here
   svo.sk.shouldignoreserverside = function() return false end
+  -- vset and vswapslow remind custom mode's players of the server forms;
+  -- serverside is off here, so they say nothing
+  svo.sk.serverprios_remind = function() end
   for _, e in ipairs(ENTRIES) do
     svo.dict[e[1]] = svo.dict[e[1]] or {}
     svo.dict[e[1]][e[2]] = { spriority = e[3], aspriority = e[4] }

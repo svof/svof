@@ -998,6 +998,21 @@
       "text": "Alias    svo (aliases, triggers) svo/(vversion) Show system version [script]"
     },
     {
+      "id": "item|Alias|svo (aliases, triggers)|svo/Clear all gaps in a prio mode|regex",
+      "digest": "db3ad74c9f4c8f71",
+      "text": "Alias    svo (aliases, triggers) svo/Clear all gaps in a prio mode [regex]"
+    },
+    {
+      "id": "item|Alias|svo (aliases, triggers)|svo/Clear all gaps in a prio mode|script",
+      "digest": "0381bb52ad5aa226",
+      "text": "Alias    svo (aliases, triggers) svo/Clear all gaps in a prio mode [script]"
+    },
+    {
+      "id": "item|Alias|svo (aliases, triggers)|svo/Export prios|script",
+      "digest": "48c84c6d575d491b",
+      "text": "Alias    svo (aliases, triggers) svo/Export prios [script]"
+    },
+    {
       "id": "item|Alias|svo (aliases, triggers)|svo/Ignore things/Toggle ignore things|regex",
       "digest": "50ab33394bc37702",
       "text": "Alias    svo (aliases, triggers) svo/Ignore things/Toggle ignore things [regex]"
@@ -1008,6 +1023,26 @@
       "text": "Alias    svo (aliases, triggers) svo/Ignore things/Toggle ignore things [script]"
     },
     {
+      "id": "item|Alias|svo (aliases, triggers)|svo/Import prios|regex",
+      "digest": "0f110b55aee33f30",
+      "text": "Alias    svo (aliases, triggers) svo/Import prios [regex]"
+    },
+    {
+      "id": "item|Alias|svo (aliases, triggers)|svo/Import prios|script",
+      "digest": "accc599763b21e28",
+      "text": "Alias    svo (aliases, triggers) svo/Import prios [script]"
+    },
+    {
+      "id": "item|Alias|svo (aliases, triggers)|svo/Set an affliction priority|regex",
+      "digest": "4d66fc2ba5c92c6c",
+      "text": "Alias    svo (aliases, triggers) svo/Set an affliction priority [regex]"
+    },
+    {
+      "id": "item|Alias|svo (aliases, triggers)|svo/Set an affliction priority|script",
+      "digest": "dbee219f3a96a706",
+      "text": "Alias    svo (aliases, triggers) svo/Set an affliction priority [script]"
+    },
+    {
       "id": "item|Alias|svo (aliases, triggers)|svo/Show hidelist|regex",
       "digest": "1eb8d9a5a673bd5a",
       "text": "Alias    svo (aliases, triggers) svo/Show hidelist [regex]"
@@ -1016,6 +1051,31 @@
       "id": "item|Alias|svo (aliases, triggers)|svo/Show hidelist|script",
       "digest": "f6002ce9a5d2cb57",
       "text": "Alias    svo (aliases, triggers) svo/Show hidelist [script]"
+    },
+    {
+      "id": "item|Alias|svo (aliases, triggers)|svo/Show priority lists|regex",
+      "digest": "0c74b540f320e5bb",
+      "text": "Alias    svo (aliases, triggers) svo/Show priority lists [regex]"
+    },
+    {
+      "id": "item|Alias|svo (aliases, triggers)|svo/Show priority lists|script",
+      "digest": "d351bb3b3db31071",
+      "text": "Alias    svo (aliases, triggers) svo/Show priority lists [script]"
+    },
+    {
+      "id": "item|Alias|svo (aliases, triggers)|svo/Swap affliction priorities|script",
+      "digest": "84a230f477e08c9b",
+      "text": "Alias    svo (aliases, triggers) svo/Swap affliction priorities [script]"
+    },
+    {
+      "id": "item|Alias|svo (aliases, triggers)|svo/Swap slow mode affliction priorities|regex",
+      "digest": "99b6df05f8a1bd6c",
+      "text": "Alias    svo (aliases, triggers) svo/Swap slow mode affliction priorities [regex]"
+    },
+    {
+      "id": "item|Alias|svo (aliases, triggers)|svo/Swap slow mode affliction priorities|script",
+      "digest": "5b4be2eecdc1b2ce",
+      "text": "Alias    svo (aliases, triggers) svo/Swap slow mode affliction priorities [script]"
     },
     {
       "id": "item|Alias|svo (namedb)|NameDB/Enemies lists|script",
@@ -1059,7 +1119,7 @@
     },
     {
       "id": "item|Script|svo (curing skeleton, controllers, action system)|Controllers|script",
-      "digest": "a13b10656c4e392c",
+      "digest": "cca27f6666c38153",
       "text": "Script   svo (curing skeleton, controllers, action system) Controllers [script]"
     },
     {
@@ -1074,7 +1134,7 @@
     },
     {
       "id": "item|Script|svo (custom prompt, serverside)|Serverside|script",
-      "digest": "d8eeab191a9be5eb",
+      "digest": "0697888b58d93385",
       "text": "Script   svo (custom prompt, serverside) Serverside [script]"
     },
     {

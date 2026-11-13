@@ -1463,6 +1463,16 @@ function sk.serverprios_confirmed(set, entry, number)
   local settled = not sk.serverprios_pending[set][entry]
   if settled then sk.serverprios_sent[set][entry] = number end
 
+  -- the player's edit, sent from svof (vset ... server), goes into the table
+  -- once the game takes it
+  if own and sk.serverprios_edits[set][entry] == number then
+    sk.serverprios_edits[set][entry] = nil
+    numbers[entry] = number
+    servermade(set)[entry] = nil
+    signals.saveconfig:emit()
+    svo.echof("%s is %d in the %s set.", entry, number, set)
+  end
+
   local toserver, toaction = sk.serverprionames()
   local name, stack = sk.serverentry(entry)
   local action = toaction[name]
@@ -1504,6 +1514,403 @@ function sk.serverprios_confirmed(set, entry, number)
       sk.serverprios_checknocure(action, toserver)
     end
   end
+end
+
+--[[ svof's list commands with server as the last word ]]
+
+-- the player's edits sent from svof, for each curingset, until the game
+-- confirms them: only a confirmed number goes into the table
+sk.serverprios_edits = {normal = {}, slowcuring = {}}
+
+-- the number the game should have for an affliction action's plain entry in
+-- a curingset, for the ss aff column of vp. nil when svof has no number
+function sk.serverprios_number(action, set)
+  if not sk.customserverprios() then return end
+  local numbers = svo.serverprios[set]
+  if not numbers or not next(numbers) then return end
+  local toserver, toaction = sk.serverprionames()
+  local name = toserver[action]
+  return name and serverprios_want(set, name, toaction, serverprios_moved(set, toserver)) or nil
+end
+
+-- why a server edit can't happen, or nil when it can
+local function serverprios_cantedit(set)
+  if not conf.serverside then return "serverside is off (tn serverside)" end
+  if not sk.customserverprios() then
+    return "in auto mode, Svof works out the server's numbers from its own lists. To set them yourself, use "
+      .."vconfig serverprios custom"
+  end
+  if not next(svo.serverprios[set] or {}) then
+    return "Svof doesn't have your serverside priorities yet. Use vconfig serverprios custom to read them"
+  end
+end
+
+-- a word a player types for an affliction, svof's name or the game's, with
+-- a stack count at the end for a stack entry: the entry as the game's list
+-- names it, or nil and why not
+local function serverprios_resolve(word, set)
+  local toserver, toaction = sk.serverprionames()
+  local numbers = svo.serverprios[set]
+  local base, stack = tostring(word):match("^(%a[%a_]-)(%d+)$")
+  if not base then base = tostring(word) end
+
+  local name = toserver[base] or base
+  if not (numbers[name] or serverunlisted[name]) then
+    return nil, ("the game's priority list has no %s"):format(base)
+  end
+  if not stack then return name end
+
+  stack = tonumber(stack)
+  local action = toaction[name]
+  if not (action and svo.dict[action] and svo.dict[action].count ~= nil) then
+    return nil, ("Svof doesn't count stacks of %s, and the game would set its plain entry instead"):format(name)
+  end
+  if stack < 2 then return name end
+  local most = sk.serverread.maxstacks[name]
+  if most and stack > most then return nil, ("%s can only have up to %d stacks"):format(name, most) end
+  return name .. "(" .. stack .. ")"
+end
+
+-- the player's number for an entry: the table's, or for a stack entry svof
+-- made, its plain entry's
+local function serverprios_own(set, entry)
+  local numbers = svo.serverprios[set]
+  if numbers[entry] then return numbers[entry] end
+  local name, stack = sk.serverentry(entry)
+  if stack then return numbers[name] end
+end
+
+-- one edit of the player's from svof. It goes into the table when the game
+-- confirms it, or at once when an override holds the entry elsewhere, or the
+-- game already has the number
+local function serverprios_edit(set, entry, number)
+  local toserver, toaction = sk.serverprionames()
+  local numbers = svo.serverprios[set]
+  local old = numbers[entry]
+  numbers[entry] = number
+  local want = serverprios_want(set, entry, toaction, serverprios_moved(set, toserver))
+  numbers[entry] = old
+
+  if want ~= number or sk.serverprios_sent[set][entry] == number then
+    numbers[entry] = number
+    servermade(set)[entry] = nil
+    signals.saveconfig:emit()
+    -- an entry swapped with this one takes the new number
+    sk.serverprios_applymoves()
+    if want ~= number then
+      svo.echof("%s is %d in the %s set, and the server keeps it at %d for now.", entry, number, set, want)
+    else
+      svo.echof("%s is %d in the %s set.", entry, number, set)
+    end
+    return
+  end
+
+  sk.serverprios_edits[set][entry] = number
+  serverprios_sendentry(set, entry, number)
+end
+
+local function serverprios_setof(word)
+  if word == nil or word == "" then return 'normal' end
+  if word == 'slowcuring' then return 'slowcuring' end
+end
+
+-- vset <aff> [slowcuring] <number> server
+function sk.serverprios_vset(word, setword, number)
+  if setword == 'defences' then
+    svo.echof("Svof doesn't set serverside defence numbers yet.")
+    return
+  end
+  local set = serverprios_setof(setword)
+  if not set then
+    svo.echof("To set a serverside priority, use vset <affliction> <number> server, or vset <affliction> "
+      .."slowcuring <number> server for the slowcuring set.")
+    return
+  end
+  local why = serverprios_cantedit(set)
+  if why then svo.echof("Can't set that serverside priority: %s.", why) return end
+
+  number = tonumber(number)
+  if not number or number < 1 or number > 26 then
+    svo.echof("Can't set that serverside priority: the game's numbers go from 1 to 26, and 26 means ignore.")
+    return
+  end
+  local entry
+  entry, why = serverprios_resolve(word, set)
+  if not entry then svo.echof("Can't set that serverside priority: %s.", why) return end
+
+  serverprios_edit(set, entry, number)
+end
+
+-- vswap <aff> <aff> server, and vswapslow <aff> <aff> server for the
+-- slowcuring set: the two entries swap the player's numbers
+function sk.serverprios_vswap(word1, word2, set)
+  local why = serverprios_cantedit(set)
+  if why then svo.echof("Can't swap those serverside priorities: %s.", why) return end
+
+  local a, b
+  a, why = serverprios_resolve(word1, set)
+  if not a then svo.echof("Can't swap those serverside priorities: %s.", why) return end
+  b, why = serverprios_resolve(word2, set)
+  if not b then svo.echof("Can't swap those serverside priorities: %s.", why) return end
+
+  local na, nb = serverprios_own(set, a), serverprios_own(set, b)
+  if not (na and nb) then
+    svo.echof("Can't swap those serverside priorities: Svof has no number for %s.", na and b or a)
+    return
+  end
+  if na == nb then
+    svo.echof("%s and %s are both %d in the %s set, so there's nothing to swap.", a, b, na, set)
+    return
+  end
+  serverprios_edit(set, a, nb)
+  serverprios_edit(set, b, na)
+end
+
+-- vp serveraffs [slowcuring]: a curingset grouped by the number the game has,
+-- like its own list. A mark says why the game's number isn't the player's
+function sk.serverprios_show(set)
+  set = set == 'slowcuring' and 'slowcuring' or 'normal'
+  local toserver, toaction = sk.serverprionames()
+  local custom = sk.customserverprios()
+  local levels, players = {}, {}
+
+  local function file(entry, number, mark, own)
+    levels[number] = levels[number] or {}
+    table.insert(levels[number], {entry = entry, mark = mark})
+    players[entry] = own
+  end
+
+  if custom then
+    local numbers = svo.serverprios[set]
+    if not next(numbers or {}) then
+      svo.echof("Svof doesn't have your serverside priorities yet. Use vconfig serverprios custom to read them.")
+      return
+    end
+    local moved = serverprios_moved(set, toserver)
+    local entries = {}
+    for entry in pairs(numbers) do entries[entry] = true end
+    for entry in pairs(servermade(set)) do entries[entry] = true end
+    for name, stacks in pairs(svo.serverprios.stackignore or {}) do
+      for stack in pairs(stacks) do entries[name .. "(" .. stack .. ")"] = true end
+    end
+
+    for entry in pairs(entries) do
+      local name, stack = sk.serverentry(entry)
+      local action = toaction[name]
+      local want = serverprios_want(set, entry, toaction, moved)
+      local own = numbers[entry]
+      local mark
+      if action and serverkeeps26(action) then
+        mark = not svo.serverignore[action] and "svof cures it" or svo.ignore[action] and "ignored" or "svof's rule"
+      elseif stack and serverstackignored(entry) then
+        mark = "stack ignored"
+      elseif moved[entry] then
+        mark = (sk.serverslick[set] and (name == toserver.asthma or own == 1)) and "autoslick" or "swapped"
+      elseif not own then
+        mark = "follows " .. name
+      end
+      if mark and own and own ~= want then mark = mark .. ", yours " .. own end
+      if want then file(entry, want, mark, own) end
+    end
+    svo.echof("Your serverside affliction priorities, %s set:", set)
+  else
+    local auto = sk.autoserverprios(set)
+    for action, name in pairs(toserver) do
+      if serverkeeps26(action) then
+        file(name, 26, "svof cures it", nil)
+      elseif auto[action] then
+        file(name, auto[action], nil, nil)
+      end
+    end
+    svo.echof("The serverside affliction priorities Svof works out from its own lists, %s set:", set)
+  end
+
+  setFgColor(112, 112, 112)
+  for number = 1, 26 do
+    echo(string.format("  %2d: ", number))
+    local here = levels[number] or {}
+    table.sort(here, function(x, y) return x.entry < y.entry end)
+    for i, item in ipairs(here) do
+      if i > 1 then echo(", ") end
+      local own = players[item.entry]
+      if custom and own then
+        local name, stack = sk.serverentry(item.entry)
+        local typed = name .. (stack or "")
+        local setword = set == 'slowcuring' and '"slowcuring"' or 'nil'
+        if own > 1 then
+          echoLink("^", ('svo.sk.serverprios_vset("%s", %s, %d)'):format(typed, setword, own - 1),
+            "Move "..item.entry.." to "..(own - 1), true)
+        end
+        echo(item.entry)
+        if own < 26 then
+          echoLink("v", ('svo.sk.serverprios_vset("%s", %s, %d)'):format(typed, setword, own + 1),
+            "Move "..item.entry.." to "..(own + 1), true)
+        end
+      else
+        echo(item.entry)
+      end
+      if item.mark then echo(" (" .. item.mark .. ")") end
+    end
+    echo("\n")
+  end
+  resetFormat()
+
+  if custom then
+    svo.echof("Affs at 26 are ignored. To change one, use vset <affliction> %s<number> server.",
+      set == 'slowcuring' and "slowcuring " or "")
+  else
+    svo.echof("To set these yourself, use vconfig serverprios custom.")
+  end
+  svo.showprompt()
+end
+
+-- a value of a server export, as Lua that only builds tables
+local function serverprios_serialise(value, depth)
+  depth = depth or 0
+  if type(value) ~= 'table' then return tostring(value) end
+  local pad = ("  "):rep(depth)
+  local keys = {}
+  for key in pairs(value) do keys[#keys+1] = key end
+  table.sort(keys, function(x, y) return tostring(x) < tostring(y) end)
+  local out = {"{"}
+  for _, key in ipairs(keys) do
+    local k = type(key) == 'number' and ("[%d]"):format(key) or ("[%q]"):format(key)
+    local v = type(value[key]) == 'string' and ("%q"):format(value[key]) or serverprios_serialise(value[key], depth + 1)
+    out[#out+1] = ("%s  %s = %s,"):format(pad, k, v)
+  end
+  out[#out+1] = pad .. "}"
+  return table.concat(out, "\n")
+end
+
+-- vexportprio <name> server: both curingsets, the swaps that are on, and the
+-- stacks ignored
+function sk.serverprios_exporttext(name)
+  local s = {("-- Serverside priorities '%s' by %s, exported @ %s"):format(name, svo.sys.charname or "Unknown",
+    os.date())}
+  for _, key in ipairs({'normal', 'slowcuring', 'toggles', 'stackignore'}) do
+    s[#s+1] = key .. " = " .. serverprios_serialise(svo.serverprios[key] or {})
+  end
+  return table.concat(s, "\n") .. "\n"
+end
+
+function sk.serverprios_export(name)
+  local why = serverprios_cantedit('normal')
+  if why then svo.echof("Can't export your serverside priorities: %s.", why) return end
+  local folder = getMudletHomeDir() .. "/svo/serverprios"
+  svo.pl.dir.makepath(folder)
+  local file, err = io.open(folder .. "/" .. name, "w")
+  if not file then svo.echof("Can't export your serverside priorities: %s.", tostring(err)) return end
+  file:write(sk.serverprios_exporttext(name))
+  file:close()
+  svo.echof("Exported your serverside priorities to %s. To load them, use vimportprio %s server.",
+    folder .. "/" .. name, name)
+end
+
+-- what an export holds, or nil and why not
+function sk.serverprios_importtext(text)
+  local env = {}
+  local chunk, err
+  if setfenv and loadstring then
+    chunk, err = loadstring(text)
+    if chunk then setfenv(chunk, env) end
+  else
+    chunk, err = load(text, "serverprios", "t", env)
+  end
+  if not chunk then return nil, err end
+  local ok, runerr = pcall(chunk)
+  if not ok then return nil, runerr end
+
+  local loaded = {}
+  for _, set in ipairs(serversets) do
+    if type(env[set]) ~= 'table' then return nil, "it has no " .. set .. " set" end
+    loaded[set] = {}
+    for entry, number in pairs(env[set]) do
+      if type(entry) ~= 'string' or not sk.serverentry(entry) or type(number) ~= 'number'
+        or number < 1 or number > 26 then
+        return nil, ("its %s set has %s = %s, which isn't an entry and a number from 1 to 26"):format(set,
+          tostring(entry), tostring(number))
+      end
+      loaded[set][entry] = number
+    end
+  end
+  loaded.toggles = {}
+  for _, toggle in ipairs(type(env.toggles) == 'table' and env.toggles or {}) do
+    if sk.serverswaps[toggle] then loaded.toggles[#loaded.toggles+1] = toggle end
+  end
+  for name, stacks in pairs(type(env.stackignore) == 'table' and env.stackignore or {}) do
+    if type(name) == 'string' and type(stacks) == 'table' then
+      for stack, on in pairs(stacks) do
+        if type(stack) == 'number' and stack >= 2 and on == true then
+          loaded.stackignore = loaded.stackignore or {}
+          loaded.stackignore[name] = loaded.stackignore[name] or {}
+          loaded.stackignore[name][stack] = true
+        end
+      end
+    end
+  end
+  return loaded
+end
+
+-- takes what an export holds, and sends the game what differs from it
+function sk.serverprios_takeexport(loaded)
+  svo.serverprios.made = {}
+  for _, set in ipairs(serversets) do svo.serverprios[set] = loaded[set] end
+  svo.serverprios.toggles = loaded.toggles
+  svo.serverprios.stackignore = loaded.stackignore
+  for name, stacks in pairs(loaded.stackignore or {}) do
+    for stack in pairs(stacks) do
+      local entry = name .. "(" .. stack .. ")"
+      for _, set in ipairs(serversets) do
+        if not svo.serverprios[set][entry] then servermade(set)[entry] = true end
+      end
+    end
+  end
+  signals.saveconfig:emit()
+
+  -- what was sent stands for what the game has, so only what differs goes
+  local toserver, toaction = sk.serverprionames()
+  for _, set in ipairs(serversets) do
+    local moved = serverprios_moved(set, toserver)
+    sk.serverprios_lastmoved[set] = moved
+    for _, from in ipairs({svo.serverprios[set], servermade(set)}) do
+      for entry in pairs(from) do
+        serverprios_sendentry(set, entry, serverprios_want(set, entry, toaction, moved))
+      end
+    end
+  end
+  for action in pairs(serverprios_overridden(toserver, toaction)) do sk.serverprios_refresh(action, toserver) end
+end
+
+-- vimportprio <name> server
+function sk.serverprios_import(name)
+  local why = serverprios_cantedit('normal')
+  if why then svo.echof("Can't import serverside priorities: %s.", why) return end
+  local path = getMudletHomeDir() .. "/svo/serverprios/" .. tostring(name)
+  local file = io.open(path, "r")
+  if not file then svo.echof("Can't import serverside priorities: there's no %s.", path) return end
+  local text = file:read("*a")
+  file:close()
+
+  local loaded
+  loaded, why = sk.serverprios_importtext(text)
+  if not loaded then svo.echof("Can't import serverside priorities from %s: %s.", name, tostring(why)) return end
+  sk.serverprios_takeexport(loaded)
+  svo.echof("Imported your serverside priorities from %s, and sent the game what differs.", name)
+end
+
+-- the list commands without server change only svof's own lists: in custom
+-- mode, svof says once a session how to edit the server's
+function sk.serverprios_remind()
+  if not sk.customserverprios() or sk.serverwarned.reminded then return end
+  sk.serverwarned.reminded = true
+  svo.echof("That changed Svof's own list. Your serverside priorities are your own in custom mode: to edit them, "
+    .."put server at the end, as in vset paralysis 3 server.")
+end
+
+-- vcleargaps <balance> server
+function sk.serverprios_refusecleargaps()
+  svo.echof("Svof doesn't clear gaps on the server: the server only goes by which number comes first, so an "
+    .."empty number does no harm.")
 end
 
 --[[ warnings about the player's own numbers ]]

@@ -37,6 +37,9 @@ This covers:
   once for each change
 - the game's names from gamename or GMCP's, with none for svof's own
   afflictions, such as paradox
+- vset, vswap and vswapslow with server at the end, which go into the table
+  once the game confirms them, their refusals, vp serveraffs, the ss aff
+  column of vp, export and import, and the reminder the plain forms give
 
 It runs the real loaders through tools/svof_world.lua and feeds the game's
 lines to the handlers the trigger and the list's reader call. The lists are
@@ -1002,6 +1005,191 @@ do
   g.sent(true)
   g.answer(LIST_SLOW, LIST_PLAIN)
   eq(echoes(g, "priority list doesn't have"), 1, "and says so once a session")
+end
+
+-- ===== svof's list commands with server at the end =====
+
+local ALIASES = "src/aliases/svo (aliases, triggers)/svo/"
+local function readfile(path)
+  local f = assert(io.open(path, "r"))
+  local s = f:read("*a")
+  f:close()
+  return s
+end
+local ALIAS = {
+  vset = readfile(ALIASES .. "Set_an_affliction_priority.lua"),
+  vswap = readfile(ALIASES .. "Swap_affliction_priorities.lua"),
+  vswapslow = readfile(ALIASES .. "Swap_slow_mode_affliction_priorities.lua"),
+  vcleargaps = readfile(ALIASES .. "Clear_all_gaps_in_a_prio_mode.lua"),
+  vp = readfile(ALIASES .. "Show_priority_lists.lua"),
+}
+do
+  local json = readfile(ALIASES .. "aliases.json")
+  for _, pattern in ipairs({
+    '"^vset (\\\\w+)(?: (\\\\w+))? (\\\\d+)( server)?$"',
+    '"^vswapslow (\\\\w+) (\\\\w+)( server)?$"',
+    '"^vcleargaps (\\\\w+)( server)?$"',
+    '"^(?:vshowprios|vp) (\\\\w+)(?: (slowcuring))?$"',
+    '"^vimportprio(?: (\\\\w+))?( server)?$"',
+  }) do
+    check("the alias pattern " .. pattern .. " takes server", json:find(pattern, 1, true) ~= nil)
+  end
+end
+-- runs an alias with what its pattern matched, nil for a group that didn't
+local function alias(g, name, ...)
+  g.w.env.matches = { name, ... }
+  g.w.run(ALIAS[name], name)
+end
+
+do
+  local g = new_game()
+  g.sent()
+  alias(g, "vset", "paralysis", nil, "3", " server")
+  eq(any_affliction(g.sent()), nil, "auto: vset server sends nothing")
+  check("and says custom mode does it", g.echoed("To set them yourself, use vconfig serverprios custom"))
+  g.sk.serverprios_show("normal")
+  check("auto: vp serveraffs shows the numbers auto mode works out",
+    g.echoed("The serverside affliction priorities Svof works out from its own lists, normal set:"))
+end
+
+do
+  local g = new_custom()
+  local svo, sk = g.svo, g.sk
+  local function N() return svo.serverprios.normal end
+
+  alias(g, "vset", "paralysis", nil, "3", " server")
+  local sent = g.sent()
+  check("vset server sends the number", sets(sent, "paralysis", 3), sent)
+  check("to the normal set alone", select(2, sent:gsub(" paralysis 3", "")) == 1
+    and not sent:find("switch slowcuring\ncuring priority paralysis", 1, true), sent)
+  eq(N().paralysis, 2, "and the table waits for the game to take it")
+  g.confirm("paralysis", 3)
+  eq(N().paralysis, 3, "the game's confirmation puts it in the table")
+  check("and svof says so", g.echoed("paralysis is 3 in the normal set."))
+  eq(any_affliction(g.sent()), nil, "with nothing sent back")
+
+  alias(g, "vset", "paralysis", "slowcuring", "7", " server")
+  sent = g.sent()
+  check("vset slowcuring server goes to the slowcuring set",
+    sent:find("curingset switch slowcuring\ncuring priority paralysis 7", 1, true) ~= nil, sent)
+
+  alias(g, "vset", "blindaff", nil, "5", " server")
+  sent = g.sent()
+  check("svof's name for an affliction works, sent as the game takes it", sets(sent, "blind", 5), sent)
+
+  alias(g, "vset", "unweavingmind2", nil, "6", " server")
+  sent = g.sent()
+  check("a stack entry goes as name and count", sets(sent, "unweavingmind2", 6), sent)
+  g.confirm("unweavingmind(2)", 6)
+  eq(N()["unweavingmind(2)"], 6, "and is the player's once confirmed")
+
+  alias(g, "vset", "paralysis2", nil, "5", " server")
+  check("a stack of one svof doesn't count is refused", g.echoed("Svof doesn't count stacks of paralysis"))
+  alias(g, "vset", "hoisted", nil, "3", " server")
+  check("so is a name the game's list lacks", g.echoed("the game's priority list has no hoisted"))
+  alias(g, "vset", "paralysis", nil, "27", " server")
+  check("and a number past 26", g.echoed("the game's numbers go from 1 to 26"))
+  alias(g, "vset", "paralysis", "herb", "3", " server")
+  check("and a balance in place of slowcuring", g.echoed("To set a serverside priority, use vset <affliction>"))
+  eq(any_affliction(g.sent()), nil, "none of those sends anything")
+
+  alias(g, "vset", "impale", nil, "4", " server")
+  eq(N().impaled, 4, "a number for something svof keeps at 26 goes into the table at once")
+  check("and says the server keeps 26", g.echoed("impaled is 4 in the normal set, and the server keeps it at 26 for now."))
+  eq(any_affliction(g.sent()), nil, "sending nothing")
+
+  -- the plain forms still edit svof's own lists, and say how to edit the server's
+  alias(g, "vset", "paralysis", "herb", "3", nil)
+  check("vset without server reminds how to edit the server's list", g.echoed("put server at the end"))
+  alias(g, "vset", "asthma", "herb", "4", nil)
+  eq(echoes(g, "put server at the end"), 1, "once a session")
+  alias(g, "vset", "paralysis", nil, "3", nil)
+  check("vset with no balance and no server asks which balance", g.echoed("Which balance?"))
+
+  alias(g, "vcleargaps", "herb", " server")
+  check("vcleargaps server is refused", g.echoed("Svof doesn't clear gaps on the server"))
+end
+
+do
+  local g = new_custom()
+  local svo, sk = g.svo, g.sk
+  local function N() return svo.serverprios.normal end
+
+  alias(g, "vswap", "paralysis", "asthma", "server", nil)
+  local sent = g.sent()
+  check("vswap server swaps the two numbers", sets(sent, "paralysis", 4) and sets(sent, "asthma", 2), sent)
+  g.confirm("paralysis", 4)
+  g.confirm("asthma", 2)
+  eq(N().paralysis .. " " .. N().asthma, "4 2", "and both are the player's once confirmed")
+  check("which isn't pva: the table holds them", svo.serverprios.toggles == nil or #svo.serverprios.toggles == 0)
+
+  alias(g, "vswapslow", "paralysis", "asthma", " server")
+  sent = g.sent()
+  check("vswapslow server swaps them in the slowcuring set",
+    sent:find("curingset switch slowcuring\ncuring priority[^\n]* paralysis 4", 1) ~= nil, sent)
+
+  -- vp serveraffs
+  g.w.echoes, g.w.links = {}, {}
+  alias(g, "vp", "serveraffs", nil)
+  check("vp serveraffs shows the set", g.echoed("Your serverside affliction priorities, normal set:"))
+  check("grouped by the game's number", g.echoed("   2: "))
+  -- the name and its mark are echoed one after the other
+  local marked = false
+  for i, e in ipairs(g.w.echoes) do
+    if e == "impaled" and g.w.echoes[i + 1] == " (svof cures it, yours " .. N().impaled .. ")" then marked = true end
+  end
+  check("with why the game's number isn't the player's", marked)
+  check("and arrows that set the player's number", g.linked('svo.sk.serverprios_vset("paralysis", nil, 3)')
+    and g.linked('svo.sk.serverprios_vset("paralysis", nil, 5)'))
+  g.w.echoes, g.w.links = {}, {}
+  alias(g, "vp", "serveraffs", "slowcuring")
+  check("vp serveraffs slowcuring shows that set", g.echoed("Your serverside affliction priorities, slowcuring set:"))
+  check("with arrows for it", g.linked('svo.sk.serverprios_vset("paralysis", "slowcuring",'))
+
+  -- the ss aff column of vp
+  eq(sk.serverprios_number("paralysis", "normal"), 4, "the ss aff column has the player's number")
+  g.w.echoes = {}
+  -- svof's intlen uses math.log10, which Mudlet's Lua 5.1 has and 5.2+ dropped
+  local math_ = g.w.env.math
+  if not math_.log10 then
+    g.w.env.math = setmetatable({ log10 = function(x) return math.log(x, 10) end }, { __index = math_ })
+  end
+  svo.printorder("herb")
+  local shown = false
+  for _, e in ipairs(g.w.echoes) do
+    if e:find("ss aff%s+4%) paralysis") then shown = true end
+  end
+  check("and vp herb shows it", shown)
+
+  -- export and import
+  svo.serverprios.toggles = { "pva" }
+  local text = sk.serverprios_exporttext("mine")
+  local loaded = assert(sk.serverprios_importtext(text))
+  local same = true
+  for _, set in ipairs({ "normal", "slowcuring" }) do
+    for entry, number in pairs(svo.serverprios[set]) do
+      if loaded[set][entry] ~= number then same = false end
+    end
+    for entry, number in pairs(loaded[set]) do
+      if svo.serverprios[set][entry] ~= number then same = false end
+    end
+  end
+  check("an export reads back to the same numbers", same)
+  eq(table.concat(loaded.toggles, " "), "pva", "and the same swaps")
+  svo.serverprios.toggles = {}
+  g.sent()
+
+  loaded.normal.prone = 9
+  loaded.toggles = {}
+  sk.serverprios_takeexport(loaded)
+  sent = g.sent()
+  eq(N().prone, 9, "an import is the player's")
+  check("and sends what differs", sets(sent, "prone", 9), sent)
+  check("but not what matches", not sent:find(" icebound ", 1, true), sent)
+
+  local bad = sk.serverprios_importtext("normal = { paralysis = 30 }\nslowcuring = {}")
+  eq(bad, nil, "an export with a number past 26 is refused")
+  eq(sk.serverprios_importtext("normal = {}"), nil, "and one without both sets")
 end
 
 -- ===== the game never lists =====
