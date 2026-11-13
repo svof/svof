@@ -684,11 +684,12 @@ end
 sk.serverlistnames = {blind = 'blindness', deaf = 'deafness'}
 
 -- the name the game's priority list has for each affliction action, and the
--- action each of its names stands for. An action the game names another way
--- when it reports afflictions (sstosvoa) is found by that name too. Where two
--- actions have one name, the one the game reports it as has it: the game's
--- lovers is the lover's curse, svof's inlove. svof's lovers action is lust,
--- which the game handles with CURING REJECTION and not with a priority
+-- action each of its names stands for. An action's name is its gamename where
+-- svof sets one, else the name GMCP reports it by (sstosvoa): sleep is
+-- sleeping. One with neither is svof's own and has no priority in the game,
+-- such as paradox, hoisted, or lust, svof's lovers action, which the game
+-- handles with CURING REJECTION. Where two actions have one name, the one the
+-- game reports it as has it
 function sk.serverprionames()
   local toserver, toaction = {}, {}
 
@@ -698,11 +699,13 @@ function sk.serverprionames()
 
   for action, entry in pairs(svo.dict) do
     if type(entry) == 'table' and type(entry.aff) == 'table' and not entry.aff.notagameaff then
-      local name = entry.gamename or action
-      name = sk.serverlistnames[name] or name
-      if not toaction[name] or toaction[name] == action or not svo.dict.sstosvoa[name] then
-        toserver[action] = name
-        toaction[name] = action
+      local name = entry.gamename or svo.dict.svotossa[action]
+      if name then
+        name = sk.serverlistnames[name] or name
+        if not toaction[name] or toaction[name] == action or not svo.dict.sstosvoa[name] then
+          toserver[action] = name
+          toaction[name] = action
+        end
       end
     end
   end
@@ -1356,6 +1359,8 @@ function sk.serverprios_keepgame()
   sk.serverprios_applymoves()
   signals.saveconfig:emit()
   svo.echof("Kept the game's serverside priorities.")
+  local names = sk.serverprionames()
+  for action in pairs(names) do sk.serverprios_checknocure(action, names) end
 end
 
 -- after the login comparison: the game gets what svof expects it to have.
@@ -1408,6 +1413,7 @@ function sk.serverlist_read(set, asked)
       if next(read.logindiffs.normal) or next(read.logindiffs.slowcuring) then
         serverprios_showdiffs(read.logindiffs)
       end
+      sk.serverprios_warnall()
     end
     return
   end
@@ -1438,6 +1444,9 @@ function sk.serverlist_read(set, asked)
         .."cures itself or ignores.")
     end
   end
+
+  -- once the lists svof asked for are all in
+  if not (asked and read.asked) then sk.serverprios_warnall() end
 end
 
 -- the game confirmed a changed entry of a curingset. svof's own sends aren't
@@ -1488,7 +1497,152 @@ function sk.serverprios_confirmed(set, entry, number)
     end
   end
   -- an entry swapped with this one takes the player's new number
-  if edited then sk.serverprios_applymoves() end
+  if edited then
+    sk.serverprios_applymoves()
+    if action then
+      if keeps26 and number ~= 26 then sk.serverprios_warnkept(action, entry, number) end
+      sk.serverprios_checknocure(action, toserver)
+    end
+  end
+end
+
+--[[ warnings about the player's own numbers ]]
+
+-- what svof last warned about, so each warning prints once for each change:
+-- the curingsets in which nothing cures an action, and the names svof found
+-- missing from the game's list
+sk.serverwarned = {nocure = {}, missing = {}}
+
+-- the curingsets in which every number the table has for an action is 26
+local function serverprios_all26(action, name)
+  local sets = {}
+  for _, set in ipairs(serversets) do
+    local numbers = svo.serverprios[set]
+    if numbers and next(numbers) then
+      local any, all26 = false, true
+      for _, entry in ipairs(serverprios_entriesof(set, name)) do
+        -- the player's own numbers: not a stack svof made or ignores
+        if numbers[entry] then
+          any = true
+          if numbers[entry] ~= 26 then all26 = false end
+        end
+      end
+      if any and all26 then sets[#sets+1] = set end
+    end
+  end
+  return sets
+end
+
+-- an action the server is meant to cure, with nothing ignoring it, that is
+-- at 26 all the same: the server doesn't cure it, and neither does svof
+function sk.serverprios_checknocure(action, toserver)
+  if not sk.customserverprios() then return end
+  toserver = toserver or sk.serverprionames()
+  local name = toserver[action]
+  if not name then return end
+
+  local sets = (svo.serverignore[action] and not serverkeeps26(action)) and serverprios_all26(action, name) or {}
+  local now = sets[1] and table.concat(sets, " and ") or nil
+  local was = sk.serverwarned.nocure[action]
+  sk.serverwarned.nocure[action] = now
+  if not now or now == was then return end
+
+  svo.echofn("%s is at 26 in the %s set%s, so nothing cures it: Svof leaves it to serverside. ", action, now,
+    sets[2] and "s" or "")
+  setFgColor(unpack(svo.getDefaultColorNums))
+  setUnderline(true)
+  echoLink("Give it a number", 'svo.sk.serverprios_givenumber("'..action..'")',
+    "Give "..action.." the number auto mode would, in each set where it's at 26", true)
+  setUnderline(false)
+  echo(" or ")
+  setUnderline(true)
+  echoLink("let Svof cure it", 'svo.unsetserverignore("'..action..'")', "Have Svof cure "..action.." itself", true)
+  setUnderline(false)
+  echo(".\n")
+end
+
+-- the link of that warning: the number auto mode would give the action, or
+-- 25, in each curingset where all of it is at 26
+function sk.serverprios_givenumber(action)
+  if not sk.customserverprios() then return end
+  local toserver = sk.serverprionames()
+  local name = toserver[action]
+  if not name then return end
+
+  local given = {}
+  for _, set in ipairs(serverprios_all26(action, name)) do
+    local number = sk.autoserverprios(set)[action] or 25
+    svo.serverprios[set][name] = number
+    given[#given+1] = ("%d in the %s set"):format(number, set)
+  end
+  if not given[1] then return end
+
+  signals.saveconfig:emit()
+  sk.serverprios_refresh(action, toserver)
+  sk.serverwarned.nocure[action] = nil
+  svo.echof("Gave %s %s.", action, table.concat(given, " and "))
+end
+
+-- the player gave a number to something svof keeps at 26: svof put it back
+-- to 26, and says why, and that the number is kept
+function sk.serverprios_warnkept(action, entry, number)
+  local _, stack = sk.serverentry(entry)
+  local why, fix, code
+  if not svo.serverignore[action] then
+    why, fix, code = ("Svof cures %s itself"):format(action), "let serverside cure it",
+      'svo.setserverignore("'..action..'")'
+  elseif svo.ignore[action] then
+    why, fix, code = ("%s is ignored"):format(action), "stop ignoring it", 'svo.toggle_ignore("'..action..'")'
+  elseif stack and serverstackignored(entry) then
+    why, fix, code = ("you ignore %s at %d stacks"):format(action, stack), "stop ignoring that stack",
+      'svo.sk.serverprios_stackignore("'..action..'", '..stack..')'
+  else
+    why = ("Svof keeps %s off serverside while it's raised as a defence, or by its own rule"):format(action)
+  end
+
+  svo.echofn("%s, so the server keeps %s at 26. Your %d is saved for when the server cures it", why, entry, number)
+  if fix then
+    echo(": ")
+    setFgColor(unpack(svo.getDefaultColorNums))
+    setUnderline(true)
+    echoLink(fix, code, fix, true)
+    setUnderline(false)
+  end
+  echo(".\n")
+end
+
+-- the affliction actions svof leaves to the server whose names the game's
+-- list of a curingset doesn't have: the server has no priority for them, so
+-- it may not cure them at all, and svof doesn't either. GMCP reports some
+-- afflictions the list doesn't have, so the name can be right. Each is said
+-- once a session
+function sk.serverprios_checkmissing(set)
+  if not sk.customserverprios() then return end
+  local listed = sk.serverread.sets[set]
+  if not listed then return end
+
+  local toserver = sk.serverprionames()
+  local missing = {}
+  for action, name in pairs(toserver) do
+    if svo.serverignore[action] and not listed[name] and not serverunlisted[name]
+      and not sk.serverwarned.missing[name] then
+      sk.serverwarned.missing[name] = true
+      missing[#missing+1] = action == name and name or (action .. " (" .. name .. ")")
+    end
+  end
+  if not missing[1] then return end
+
+  table.sort(missing)
+  svo.echof("Svof leaves %s to serverside, but the game's priority list doesn't have %s, so the server might not "
+    .."cure %s. To have Svof cure %s instead, use vshow serverside.", svo.concatand(missing),
+    missing[2] and "them" or "it", missing[2] and "them" or "it", missing[2] and "them" or "it")
+end
+
+-- every warning that goes by the lists and the table, after they were read
+function sk.serverprios_warnall()
+  for _, set in ipairs(serversets) do sk.serverprios_checkmissing(set) end
+  local toserver = sk.serverprionames()
+  for action in pairs(toserver) do sk.serverprios_checknocure(action, toserver) end
 end
 
 -- drops the sync's memory of what it sent, so the next one sends everything
@@ -1562,6 +1716,7 @@ end
 local function serverprios_changed(action)
   if type(action) ~= 'string' or not svo.dict[action] then return end
   sk.serverprios_refresh(action)
+  sk.serverprios_checknocure(action)
 end
 signals["svo ignore changed"]:connect(serverprios_changed, "keep or give back a custom server priority")
 signals["svo serverignore changed"]:connect(serverprios_changed, "keep or give back a custom server priority")

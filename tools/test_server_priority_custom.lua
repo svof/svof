@@ -32,6 +32,11 @@ This covers:
 - vignore <aff> <count>: its refusals, one stack at 26 apart from the whole
   ignore, the stack entry svof makes following the plain one, the game's
   stack limit, and the switch to auto
+- the warnings: nothing cures it, a number kept for something svof keeps at
+  26, and an affliction left to the server that the game's list lacks, each
+  once for each change
+- the game's names from gamename or GMCP's, with none for svof's own
+  afflictions, such as paradox
 
 It runs the real loaders through tools/svof_world.lua and feeds the game's
 lines to the handlers the trigger and the list's reader call. The lists are
@@ -893,6 +898,110 @@ do
   check("and gives the set that isn't reset the plain entry's number",
     sent:find("curingset switch slowcuring\ncuring priority[^\n]* unweavingmind3 25", 1) ~= nil, sent)
   check("and says the server cures every stack again", g.echoed("the server cures every stack again"))
+end
+
+-- ===== warnings =====
+
+local function echoes(g, text)
+  local n = 0
+  for _, e in ipairs(g.w.echoes) do
+    if e:find(text, 1, true) then n = n + 1 end
+  end
+  return n
+end
+
+do
+  local g = new_custom()
+  local svo, sk = g.svo, g.sk
+
+  -- the game's names: gamename, else the one GMCP reports. svof's own
+  -- afflictions have neither, and no priority in the game
+  local toserver = sk.serverprionames()
+  eq(toserver.sleep, "sleeping", "sleep goes by its GMCP name, sleeping, which the game lists")
+  eq(toserver.galed, "airfisted", "and galed by airfisted")
+  eq(toserver.blindaff, "blindness", "a gamename comes first")
+  eq(toserver.paradox, nil, "paradox, not an affliction in the game, has no server name")
+  eq(toserver.insomnia, nil, "nor does insomnia, which GMCP doesn't report as svof's")
+  eq(toserver.hoisted, nil, "nor hoisted")
+  check("so the switch finds no name the list lacks", not g.echoed("priority list doesn't have"))
+
+  -- nothing cures it
+  check("this test's premise: the server cures paralysis", svo.serverignore.paralysis == true)
+  -- the captured list has latched, blindness and deafness at 26, which svof
+  -- leaves to the server in this setup
+  check("the switch warns for a 26 the server is meant to cure",
+    g.echoed("latched is at 26 in the normal and slowcuring sets, so nothing cures it"))
+  local n0 = echoes(g, "so nothing cures it")
+  check("but not for paralysis, which has a number", not g.echoed("paralysis is at 26"))
+  g.confirm("paralysis", 26)
+  check("26 on an affliction the server cures warns that nothing cures it",
+    g.echoed("paralysis is at 26 in the normal set, so nothing cures it"))
+  check("with a link to give it a number", g.linked('svo.sk.serverprios_givenumber("paralysis")'))
+  check("and one to let svof cure it", g.linked('svo.unsetserverignore("paralysis")'))
+  eq(any_affliction(g.sent()), nil, "the warning changes no number by itself")
+  g.confirm("paralysis", 26)
+  eq(echoes(g, "so nothing cures it"), n0 + 1, "and says it once for each change")
+
+  sk.serverprios_givenumber("paralysis")
+  local sent = g.sent()
+  local auto = sk.autoserverprios("normal").paralysis
+  eq(svo.serverprios.normal.paralysis, auto, "the link gives it auto mode's number")
+  check("and sends it", sets(sent, "paralysis", auto), sent)
+  g.confirm("paralysis", auto)
+  g.confirm("paralysis", 26)
+  eq(echoes(g, "so nothing cures it"), n0 + 2, "26 again is a new change, and warns again")
+
+  svo.serverignore.paralysis = false
+  svo.signals["svo serverignore changed"]:emit("paralysis")
+  g.sent()
+  svo.serverignore.paralysis = true
+  svo.signals["svo serverignore changed"]:emit("paralysis")
+  g.sent()
+  eq(echoes(g, "so nothing cures it"), n0 + 3, "so is the server curing it again after svof did")
+
+  -- svof keeps it at 26, and the player gave it a number
+  g.confirm("impaled", 3)
+  check("a number for an affliction svof cures says it's kept",
+    g.echoed("Svof cures impale itself, so the server keeps impaled at 26. Your 3 is saved"))
+  check("with a link to let serverside cure it", g.linked('svo.setserverignore("impale")'))
+  svo.setignore("asthma", true)
+  svo.signals["svo ignore changed"]:emit("asthma")
+  g.sent()
+  g.confirm("asthma", 26)
+  g.confirm("asthma", 5)
+  check("and for one svof ignores", g.echoed("asthma is ignored, so the server keeps asthma at 26. Your 5 is saved"))
+  check("with a link to stop ignoring it", g.linked('svo.toggle_ignore("asthma")'))
+  eq(echoes(g, "so nothing cures it"), n0 + 3, "an ignored affliction at 26 isn't one nothing cures")
+
+  -- a reset list has neither blindness nor deafness, and the game still has them
+  g.line(RESET)
+  g.sent(true)
+  g.answer(LIST_SLOW, LIST_DEFAULTS)
+  local lacking = false
+  for _, e in ipairs(g.w.echoes) do
+    if e:find("priority list doesn't have", 1, true) and e:find("blindness", 1, true) then lacking = true end
+  end
+  check("blindness missing from a reset list isn't a name svof has wrong", not lacking)
+end
+
+do
+  -- an affliction left to the server that the game's list doesn't have
+  local g = new_game()
+  g.svo.serverignore.galed = true
+  g.sent()
+  g.mode("custom")
+  g.sent(true)
+  g.answer(LIST_SLOW, LIST_PLAIN)
+  check("one left to the server that the list lacks is named, with its game name",
+    g.echoed("Svof leaves galed (airfisted) to serverside, but the game's priority list doesn't have it"))
+  check("with how to have svof cure it", g.echoed("To have Svof cure it instead, use vshow serverside."))
+  g.svo.logging_in = true
+  g.svo.signals.changecuring:emit()
+  g.svo.logging_in = false
+  g.svo.signals.changecuring:emit()
+  g.sent(true)
+  g.answer(LIST_SLOW, LIST_PLAIN)
+  eq(echoes(g, "priority list doesn't have"), 1, "and says so once a session")
 end
 
 -- ===== the game never lists =====
