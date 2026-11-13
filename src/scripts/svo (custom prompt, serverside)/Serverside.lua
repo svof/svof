@@ -521,8 +521,8 @@ end
 --[[ reading the game's own affliction priorities ]]
 
 -- What the game says its affliction priorities are, read from CURING PRIORITY
--- LIST and from the lines that answer a change. svof only keeps it for now:
--- nothing is sent, saved or decided from it.
+-- LIST and from the lines that answer a change. Only custom mode uses it
+-- (vconfig serverprios custom, below).
 --   sets       curingset name -> { [entry] = number }, with each entry named
 --              as the list names it: 'paralysis', or 'unweavingmind(2)' for
 --              exactly two stacks. Afflictions svof has no action for are
@@ -684,7 +684,10 @@ sk.serverlistnames = {blind = 'blindness', deaf = 'deafness'}
 
 -- the name the game's priority list has for each affliction action, and the
 -- action each of its names stands for. An action the game names another way
--- when it reports afflictions (sstosvoa) is found by that name too
+-- when it reports afflictions (sstosvoa) is found by that name too. Where two
+-- actions have one name, the one the game reports it as has it: the game's
+-- lovers is the lover's curse, svof's inlove. svof's lovers action is lust,
+-- which the game handles with CURING REJECTION and not with a priority
 function sk.serverprionames()
   local toserver, toaction = {}, {}
 
@@ -696,8 +699,10 @@ function sk.serverprionames()
     if type(entry) == 'table' and type(entry.aff) == 'table' and not entry.aff.notagameaff then
       local name = entry.gamename or action
       name = sk.serverlistnames[name] or name
-      toserver[action] = name
-      toaction[name] = action
+      if not toaction[name] or toaction[name] == action or not svo.dict.sstosvoa[name] then
+        toserver[action] = name
+        toaction[name] = action
+      end
     end
   end
 
@@ -776,6 +781,43 @@ local function serverprios_forgetsent()
 end
 serverprios_forgetsent()
 
+-- what svof sent that the game hasn't confirmed yet, for each entry of each
+-- curingset: the numbers in the order they went out, each with when. A
+-- confirmation of one of them is svof's own send and not the player's edit.
+-- One the game never confirms is dropped after a while, so a lost line or a
+-- refused command doesn't leave it waiting
+sk.serverprios_pending = {normal = {}, slowcuring = {}}
+-- in seconds, long enough for a whole table paced under the game's limit
+local serverpending_life = 60
+
+local function serverprios_pend(set, entry, number)
+  local pending = sk.serverprios_pending[set]
+  pending[entry] = pending[entry] or {}
+  local list = pending[entry]
+  list[#list+1] = {number = number, at = getEpoch()}
+end
+
+-- whether a confirmed number is one svof sent. It and what was sent before it
+-- stop waiting: the game confirms in the order sent, so those were lost
+local function serverprios_unpend(set, entry, number)
+  local pending = sk.serverprios_pending[set]
+  local list = pending[entry]
+  if not list then return false end
+
+  local now, own = getEpoch(), false
+  while list[1] and now - list[1].at > serverpending_life do table.remove(list, 1) end
+  for i = 1, #list do
+    if list[i].number == number then
+      for _ = 1, i do table.remove(list, 1) end
+      own = true
+      break
+    end
+  end
+
+  if not list[1] then pending[entry] = nil end
+  return own
+end
+
 -- sends an entry's number to a curingset: unweavingmind(2) goes as
 -- unweavingmind2
 local function serverprios_sendentry(set, entry, number)
@@ -784,7 +826,16 @@ local function serverprios_sendentry(set, entry, number)
   sent[entry] = number
 
   local name, stack = sk.serverentry(entry)
-  svo.sendcuringprio(name .. (stack or "") .. " " .. number, 'affliction', set == 'slowcuring')
+  -- the name the game is known to take, which it confirms under the listed one
+  for sendname, listname in pairs(sk.serverlistnames) do
+    if listname == name then name = sendname end
+  end
+  local prio = name .. (stack or "") .. " " .. number
+  -- the same entry and number already waiting this tick goes out only once,
+  -- so it's confirmed only once
+  local queue = set == 'slowcuring' and sk.affqueueslow or sk.affqueue
+  if not table.contains(queue, " "..prio) then serverprios_pend(set, entry, number) end
+  svo.sendcuringprio(prio, 'affliction', set == 'slowcuring')
 end
 
 -- afflictions the game has that its list can lack: a reset set's list has
@@ -865,8 +916,9 @@ function sk.serverprios_take(set, entries, fresh)
   for entry, number in pairs(entries) do
     local name, stack = sk.serverentry(entry)
     local action = toaction[name]
-    -- what the game has, so it isn't sent again
-    sk.serverprios_sent[set][entry] = number
+    -- what the game has, so it isn't sent again, unless svof sent it another
+    -- number since it was asked for the list
+    if not sk.serverprios_pending[set][entry] then sk.serverprios_sent[set][entry] = number end
     if number == 26 and action and serverkeeps26(action) then
       auto = auto or sk.autoserverprios(set)
       if fresh then
@@ -893,19 +945,24 @@ function sk.serverprios_take(set, entries, fresh)
 end
 
 -- asks the game for both curingsets' lists, the one in use last so it stays
--- in use. why is 'switch' when custom mode starts and 'reset' after a reset
--- in game
+-- in use. why is 'switch' when custom mode starts, 'reset' after a reset in
+-- game, and 'login' to compare them with the table
 function sk.serverprios_ask(why)
   local read = sk.serverread
   read.asked = {normal = true, slowcuring = true, why = why}
+  read.logindiffs = nil
 
   if read.askedtimer then killTimer(read.askedtimer) end
   read.askedtimer = tempTimer(15, function()
     read.askedtimer = nil
     if not read.asked then return end
     read.asked = nil
-    svo.echof("The game didn't list your serverside priorities, so Svof doesn't have them. "
-      .."Use vconfig serverprios custom to ask again.")
+    if why == 'login' then
+      svo.echof("The game didn't list your serverside priorities, so Svof couldn't check them against its own.")
+    else
+      svo.echof("The game didn't list your serverside priorities, so Svof doesn't have them. "
+        .."Use vconfig serverprios custom to ask again.")
+    end
   end)
 
   local inuse, other = 'normal', 'slowcuring'
@@ -920,12 +977,127 @@ local function serverprios_count(set)
   return count
 end
 
+-- the number svof expects the game to have for an entry of a curingset: 26
+-- for what svof keeps there, and else the table's number
+local function serverprios_expected(set, entry, toaction)
+  local action = toaction[(sk.serverentry(entry))]
+  if action and serverkeeps26(action) then return 26 end
+  return svo.serverprios[set][entry]
+end
+
+-- where a listed curingset differs from what svof expects of it, sorted by
+-- entry: {entry, the game's number, svof's}, with nil for a missing number
+local function serverprios_compare(set)
+  local _, toaction = sk.serverprionames()
+  local listed, numbers = sk.serverread.sets[set], svo.serverprios[set]
+  local diffs = {}
+
+  for entry, number in pairs(listed) do
+    local expected = serverprios_expected(set, entry, toaction)
+    if expected ~= number then diffs[#diffs+1] = {entry, number, expected} end
+  end
+  for entry in pairs(numbers) do
+    -- the list can lack these without the game having lost them
+    if not listed[entry] and not serverunlisted[entry] then
+      diffs[#diffs+1] = {entry, nil, serverprios_expected(set, entry, toaction)}
+    end
+  end
+
+  table.sort(diffs, function(a, b) return a[1] < b[1] end)
+  return diffs
+end
+
+local function serverprios_showdiffs(diffs)
+  svo.echof("Your serverside priorities in the game aren't the ones Svof has:")
+  for _, set in ipairs(serversets) do
+    for _, diff in ipairs(diffs[set]) do
+      svo.echof("  %s set: %s is %s in the game and %s in Svof.", set, diff[1],
+        diff[2] or "missing", diff[3] or "missing")
+    end
+  end
+
+  svo.echofn("Keep ")
+  setFgColor(unpack(svo.getDefaultColorNums))
+  setUnderline(true)
+  echoLink("the game's", 'svo.sk.serverprios_keepgame()', "Take the game's numbers into Svof", true)
+  setUnderline(false)
+  echo(", or send ")
+  setUnderline(true)
+  echoLink("Svof's", 'svo.sk.serverprios_keepsvof()', "Send Svof's numbers to the game", true)
+  setUnderline(false)
+  echo(".\n")
+end
+
+-- after the login comparison: the game's numbers go into the table
+function sk.serverprios_keepgame()
+  local read = sk.serverread
+  if not sk.customserverprios() or not read.sets.normal or not read.sets.slowcuring then
+    svo.echof("Svof doesn't have both of the game's lists any more, so nothing changed.")
+    return
+  end
+
+  for _, set in ipairs(serversets) do
+    local entries = {}
+    for entry, number in pairs(read.sets[set]) do entries[entry] = number end
+    sk.serverprios_take(set, entries)
+  end
+  -- what svof keeps at 26 stays there
+  local toserver = sk.serverprionames()
+  for action in pairs(toserver) do
+    if serverkeeps26(action) then sk.serverprios_refresh(action, toserver) end
+  end
+  signals.saveconfig:emit()
+  svo.echof("Kept the game's serverside priorities.")
+end
+
+-- after the login comparison: the game gets what svof expects it to have.
+-- What only the game has goes into the table, since svof has no number to
+-- send for it
+function sk.serverprios_keepsvof()
+  local read = sk.serverread
+  if not sk.customserverprios() then return end
+
+  local toserver, toaction = sk.serverprionames()
+  for _, set in ipairs(serversets) do
+    local numbers = svo.serverprios[set]
+    for entry, number in pairs(read.sets[set] or {}) do
+      if not numbers[entry] then numbers[entry] = number end
+    end
+    -- what was sent stands for what the game listed, so only what differs goes
+    for entry in pairs(numbers) do
+      serverprios_sendentry(set, entry, serverprios_expected(set, entry, toaction))
+    end
+  end
+  for action in pairs(toserver) do
+    if serverkeeps26(action) then sk.serverprios_refresh(action, toserver) end
+  end
+  signals.saveconfig:emit()
+  svo.echof("Sent Svof's serverside priorities to the game.")
+end
+
 -- a curingset's whole list was read. asked is why svof asked for it, or nil
 -- when the player did
 function sk.serverlist_read(set, asked)
   local read = sk.serverread
   if asked and read.asked then read.asked[set] = nil end
   if not sk.customserverprios() then return end
+
+  if asked == 'login' then
+    -- what the game has, whatever svof makes of it
+    sk.serverprios_sent[set] = {}
+    for entry, number in pairs(read.sets[set]) do sk.serverprios_sent[set][entry] = number end
+
+    read.logindiffs = read.logindiffs or {}
+    read.logindiffs[set] = serverprios_compare(set)
+    if read.asked and not read.asked.normal and not read.asked.slowcuring then
+      read.asked = nil
+      if read.askedtimer then killTimer(read.askedtimer); read.askedtimer = nil end
+      if next(read.logindiffs.normal) or next(read.logindiffs.slowcuring) then
+        serverprios_showdiffs(read.logindiffs)
+      end
+    end
+    return
+  end
 
   local entries = {}
   for entry, number in pairs(read.sets[set]) do entries[entry] = number end
@@ -955,25 +1127,32 @@ function sk.serverlist_read(set, asked)
   end
 end
 
--- the game confirmed a changed entry of a curingset. A 26 on an affliction
--- svof keeps at 26 is svof's own, and the table keeps the player's number
+-- the game confirmed a changed entry of a curingset. svof's own sends aren't
+-- the player's edits, and neither is a 26 on an affliction svof keeps at 26:
+-- that one is svof's too, confirmed after it stopped waiting
 function sk.serverprios_confirmed(set, entry, number)
   if not sk.customserverprios() then return end
 
   local numbers = svo.serverprios[set]
   if not numbers or not next(numbers) then return end
 
-  -- what the game has now, whoever set it
-  sk.serverprios_sent[set][entry] = number
+  local own = serverprios_unpend(set, entry, number)
+  -- with more of svof's sends on the way, the game won't keep this number
+  local settled = not sk.serverprios_pending[set][entry]
+  if settled then sk.serverprios_sent[set][entry] = number end
 
   local _, toaction = sk.serverprionames()
   local action = toaction[(sk.serverentry(entry))]
-  local keeps26 = action and serverkeeps26(action)
-  if keeps26 and number == 26 then return end
+  local keeps26 = action and serverkeeps26(action) or false
 
-  numbers[entry] = number
-  -- the player's number is kept for later, and the game's goes back to 26
-  if keeps26 then serverprios_sendentry(set, entry, 26) end
+  if not own and not (keeps26 and number == 26) then numbers[entry] = number end
+
+  -- the game should have svof's 26, or else the player's number: an edit of
+  -- something svof keeps at 26 goes back to 26, and an edit that crossed
+  -- svof's own send gets the player's number back
+  if not settled then return end
+  local want = keeps26 and 26 or numbers[entry]
+  if want and want ~= number then serverprios_sendentry(set, entry, want) end
 end
 
 -- drops the sync's memory of what it sent, so the next one sends everything
@@ -1044,6 +1223,30 @@ end
 for _, event in ipairs({"svo keepup changed", "svo switched defence mode", "svo done defup"}) do
   signals[event]:connect(serverprios_ruleschanged, "keep or give back custom server priorities by rule")
 end
+
+-- at login, check the game's numbers against the table: they can have been
+-- changed from another client, or while svof was off
+function sk.serverprios_login()
+  if not sk.customserverprios() then return end
+  if next(svo.serverprios.normal or {}) and next(svo.serverprios.slowcuring or {}) then
+    sk.serverprios_ask('login')
+  else
+    -- custom was chosen while serverside was off, so there are none yet
+    sk.serverprios_ask('switch')
+  end
+end
+
+-- logging in is when svo.logging_in, set on load and on connecting, goes
+-- back to false
+local serverprios_loggingin = false
+signals.changecuring:connect(function()
+  if svo.logging_in then
+    serverprios_loggingin = true
+  elseif serverprios_loggingin then
+    serverprios_loggingin = false
+    sk.serverprios_login()
+  end
+end, "check custom server priorities at login")
 
 --[[ register all signals needed for this to work ]]
 

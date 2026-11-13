@@ -19,6 +19,12 @@ This covers:
 - a reset in game
 - the switch back to auto, and stack entries surviving the round trip
 - a class change, and serverside going on, in custom mode
+- svof's own sends, confirmed late or crossed by the player's edit, never
+  taken as the player's numbers, and sends never confirmed stop waiting
+- the check at login against a game that keeps what svof sends, and both
+  answers to the differences it shows
+- the game's lovers going to inlove and not to lust, which shares its name,
+  and blindness sent as blind
 
 It runs the real loaders through tools/svof_world.lua and feeds the game's
 lines to the handlers the trigger and the list's reader call. The lists are
@@ -155,6 +161,12 @@ do
   eq(g.sk.customserverprios(), true, "custom with serverside on")
   g.svo.conf.serverside = false
   eq(g.sk.customserverprios(), false, "custom with serverside off does nothing")
+
+  -- the game's lovers is the lover's curse, svof's inlove. svof's lovers
+  -- action is lust, which has the same name and no priority in the game
+  local toserver, toaction = g.sk.serverprionames()
+  eq(toaction.lovers, "inlove", "the game's lovers is inlove, the lover's curse")
+  eq(toserver.lovers, nil, "and lust, svof's lovers action, has no server priority")
 end
 
 -- ===== auto mode is as it was =====
@@ -330,6 +342,260 @@ do
   local sent = g.sent()
   check("serverside on asks for the lists, having no numbers yet", sent:find("curing priority list", 1, true) ~= nil, sent)
   check("and doesn't reset", not sent:find("PRIORITY RESET", 1, true), sent)
+end
+
+-- ===== a game that keeps what svof sends =====
+
+-- the numbers the game has, starting from what svof read, with every
+-- affliction number svof sent since put in, in order and in the curingset in
+-- use. It stands in for the game at login
+local function new_model(sets)
+  local model = { sets = {}, active = "normal" }
+  for set, entries in pairs(sets) do
+    model.sets[set] = {}
+    for entry, number in pairs(entries) do model.sets[set][entry] = number end
+  end
+  local listnames = { blind = "blindness", deaf = "deafness" }
+  function model.apply(sent)
+    for cmd in sent:gmatch("[^\n]+") do
+      local set = cmd:match("^curingset switch (%w+)$")
+      if set then model.active = set end
+      local rest = cmd:match("^curing priority (.*)$")
+      if rest and not rest:find("^defence") and rest ~= "list" and not rest:lower():find("^reset") then
+        for name, number in rest:gmatch("(%S+) (%d+)") do
+          local plain, stack = name:match("^(.-)(%d+)$")
+          local entry = plain and (plain .. "(" .. stack .. ")") or (listnames[name] or name)
+          model.sets[model.active][entry] = tonumber(number)
+        end
+      end
+    end
+  end
+  function model.list(set)
+    local levels = {}
+    for entry, number in pairs(model.sets[set]) do
+      levels[number] = levels[number] or {}
+      table.insert(levels[number], entry)
+    end
+    local out = { "Your affliction curing priorities for the priority set " .. set .. ":" }
+    for n = 1, 26 do
+      table.sort(levels[n] or {})
+      out[#out + 1] = (n .. ":  " .. table.concat(levels[n] or {}, ", ")):gsub("%s+$", "")
+    end
+    out[#out + 1] = "Affs with priority 26 are ignored."
+    return table.concat(out, "\n")
+  end
+  return model
+end
+
+-- a custom-mode svof that has read the captured lists, and a game that keeps
+-- what svof sends from then on
+local function new_custom()
+  local g = new_game()
+  g.sent()
+  g.mode("custom")
+  g.sent(true)
+  g.answer(LIST_SLOW, LIST_PLAIN)
+  g.model = new_model(g.sk.serverread.sets)
+  g.model.apply(g.sent())
+  -- the game's answer to what svof sent, in the normal set
+  function g.confirm(name, number)
+    g.line(("You have set the '%s' affliction to the %d priority."):format(name, number))
+  end
+  function g.login()
+    g.svo.logging_in = true
+    g.svo.signals.changecuring:emit()
+    g.svo.logging_in = false
+    g.svo.signals.changecuring:emit()
+  end
+  function g.linked(code)
+    for _, l in ipairs(g.w.links) do
+      if l:find(code, 1, true) then return true end
+    end
+    return false
+  end
+  return g
+end
+
+-- ===== svof's own sends aren't the player's edits =====
+
+do
+  local g = new_custom()
+  local svo = g.svo
+  local p = svo.serverprios.normal.paralysis
+  eq(p, 2, "this test's premise: paralysis is the player's 2")
+
+  -- an ignore that comes off before the game answers it
+  svo.setignore("paralysis", true)
+  svo.signals["svo ignore changed"]:emit("paralysis")
+  svo.unsetignore("paralysis")
+  svo.signals["svo ignore changed"]:emit("paralysis")
+  local sent = g.sent()
+  check("an ignore on and off at once sends both", sent:find(" paralysis 26 paralysis 2", 1, true) ~= nil, sent)
+  g.confirm("paralysis", 26)
+  eq(svo.serverprios.normal.paralysis, 2, "svof's 26, confirmed after the ignore came off, isn't the player's")
+  g.confirm("paralysis", 2)
+  eq(svo.serverprios.normal.paralysis, 2, "and svof's own 2 changes nothing")
+  eq(any_affliction(g.sent()), nil, "neither confirmation is answered")
+
+  -- an ignore that comes off and goes on again before the game answers
+  svo.setignore("paralysis", true)
+  svo.signals["svo ignore changed"]:emit("paralysis")
+  g.sent()
+  g.confirm("paralysis", 26)
+  svo.unsetignore("paralysis")
+  svo.signals["svo ignore changed"]:emit("paralysis")
+  svo.setignore("paralysis", true)
+  svo.signals["svo ignore changed"]:emit("paralysis")
+  g.sent()
+  g.confirm("paralysis", 2)
+  eq(any_affliction(g.sent()), nil, "svof's own 2, with its 26 still on the way, isn't answered with 26")
+  g.confirm("paralysis", 26)
+  eq(svo.serverprios.normal.paralysis, 2, "the table keeps the player's number")
+  eq(any_affliction(g.sent()), nil, "and nothing more is sent")
+
+  -- the player's edit lands between svof's send and its confirmation
+  svo.unsetignore("paralysis")
+  svo.signals["svo ignore changed"]:emit("paralysis")
+  sent = g.sent()
+  check("coming off ignore sends the player's number", sets(sent, "paralysis", 2), sent)
+  g.confirm("paralysis", 7)
+  eq(svo.serverprios.normal.paralysis, 7, "the player's edit is taken")
+  eq(any_affliction(g.sent()), nil, "and not answered while svof's send is on its way")
+  g.confirm("paralysis", 2)
+  eq(svo.serverprios.normal.paralysis, 7, "svof's own send landing after it doesn't undo it")
+  sent = g.sent()
+  check("and the game gets the player's number back", sets(sent, "paralysis", 7), sent)
+  g.confirm("paralysis", 7)
+  eq(any_affliction(g.sent()), nil, "which settles it")
+end
+
+do
+  -- the game takes blind and confirms it as blindness
+  local g = new_custom()
+  g.svo.serverprios.normal.blindness = 5
+  g.sk.serverprios_send()
+  local sent = g.sent()
+  check("blindness is sent as blind", sets(sent, "blind", 5) and not sent:find(" blindness ", 1, true), sent)
+  g.confirm("blindness", 5)
+  eq(any_affliction(g.sent()), nil, "and its confirmation as blindness is svof's own")
+end
+
+do
+  -- sends that are never confirmed stop waiting
+  for _, late in ipairs({ false, true }) do
+    local g = new_custom()
+    local svo = g.svo
+    svo.setignore("asthma", true)
+    svo.signals["svo ignore changed"]:emit("asthma")
+    svo.unsetignore("asthma")
+    svo.signals["svo ignore changed"]:emit("asthma")
+    g.sent()
+    if late then g.w.advance(61) end
+    g.confirm("asthma", 26)
+    if late then
+      eq(svo.serverprios.normal.asthma, 26, "a minute on, a 26 svof doesn't keep is the player's")
+    else
+      eq(svo.serverprios.normal.asthma, 4, "within a minute, the 26 svof sent is svof's")
+    end
+  end
+end
+
+-- ===== the check at login =====
+
+do
+  local g = new_custom()
+  local svo, sk = g.svo, g.sk
+  g.confirm("unweavingmind(2)", 6)
+  g.model.apply(g.sent())
+  g.model.sets.normal["unweavingmind(2)"] = 6
+
+  g.login()
+  local sent = g.sent(true)
+  check("login asks for both lists", select(2, sent:gsub("curing priority list", "")) == 2, sent)
+  g.answer(g.model.list("slowcuring"), g.model.list("normal"))
+  eq(sk.serverread.asked, nil, "svof stops waiting")
+  check("lists that match say nothing", not g.echoed("aren't the ones Svof has"))
+  eq(any_affliction(g.sent()), nil, "and send nothing")
+
+  -- changed from another client while svof was away
+  g.model.sets.normal.paralysis = 5
+  g.model.sets.normal["unweavingmind(2)"] = nil
+  g.model.sets.slowcuring.daeggerimpale = 3
+  g.model.sets.normal.newaff = 4
+  g.login()
+  g.sent(true)
+  g.answer(g.model.list("slowcuring"), g.model.list("normal"))
+  check("differences are shown", g.echoed("aren't the ones Svof has"))
+  check("a changed number", g.echoed("normal set: paralysis is 5 in the game and 2 in Svof."))
+  check("a stack entry the game lost", g.echoed("normal set: unweavingmind(2) is missing in the game and 6 in Svof."))
+  check("an affliction svof cures that the game would cure too",
+    g.echoed("slowcuring set: daeggerimpale is 3 in the game and 26 in Svof."))
+  check("an entry svof doesn't have", g.echoed("normal set: newaff is 4 in the game and missing in Svof."))
+  check("svof's own 26 isn't a difference", not g.echoed("impaled is"))
+  check("one link keeps the game's", g.linked("svo.sk.serverprios_keepgame()"))
+  check("one sends svof's", g.linked("svo.sk.serverprios_keepsvof()"))
+  eq(svo.serverprios.normal.paralysis, 2, "nothing changes until one is chosen")
+  eq(any_affliction(g.sent()), nil, "and nothing is sent")
+
+  sk.serverprios_keepsvof()
+  sent = g.sent()
+  check("sending svof's sends the changed number", sets(sent, "paralysis", 2), sent)
+  check("the lost stack entry", sets(sent, "unweavingmind2", 6), sent)
+  check("and 26 for what svof cures", sets(sent, "daeggerimpale", 26), sent)
+  check("but not what already matches", not sent:find(" icebound ", 1, true), sent)
+  eq(svo.serverprios.normal.newaff, 4, "an entry only the game had goes into the table")
+  g.model.apply(sent)
+
+  g.login()
+  g.sent(true)
+  g.w.echoes = {}
+  g.answer(g.model.list("slowcuring"), g.model.list("normal"))
+  check("after that, the next login matches", not g.echoed("aren't the ones Svof has"))
+end
+
+do
+  local g = new_custom()
+  local svo, sk = g.svo, g.sk
+  g.model.sets.normal.paralysis = 5
+  g.model.sets.normal.daeggerimpale = 3
+  g.login()
+  g.sent(true)
+  g.answer(g.model.list("slowcuring"), g.model.list("normal"))
+  sk.serverprios_keepgame()
+  eq(svo.serverprios.normal.paralysis, 5, "keeping the game's takes its number")
+  eq(svo.serverprios.normal.daeggerimpale, 3, "for an affliction svof cures, too, kept for later")
+  local sent = g.sent()
+  check("which goes back to 26 in the game", sets(sent, "daeggerimpale", 26), sent)
+  check("and nothing else is sent", not sent:find(" paralysis ", 1, true), sent)
+end
+
+do
+  -- custom chosen with serverside off has no numbers to compare
+  local g = new_game()
+  g.svo.conf.serverside = false
+  g.mode("custom")
+  g.svo.conf.serverside = true
+  g.sent()
+  g.svo.logging_in = true
+  g.svo.signals.changecuring:emit()
+  g.svo.logging_in = false
+  g.svo.signals.changecuring:emit()
+  g.sent(true)
+  g.answer(LIST_SLOW, LIST_PLAIN)
+  eq(g.count("normal"), 131, "login with no numbers yet takes the game's")
+  check("as the switch to custom does", g.echoed("Took your serverside priorities from the game"))
+end
+
+do
+  -- in auto mode, login asks for nothing
+  local g = new_game()
+  g.sent()
+  g.svo.logging_in = true
+  g.svo.signals.changecuring:emit()
+  g.svo.logging_in = false
+  g.svo.signals.changecuring:emit()
+  local sent = g.sent(true)
+  check("auto: login asks for no list", not sent:find("curing priority list", 1, true), sent)
 end
 
 -- ===== the game never lists =====
