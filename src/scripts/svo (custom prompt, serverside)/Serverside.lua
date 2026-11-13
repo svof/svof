@@ -87,6 +87,10 @@ function sk.sendpriorityswitch(action, balance, raffs, rdefs, cache, slow)
     isdefence = 'defence '
     istype = 'defence'
     priority = rdefs[action]
+  elseif svo.dict[action].aff and svo.dict[action].noserverprio then
+    -- the game has no priority for it, so its name would set another's
+    svo.debugf("sk.sendpriorityswitch: %s has no serverside priority", action)
+    return
   elseif svo.dict[action].aff and not svo.dict[action].aff.notagameaff then
     isdefence = ''
     istype = 'affliction'
@@ -119,6 +123,10 @@ function sk.sendpriorityignore(action, balance, rignoreaffs, rignoredefs, cache,
     isdefence = "defence "
     istype = 'defence'
     priority = 'reset'
+  elseif svo.dict[action].aff and svo.dict[action].noserverprio then
+    -- the game has no priority for it, so its name would set another's
+    svo.debugf("sk.sendpriorityignore: %s has no serverside priority", action)
+    return
   elseif svo.dict[action].aff and not svo.dict[action].aff.notagameaff then
     isdefence = ""
     istype = 'affliction'
