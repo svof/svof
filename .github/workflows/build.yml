@@ -498,6 +498,15 @@ jobs:
       - name: test mucous
         run: lua tools/test_mucous.lua
 
+      # Gate 1.99998. The serverside sync sends each affliction one number
+      # per curingset, in every class: slickness, on herb and smoke, gets its
+      # herb position (serverpriobalance), once, and every affliction on more
+      # than one balance names its balance. Runs the real loaders
+      # (tools/svof_world.lua) and replays what svof sends through a model of
+      # the curingsets.
+      - name: test one serverside number per affliction
+        run: lua tools/test_serverprio_one_number.lua
+
       - uses: actions/setup-java@v4
         with:
           distribution: temurin

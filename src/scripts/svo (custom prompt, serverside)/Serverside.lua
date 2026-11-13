@@ -141,6 +141,48 @@ function sk.sendpriorityignore(action, balance, rignoreaffs, rignoredefs, cache,
   svo.sendcuringprio(gamename .. " " .. priority, istype, slow)
 end
 
+-- splits every balance of one curingset into afflictions, defences and
+-- ignored ones, each a name - position table. An affliction has one
+-- priority in the game however many balances svof cures it on, so one
+-- with several - slickness, on herb and smoke - gets the position on the
+-- balance its entry names in serverpriobalance. Without one, it gets the
+-- least urgent of its positions, so it is never cured ahead of something
+-- svof puts above it on any of its balances
+function sk.splitserverprios(neworderbals)
+  local split, levels, named, dict = {}, {}, {}, svo.dict
+
+  for balance, neworder in pairs(neworderbals) do
+    local affs, defs, ignoreaffs, ignoredefs = sk.splitdefs(balance, neworder)
+    local r = {affs = {}, defs = {}, ignoreaffs = {}, ignoredefs = {}}
+    for index, aff in pairs(affs) do
+      r.affs[aff] = index
+      if dict[aff].serverpriobalance == balance then
+        named[aff] = index
+      elseif not levels[aff] or index > levels[aff] then
+        levels[aff] = index
+      end
+    end
+    for index, def in pairs(defs) do r.defs[def] = index end
+    for index, aff in pairs(ignoreaffs) do r.ignoreaffs[aff] = index end
+    for index, def in pairs(ignoredefs) do r.ignoredefs[def] = index end
+    split[balance] = r
+  end
+
+  for _, r in pairs(split) do
+    for aff in pairs(r.affs) do r.affs[aff] = named[aff] or levels[aff] end
+  end
+
+  return split
+end
+
+-- an affliction has one priority in a curingset whatever its balances, so
+-- its balances share one cache; a defence's cache is its balance's
+local function serverpriocache(caches, balance, action)
+  local key = svo.dict[action][balance].def and balance or 'affliction'
+  caches[key] = caches[key] or {}
+  return caches[key]
+end
+
 function sk.updateserversideprios()
 --Don't do anything before we log in. Clear the timer on the way out, or
 --nothing would ever start another sync
@@ -157,6 +199,17 @@ function sk.updateserversideprios()
 
   local basictableindexdiff = svo.basictableindexdiff
 
+  -- the normal curingset's balances are split together, so an affliction on
+  -- two of them gets one number
+  local neworderbals = {}
+  for balance in pairs(sk.priosbeforechange) do
+    if balance ~= 'slowcuring' then
+      -- get the new list of prios, sorted in importance
+      neworderbals[balance] = svo.prio.getsortedlist(balance)
+    end
+  end
+  local split = sk.splitserverprios(neworderbals)
+
   for balance, data in pairs(sk.priosbeforechange) do
     if balance == 'slowcuring' then
       sk.priochangecache[balance] = sk.priochangecache[balance] or {}
@@ -170,54 +223,37 @@ function sk.updateserversideprios()
       -- get the new list of prios, sorted in importance
       local neworderslow = svo.prio.getsortedlist(balance)
       -- split the action_balance actions into separate balances
-      local neworderbals = sk.splitbals(neworderslow)
+      local splitslow = sk.splitserverprios(sk.splitbals(neworderslow))
 
       -- if not in slowcuring mode, switch to slowcuring prios first
-      for balance, neworder in pairs(neworderbals) do
+      for balance, r in pairs(splitslow) do
         if diff[balance] then
-          priochangecache[balance] = priochangecache[balance] or {}
-          local affs, defs, ignoreaffs, ignoredefs = sk.splitdefs(balance, neworder)
-          local raffs, rdefs, rignoreaffs, rignoredefs = {}, {}, {}, {}
-          for index, aff in pairs(affs) do raffs[aff] = index end
-          for index, def in pairs(defs) do rdefs[def] = index end
-          for index, aff in pairs(ignoreaffs) do rignoreaffs[aff] = index end
-          for index, def in pairs(ignoredefs) do rignoredefs[def] = index end
-
           -- update for the changes
           for _, action in pairs(diff[balance]) do
+            local cache = serverpriocache(priochangecache, balance, action)
             -- check if this is something actually on prios. an aff could be ignored, a def not on keepup
-            if raffs[action] or rdefs[action] then
-
-              sk.sendpriorityswitch(action, balance, raffs, rdefs, priochangecache[balance], true)
-            elseif rignoreaffs[action] or rignoredefs[action] then
-              sk.sendpriorityignore(action, balance, rignoreaffs, rignoredefs, priochangecache[balance], true)
+            if r.affs[action] or r.defs[action] then
+              sk.sendpriorityswitch(action, balance, r.affs, r.defs, cache, true)
+            elseif r.ignoreaffs[action] or r.ignoredefs[action] then
+              sk.sendpriorityignore(action, balance, r.ignoreaffs, r.ignoredefs, cache, true)
             end
           end
         end
       end
     else
-      sk.priochangecache[balance] = sk.priochangecache[balance] or {}
-
       -- make the diff of snapshots
       local diff = basictableindexdiff(data.data, afterstate[balance].newdata)
       -- if next(diff) then svo.debugf("%s diff: %s", balance, pl.pretty.write(diff)) end
-      -- get the new list of prios, sorted in importance
-      local neworder = svo.prio.getsortedlist(balance)
-      local affs, defs, ignoreaffs, ignoredefs = sk.splitdefs(balance, neworder)
-      local raffs, rdefs, rignoreaffs, rignoredefs = {}, {}, {}, {}
-      for index, aff in pairs(affs) do raffs[aff] = index end
-      for index, def in pairs(defs) do rdefs[def] = index end
-      for index, aff in pairs(ignoreaffs) do rignoreaffs[aff] = index end
-      for index, def in pairs(ignoredefs) do rignoredefs[def] = index end
-      
+      local r = split[balance]
+
       -- update for the changes
       for _, action in pairs(diff) do
+        local cache = serverpriocache(sk.priochangecache, balance, action)
         -- check if this is something actually on prios. an aff could be ignored, a def not on keepup
-        if raffs[action] or rdefs[action] then
-
-          sk.sendpriorityswitch(action, balance, raffs, rdefs, sk.priochangecache[balance], false)
-        elseif rignoreaffs[action] or rignoredefs[action] then
-          sk.sendpriorityignore(action, balance, rignoreaffs, rignoredefs, sk.priochangecache[balance], false)
+        if r.affs[action] or r.defs[action] then
+          sk.sendpriorityswitch(action, balance, r.affs, r.defs, cache, false)
+        elseif r.ignoreaffs[action] or r.ignoredefs[action] then
+          sk.sendpriorityignore(action, balance, r.ignoreaffs, r.ignoredefs, cache, false)
         end
       end
     end
