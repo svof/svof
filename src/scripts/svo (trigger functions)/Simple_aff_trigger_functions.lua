@@ -128,6 +128,11 @@ svo.valid.simplelovers = function (name)
   svo.checkaction(svo.dict.lovers.aff, true)
   svo.dict.lovers.tempmap[#svo.dict.lovers.tempmap+1] = name -- hack to allow multiple names on ALLIES
   lifevision.add(actions.lovers_aff.p, nil)
+
+  -- serverside picks up a lust itself, but not in blackout (Announce #5524)
+  if svo.affs.blackout and svo.serverrejects() then
+    svo.sendcuring("rejection assume " .. name)
+  end
 end
 
 svo.valid.simpleunknowncrippledleg = function (number)

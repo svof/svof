@@ -999,7 +999,7 @@
     },
     {
       "id": "item|Script|svo (actions dictionary)|Dictionary of actions (affs-defs-misc)|script",
-      "digest": "7eaa48535c661b1b",
+      "digest": "67e4a4217c5aabde",
       "text": "Script   svo (actions dictionary) Dictionary of actions (affs-defs-misc) [script]"
     },
     {
@@ -1034,7 +1034,7 @@
     },
     {
       "id": "item|Script|svo (curing skeleton, controllers, action system)|Curing skeleton|script",
-      "digest": "cf8389cc7c92780c",
+      "digest": "5e4cb4eecec5d3a1",
       "text": "Script   svo (curing skeleton, controllers, action system) Curing skeleton [script]"
     },
     {
@@ -1044,7 +1044,7 @@
     },
     {
       "id": "item|Script|svo (custom prompt, serverside)|Serverside|script",
-      "digest": "ca205bc850bedb0a",
+      "digest": "9b8400fe0c83f47d",
       "text": "Script   svo (custom prompt, serverside) Serverside [script]"
     },
     {
@@ -1284,12 +1284,12 @@
     },
     {
       "id": "item|Script|svo (trigger functions)|Main trigger functions|script",
-      "digest": "10fc07646d1638d6",
+      "digest": "6238c8808b2b59c6",
       "text": "Script   svo (trigger functions) Main trigger functions [script]"
     },
     {
       "id": "item|Script|svo (trigger functions)|Simple aff trigger functions|script",
-      "digest": "c9fe660a1b9779cc",
+      "digest": "325640d844ddd76d",
       "text": "Script   svo (trigger functions) Simple aff trigger functions [script]"
     },
     {
