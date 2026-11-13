@@ -19,9 +19,9 @@ as the whitelist. When serverside has lust (vshow server), svof now:
 
 This runs the real loaders through tools/svof_world.lua for a Magi and
 feeds the game's replies as lines. The replies are the ones captured in
-game on 2026-11-13; the format of a whitelist with several names wasn't
-seen, so the test feeds two forms. It proves what svof sends and how it
-reads the replies, not what the game does with the commands.
+game on 2026-11-13, a whitelist of several names included ("A, B, and
+C."). It proves what svof sends and how it reads the replies, not what
+the game does with the commands.
 
 Run: lua tools/test_lust_rejection.lua
 Exits 0 and prints "ALL PASS" on success, exits 1 and prints failures.
@@ -194,7 +194,8 @@ end
 
 -- ===== reading a whitelist with names =====
 
-for _, form in ipairs({ "Alex, Quinn and Sam", "Alex, Quinn, and Sam" }) do
+-- the game's form, with a serial comma, and the same without one
+for _, form in ipairs({ "Alex, Quinn, and Sam", "Alex, Quinn and Sam" }) do
   local w = serverside_on({ "Alex", "Dana" })
   w.svo.setserverignore("lovers")
   settle(w)
