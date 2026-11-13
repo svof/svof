@@ -69,7 +69,15 @@ function ndb.init()
   ndb.db = db:create("NameDB", ndb.schema)
   -- necessary on Windows, because its IO tends to... slow down with time.
   -- http://www.sqlite.org/pragma.html#pragma_synchronous
-  db.__conn["namedb"]:execute("pragma synchronous = OFF")
+  -- SQLite refuses to change this inside a transaction, and db:create leaves
+  -- the connection in one, so the pragma only takes with autocommit on for a
+  -- moment. Sent inside the transaction it was refused without a word: every
+  -- NameDB commit flushed to disk, about 400 ms each in Mudlet on Windows.
+  local conn = db.__conn["namedb"]
+  conn:commit()
+  conn:setautocommit(true)
+  conn:execute("pragma synchronous = OFF")
+  conn:setautocommit(false)
 
   -- automigration by db: doesn't work anymore because LuaSQL bugs out on the pragma statement
   -- so if there was any data at all in the db, see if any of it needs to be added

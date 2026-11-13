@@ -556,6 +556,44 @@ do
   eq(w.honored[2], "Bravo", "then the rest")
 end
 
+-- 13. ndb.init turns synchronous off outside a transaction. SQLite refuses the
+-- pragma inside one, db:create leaves the connection in one, and sent there
+-- it did nothing: every NameDB commit flushed to disk (about 400 ms each in
+-- Mudlet on Windows, measured 2026-11-13).
+do
+  local initsrc = read_file(DIR .. "ndb.init.lua")
+  local calls, autocommit = {}, false
+  local conn = {}
+  function conn:commit() calls[#calls + 1] = "commit" return true end
+  function conn:setautocommit(on) autocommit = on calls[#calls + 1] = "autocommit " .. tostring(on) return true end
+  function conn:execute(q)
+    if q:lower():find("pragma synchronous", 1, true) then
+      calls[#calls + 1] = "pragma, autocommit " .. tostring(autocommit)
+    end
+    return 0
+  end
+  local dbstub = {__conn = {namedb = conn}}
+  function dbstub:create() return {people = {}} end
+  function dbstub:fetch() return {} end
+  function dbstub:eq() end
+  local env = setmetatable({db = dbstub, ndb = {}, tempTimer = function() end, cecho = function() end,
+    ipairs = ipairs, next = next}, {__index = _G})
+  local chunk
+  if setfenv then
+    chunk = assert(loadstring(initsrc, "ndb.init"))
+    setfenv(chunk, env)
+  else
+    chunk = assert(load(initsrc, "ndb.init", "t", env))
+  end
+  chunk()
+  local pragma, after
+  for i, c in ipairs(calls) do
+    if c:find("^pragma") then pragma = c after = calls[i + 1] end
+  end
+  eq(pragma, "pragma, autocommit true", "ndb.init sends the synchronous pragma outside a transaction")
+  eq(after, "autocommit false", "and puts the connection back the way db:create left it")
+end
+
 if #failures == 0 then
   print(string.format("ALL PASS (%d checks)", checks))
   os.exit(0)
