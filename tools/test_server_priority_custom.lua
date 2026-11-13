@@ -25,6 +25,10 @@ This covers:
   answers to the differences it shows
 - the game's lovers going to inlove and not to lust, which shares its name,
   and blindness sent as blind
+- pva, avs and pvd as swaps of the server's numbers, in the order they went
+  on, kept across a login, and never taken as the player's numbers
+- autoslick putting asthma first in the server's numbers, and giving its
+  number back
 
 It runs the real loaders through tools/svof_world.lua and feeds the game's
 lines to the handlers the trigger and the list's reader call. The lists are
@@ -596,6 +600,155 @@ do
   g.svo.signals.changecuring:emit()
   local sent = g.sent(true)
   check("auto: login asks for no list", not sent:find("curing priority list", 1, true), sent)
+end
+
+-- ===== tactical swaps: pva, avs, pvd =====
+
+do
+  local g = new_game()
+  g.sent()
+  g.sk.serverprios_toggle("pva")
+  eq(any_affliction(g.sent()), nil, "auto: pva sends no server number of its own")
+  eq(g.svo.serverprios.toggles, nil, "and isn't kept")
+end
+
+do
+  local g = new_custom()
+  local svo, sk = g.svo, g.sk
+  -- a list read replaces the table, so it is looked up each time
+  local function N() return svo.serverprios.normal end
+  eq(N().paralysis .. " " .. N().asthma .. " " .. N().darkshade, "2 4 25", "this test's premise: paralysis 2, asthma 4, darkshade 25")
+
+  sk.serverprios_toggle("pva")
+  local sent = g.sent()
+  check("pva swaps the server's numbers of paralysis and asthma", sets(sent, "paralysis", 4) and sets(sent, "asthma", 2), sent)
+  check("in both sets", select(2, sent:gsub(" paralysis 4", "")) == 2, sent)
+  eq(table.concat(svo.serverprios.toggles, " "), "pva", "and keeps it on, to survive a restart")
+  eq(N().paralysis, 2, "the table keeps the player's numbers")
+  g.model.apply(sent)
+  g.confirm("paralysis", 4)
+  g.confirm("asthma", 2)
+  eq(N().paralysis .. " " .. N().asthma, "2 4", "svof's own swap, confirmed, isn't the player's")
+  eq(any_affliction(g.sent()), nil, "and isn't answered")
+
+  -- a list the player asks for while the swap is on
+  g.lines(g.model.list("normal"))
+  eq(N().paralysis .. " " .. N().asthma, "2 4", "a list read meanwhile leaves the player's numbers")
+
+  -- the login check expects the swap
+  g.login()
+  g.sent(true)
+  g.answer(g.model.list("slowcuring"), g.model.list("normal"))
+  check("the login check expects the swaps that are on", not g.echoed("aren't the ones Svof has"))
+
+  -- a later swap moves what the earlier one left
+  sk.serverprios_toggle("pvd")
+  sent = g.sent()
+  check("pvd after pva swaps paralysis's new number with darkshade's",
+    sets(sent, "paralysis", 25) and sets(sent, "darkshade", 4) and not sent:find(" asthma ", 1, true), sent)
+  eq(table.concat(svo.serverprios.toggles, " "), "pva pvd", "in the order they went on")
+  g.model.apply(sent)
+
+  -- the player's edit of a swapped entry is the player's number
+  g.confirm("asthma", 9)
+  eq(N().asthma, 9, "an edit of a swapped entry goes into the table")
+  check("svof says where it keeps it", g.echoed("asthma's serverside number is 9, and Svof keeps it at 2"))
+  sent = g.sent()
+  check("and the game keeps the swap, with the new number on the other side",
+    sets(sent, "asthma", 2) and sets(sent, "darkshade", 9), sent)
+  g.model.apply(sent)
+
+  sk.serverprios_toggle("pva")
+  sent = g.sent()
+  check("pva off gives paralysis darkshade's number, as pvd alone does",
+    sets(sent, "paralysis", 25) == false and sets(sent, "asthma", 9) and sets(sent, "darkshade", 2), sent)
+  eq(table.concat(svo.serverprios.toggles, " "), "pvd", "and leaves pvd on")
+  g.model.apply(sent)
+  sk.serverprios_toggle("pvd")
+  sent = g.sent()
+  check("with both off, each has its own number", sets(sent, "paralysis", 2) and sets(sent, "darkshade", 25), sent)
+  eq(#svo.serverprios.toggles, 0, "and nothing stays on")
+end
+
+do
+  -- swaps that are on, kept at a restart: the game has them, and the table
+  -- doesn't take them as the player's
+  local g = new_custom()
+  local svo, sk = g.svo, g.sk
+  sk.serverprios_toggle("avs")
+  g.model.apply(g.sent())
+  g.model.sets.normal.prone = 5
+  g.login()
+  g.sent(true)
+  g.answer(g.model.list("slowcuring"), g.model.list("normal"))
+  check("only the real difference is shown", g.echoed("prone is 5") and not g.echoed("slickness is"))
+  sk.serverprios_keepgame()
+  eq(svo.serverprios.normal.slickness .. " " .. svo.serverprios.normal.impatience, "3 7",
+    "keeping the game's doesn't take the swapped numbers as the player's")
+  eq(svo.serverprios.normal.prone, 5, "and takes the player's change")
+  eq(any_affliction(g.sent()), nil, "with nothing to send")
+end
+
+-- ===== autoslick in server numbers =====
+
+do
+  local g = new_custom()
+  local svo, sk = g.svo, g.sk
+  svo.conf.autoslick = true
+  local function N() return svo.serverprios.normal end
+  check("this test's premise: paralysis is before asthma", N().paralysis < N().asthma)
+
+  svo.affl.slickness, svo.affl.asthma = {}, {}
+  sk.serverprios_autoslick()
+  eq(any_affliction(g.sent()), nil, "asthma and slickness alone don't need it")
+
+  svo.affl.anorexia = {}
+  sk.serverprios_autoslick()
+  local sent = g.sent()
+  check("with a third, asthma goes first", sets(sent, "asthma", 1), sent)
+  check("and what was first makes room", sets(sent, "aeon", 2) and sets(sent, "icebound", 2), sent)
+  check("in both sets", select(2, sent:gsub(" asthma 1", "")) == 2, sent)
+  check("svof says so", g.echoed("the server cures asthma first"))
+  g.model.apply(sent)
+  g.confirm("asthma", 1)
+  g.confirm("aeon", 2)
+  eq(N().asthma .. " " .. N().aeon, "4 1", "svof's own numbers aren't the player's")
+
+  sk.serverprios_autoslick()
+  eq(any_affliction(g.sent()), nil, "nothing more while it holds")
+
+  svo.affl.slickness = nil
+  sk.serverprios_autoslick()
+  sent = g.sent()
+  check("without slickness, asthma gets its number back", sets(sent, "asthma", 4) and sets(sent, "aeon", 1), sent)
+  check("and svof says so", g.echoed("Gave asthma its serverside number back"))
+
+  -- vconfig autoslick off while it holds
+  svo.affl.slickness = {}
+  sk.serverprios_autoslick()
+  g.sent()
+  svo.conf.autoslick = false
+  svo.signals["svo config changed"]:emit("autoslick")
+  sent = g.sent()
+  check("turning autoslick off gives the number back", sets(sent, "asthma", 4), sent)
+end
+
+do
+  -- asthma already before paralysis and impatience
+  local g = new_custom()
+  local svo, sk = g.svo, g.sk
+  svo.conf.autoslick = true
+  -- in both sets, since autoslick goes by each set's own numbers
+  g.confirm("asthma", 1)
+  g.line(SWITCH_SLOW)
+  g.confirm("asthma", 1)
+  g.line(SWITCH_NORMAL)
+  g.sent()
+  svo.affl.slickness, svo.affl.asthma, svo.affl.anorexia = {}, {}, {}
+  sk.serverprios_autoslick()
+  -- asthma ties with aeon at 1, but paralysis and impatience are after it
+  eq(any_affliction(g.sent()), nil, "asthma before paralysis and impatience needs nothing")
+  eq(next(sk.serverslick), nil, "and autoslick stays off")
 end
 
 -- ===== the game never lists =====

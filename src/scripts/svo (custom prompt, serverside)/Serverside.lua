@@ -855,6 +855,147 @@ local function serverprios_entriesof(numbers, name)
   return entries
 end
 
+-- Tactical overrides: numbers svof moves for a while on top of the table, and
+-- gives back afterwards. They never go into the table. pva, avs and pvd each
+-- swap two afflictions' numbers and stay on until used again, a restart
+-- included. svo.serverprios.toggles has them in the order they went on, and a
+-- later one swaps what the earlier ones left. Autoslick puts asthma first
+sk.serverswaps = {
+  pva = {'paralysis', 'asthma'},
+  avs = {'slickness', 'impatience'},
+  pvd = {'paralysis', 'darkshade'},
+}
+
+-- the curingsets autoslick has put asthma first in
+sk.serverslick = {}
+
+-- the number a tactical override gives each plain entry of a curingset it
+-- moves. A 26 svof keeps an affliction at still comes first
+local function serverprios_moved(set, toserver)
+  local numbers = svo.serverprios[set] or {}
+  local moved = {}
+  local function now(entry) return moved[entry] or numbers[entry] end
+
+  for _, toggle in ipairs(svo.serverprios.toggles or {}) do
+    local pair = sk.serverswaps[toggle]
+    local a, b = pair and toserver[pair[1]], pair and toserver[pair[2]]
+    local na, nb = a and now(a), b and now(b)
+    if na and nb then moved[a], moved[b] = nb, na end
+  end
+
+  local asthma = toserver.asthma
+  if sk.serverslick[set] and asthma and numbers[asthma] then
+    -- what is first makes room, so asthma is first alone
+    local first = {}
+    for entry in pairs(numbers) do
+      if entry ~= asthma and not select(2, sk.serverentry(entry)) and now(entry) == 1 then first[#first+1] = entry end
+    end
+    for _, entry in ipairs(first) do moved[entry] = 2 end
+    moved[asthma] = 1
+  end
+
+  return moved
+end
+
+-- the number the game should have for an entry of a curingset: 26 for what
+-- svof keeps there, else a tactical override's, else the table's
+local function serverprios_want(set, entry, toaction, moved)
+  local action = toaction[(sk.serverentry(entry))]
+  if action and serverkeeps26(action) then return 26 end
+  return moved[entry] or svo.serverprios[set][entry]
+end
+
+-- what the tactical overrides moved when they were last sent, for each
+-- curingset, so an entry they stop moving gets its number back
+sk.serverprios_lastmoved = {normal = {}, slowcuring = {}}
+
+-- sends what the tactical overrides move now, and gives back what they no
+-- longer do
+function sk.serverprios_applymoves()
+  if not sk.customserverprios() or svo.logging_in then return end
+
+  local toserver, toaction = sk.serverprionames()
+  for _, set in ipairs(serversets) do
+    local numbers = svo.serverprios[set]
+    if numbers and next(numbers) then
+      local moved = serverprios_moved(set, toserver)
+      local touched = {}
+      for entry in pairs(sk.serverprios_lastmoved[set]) do touched[entry] = true end
+      for entry in pairs(moved) do touched[entry] = true end
+      sk.serverprios_lastmoved[set] = moved
+
+      for entry in pairs(touched) do
+        local want = serverprios_want(set, entry, toaction, moved)
+        if want then serverprios_sendentry(set, entry, want) end
+      end
+    end
+  end
+end
+
+-- pva, avs and pvd in custom mode: the swap of svof's own list happens as it
+-- always has, and this one moves the server's numbers
+function sk.serverprios_toggle(name)
+  local pair = sk.serverswaps[name]
+  if not pair or not sk.customserverprios() then return end
+
+  local toggles = svo.serverprios.toggles or {}
+  svo.serverprios.toggles = toggles
+  local on = true
+  for i = #toggles, 1, -1 do
+    if toggles[i] == name then table.remove(toggles, i); on = false end
+  end
+  if on then toggles[#toggles+1] = name end
+
+  signals.saveconfig:emit()
+  sk.serverprios_applymoves()
+
+  if on then
+    svo.echof("Swapped the serverside numbers of %s and %s, until you use %s again.", pair[1], pair[2], name)
+  else
+    svo.echof("Gave %s and %s their own serverside numbers back.", pair[1], pair[2])
+  end
+end
+
+-- autoslick in custom mode. With asthma and slickness, and paralysis or
+-- impatience at asthma's number or before it, the server cures asthma first,
+-- until slickness or asthma is gone. As with svof's own lists, two
+-- afflictions alone don't need it
+function sk.serverprios_autoslick()
+  if not sk.customserverprios() then return end
+
+  local affl = svo.affl
+  local both = conf.autoslick and affl.slickness and affl.asthma
+  local toserver, toaction
+  local on, off = false, false
+
+  for _, set in ipairs(serversets) do
+    local numbers = svo.serverprios[set]
+    if not both then
+      if sk.serverslick[set] then sk.serverslick[set] = nil; off = true end
+    elseif not sk.serverslick[set] and numbers and next(numbers) and table.size(affl) > 2 then
+      if not toserver then toserver, toaction = sk.serverprionames() end
+      local moved = serverprios_moved(set, toserver)
+      local function now(action)
+        local entry = toserver[action]
+        return entry and serverprios_want(set, entry, toaction, moved)
+      end
+      local asthma, paralysis, impatience = now('asthma'), now('paralysis'), now('impatience')
+      if asthma and asthma < 26 and ((paralysis and paralysis <= asthma) or (impatience and impatience <= asthma)) then
+        sk.serverslick[set] = true
+        on = true
+      end
+    end
+  end
+
+  if not on and not off then return end
+  sk.serverprios_applymoves()
+  if on then
+    echo'\n' svo.echof("Asthma and slickness, with paralysis or impatience before asthma: the server cures asthma first for now.")
+  else
+    echo'\n' svo.echof("Gave asthma its serverside number back.")
+  end
+end
+
 -- sends an action's entries what they should have now, in both curingsets:
 -- 26 while svof keeps the affliction there, and the player's numbers otherwise
 function sk.serverprios_refresh(action, toserver)
@@ -869,11 +1010,12 @@ function sk.serverprios_refresh(action, toserver)
     local numbers = svo.serverprios[set]
     -- a set that was never read has no numbers to give back
     if numbers and next(numbers) then
+      local moved = keeps26 and {} or serverprios_moved(set, toserver)
       for _, entry in ipairs(serverprios_entriesof(numbers, name)) do
         if keeps26 then
           serverprios_sendentry(set, entry, 26)
-        elseif numbers[entry] then
-          serverprios_sendentry(set, entry, numbers[entry])
+        elseif moved[entry] or numbers[entry] then
+          serverprios_sendentry(set, entry, moved[entry] or numbers[entry])
         elseif sk.serverprios_sent[set][entry] == 26 then
           -- svof put it at 26 and the player never gave it a number
           local auto = sk.autoserverprios(set)[action]
@@ -884,7 +1026,8 @@ function sk.serverprios_refresh(action, toserver)
   end
 end
 
--- sends both curingsets the whole table, and 26 for what svof keeps there
+-- sends both curingsets the whole table, with the tactical overrides, and 26
+-- for what svof keeps there
 function sk.serverprios_send()
   if not sk.customserverprios() or svo.logging_in then return end
 
@@ -892,9 +1035,11 @@ function sk.serverprios_send()
   local toserver, toaction = sk.serverprionames()
 
   for _, set in ipairs(serversets) do
+    local moved = serverprios_moved(set, toserver)
+    sk.serverprios_lastmoved[set] = moved
     for entry, number in pairs(svo.serverprios[set] or {}) do
       local action = toaction[(sk.serverentry(entry))]
-      if not (action and serverkeeps26(action)) then serverprios_sendentry(set, entry, number) end
+      if not (action and serverkeeps26(action)) then serverprios_sendentry(set, entry, moved[entry] or number) end
     end
   end
 
@@ -909,9 +1054,12 @@ end
 -- stack entry the table had and the game doesn't is sent again: auto mode's
 -- reset clears them
 function sk.serverprios_take(set, entries, fresh)
-  local _, toaction = sk.serverprionames()
+  local toserver, toaction = sk.serverprionames()
   local old = svo.serverprios[set] or {}
   local new, auto = {}, nil
+  -- a number a tactical override moved is svof's, not the player's. After
+  -- auto mode the game has auto's numbers, which no override moved
+  local moved = fresh and {} or serverprios_moved(set, toserver)
 
   for entry, number in pairs(entries) do
     local name, stack = sk.serverentry(entry)
@@ -926,6 +1074,8 @@ function sk.serverprios_take(set, entries, fresh)
       else
         number = old[entry] or (not stack and auto[action]) or 26
       end
+    elseif moved[entry] and number == moved[entry] and old[entry] then
+      number = old[entry]
     end
     new[entry] = number
   end
@@ -977,29 +1127,23 @@ local function serverprios_count(set)
   return count
 end
 
--- the number svof expects the game to have for an entry of a curingset: 26
--- for what svof keeps there, and else the table's number
-local function serverprios_expected(set, entry, toaction)
-  local action = toaction[(sk.serverentry(entry))]
-  if action and serverkeeps26(action) then return 26 end
-  return svo.serverprios[set][entry]
-end
-
 -- where a listed curingset differs from what svof expects of it, sorted by
--- entry: {entry, the game's number, svof's}, with nil for a missing number
+-- entry: {entry, the game's number, svof's}, with nil for a missing number.
+-- svof expects its 26s and the tactical overrides that are on
 local function serverprios_compare(set)
-  local _, toaction = sk.serverprionames()
+  local toserver, toaction = sk.serverprionames()
   local listed, numbers = sk.serverread.sets[set], svo.serverprios[set]
+  local moved = serverprios_moved(set, toserver)
   local diffs = {}
 
   for entry, number in pairs(listed) do
-    local expected = serverprios_expected(set, entry, toaction)
+    local expected = serverprios_want(set, entry, toaction, moved)
     if expected ~= number then diffs[#diffs+1] = {entry, number, expected} end
   end
   for entry in pairs(numbers) do
     -- the list can lack these without the game having lost them
     if not listed[entry] and not serverunlisted[entry] then
-      diffs[#diffs+1] = {entry, nil, serverprios_expected(set, entry, toaction)}
+      diffs[#diffs+1] = {entry, nil, serverprios_want(set, entry, toaction, moved)}
     end
   end
 
@@ -1041,11 +1185,13 @@ function sk.serverprios_keepgame()
     for entry, number in pairs(read.sets[set]) do entries[entry] = number end
     sk.serverprios_take(set, entries)
   end
-  -- what svof keeps at 26 stays there
+  -- what svof keeps at 26 stays there, and the tactical overrides that are on
+  -- stay on
   local toserver = sk.serverprionames()
   for action in pairs(toserver) do
     if serverkeeps26(action) then sk.serverprios_refresh(action, toserver) end
   end
+  sk.serverprios_applymoves()
   signals.saveconfig:emit()
   svo.echof("Kept the game's serverside priorities.")
 end
@@ -1064,8 +1210,10 @@ function sk.serverprios_keepsvof()
       if not numbers[entry] then numbers[entry] = number end
     end
     -- what was sent stands for what the game listed, so only what differs goes
+    local moved = serverprios_moved(set, toserver)
+    sk.serverprios_lastmoved[set] = moved
     for entry in pairs(numbers) do
-      serverprios_sendentry(set, entry, serverprios_expected(set, entry, toaction))
+      serverprios_sendentry(set, entry, serverprios_want(set, entry, toaction, moved))
     end
   end
   for action in pairs(toserver) do
@@ -1087,6 +1235,9 @@ function sk.serverlist_read(set, asked)
     sk.serverprios_sent[set] = {}
     for entry, number in pairs(read.sets[set]) do sk.serverprios_sent[set][entry] = number end
 
+    -- the overrides that are on, so an entry they stop moving gets its number
+    -- back
+    sk.serverprios_lastmoved[set] = serverprios_moved(set, (sk.serverprionames()))
     read.logindiffs = read.logindiffs or {}
     read.logindiffs[set] = serverprios_compare(set)
     if read.asked and not read.asked.normal and not read.asked.slowcuring then
@@ -1110,6 +1261,8 @@ function sk.serverlist_read(set, asked)
   for action in pairs(toserver) do
     if serverkeeps26(action) then sk.serverprios_refresh(action, toserver) end
   end
+  -- and the tactical overrides that are on, which a reset or auto mode undid
+  sk.serverprios_applymoves()
 
   if asked and read.asked and not read.asked.normal and not read.asked.slowcuring then
     read.asked = nil
@@ -1141,18 +1294,31 @@ function sk.serverprios_confirmed(set, entry, number)
   local settled = not sk.serverprios_pending[set][entry]
   if settled then sk.serverprios_sent[set][entry] = number end
 
-  local _, toaction = sk.serverprionames()
+  local toserver, toaction = sk.serverprionames()
   local action = toaction[(sk.serverentry(entry))]
   local keeps26 = action and serverkeeps26(action) or false
 
-  if not own and not (keeps26 and number == 26) then numbers[entry] = number end
+  local edited = not own and not (keeps26 and number == 26)
+  local moved = serverprios_moved(set, toserver)
+  if edited then
+    numbers[entry] = number
+    -- the override's number for it can come from the player's new one
+    moved = serverprios_moved(set, toserver)
+    if moved[entry] then
+      svo.echof("%s's serverside number is %d, and Svof keeps it at %d while %s.", entry, number, moved[entry],
+        sk.serverslick[set] and entry == toserver.asthma and "autoslick has asthma first" or "a swap is on (pva, avs, pvd)")
+    end
+  end
 
-  -- the game should have svof's 26, or else the player's number: an edit of
-  -- something svof keeps at 26 goes back to 26, and an edit that crossed
-  -- svof's own send gets the player's number back
-  if not settled then return end
-  local want = keeps26 and 26 or numbers[entry]
-  if want and want ~= number then serverprios_sendentry(set, entry, want) end
+  -- the game should have svof's 26, an override's number, or else the
+  -- player's: an edit of something svof keeps at 26 goes back to 26, and an
+  -- edit that crossed svof's own send gets the player's number back
+  if settled then
+    local want = serverprios_want(set, entry, toaction, moved)
+    if want and want ~= number then serverprios_sendentry(set, entry, want) end
+  end
+  -- an entry swapped with this one takes the player's new number
+  if edited then sk.serverprios_applymoves() end
 end
 
 -- drops the sync's memory of what it sent, so the next one sends everything
@@ -1165,6 +1331,9 @@ end
 
 -- vconfig serverprios: does the switch and says what it did
 function sk.serverpriosmode()
+  -- autoslick starts again from the afflictions, in the new mode's numbers
+  sk.serverslick = {}
+
   if conf.serverprios == 'custom' then
     if not conf.serverside then
       svo.echof("Svof will keep your own serverside priorities once serverside is on (tn serverside).")
@@ -1227,6 +1396,8 @@ end
 -- at login, check the game's numbers against the table: they can have been
 -- changed from another client, or while svof was off
 function sk.serverprios_login()
+  -- the afflictions autoslick went by are gone with the old session
+  sk.serverslick = {}
   if not sk.customserverprios() then return end
   if next(svo.serverprios.normal or {}) and next(svo.serverprios.slowcuring or {}) then
     sk.serverprios_ask('login')
@@ -1247,6 +1418,11 @@ signals.changecuring:connect(function()
     sk.serverprios_login()
   end
 end, "check custom server priorities at login")
+
+-- vconfig autoslick off gives asthma its number back
+signals["svo config changed"]:connect(function(config)
+  if config == 'autoslick' then sk.serverprios_autoslick() end
+end, "autoslick in custom server priorities")
 
 --[[ register all signals needed for this to work ]]
 

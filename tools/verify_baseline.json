@@ -978,6 +978,21 @@
       "text": "Trigger  svo (aliases, triggers) svo/Harmonics/Paxmusicalis [only in the originals]"
     },
     {
+      "id": "item|Alias|svo (aliases, triggers)|svo/(avs) Toggle slickness and impatience|script",
+      "digest": "e0832aa916e5f460",
+      "text": "Alias    svo (aliases, triggers) svo/(avs) Toggle slickness and impatience [script]"
+    },
+    {
+      "id": "item|Alias|svo (aliases, triggers)|svo/(pva) Toggle paralysis & asthma priority|script",
+      "digest": "3d0f408675b5a55c",
+      "text": "Alias    svo (aliases, triggers) svo/(pva) Toggle paralysis & asthma priority [script]"
+    },
+    {
+      "id": "item|Alias|svo (aliases, triggers)|svo/(pvd) Toggle paralysis and darkshade|script",
+      "digest": "a953582fca6fd621",
+      "text": "Alias    svo (aliases, triggers) svo/(pvd) Toggle paralysis and darkshade [script]"
+    },
+    {
       "id": "item|Alias|svo (aliases, triggers)|svo/(vversion) Show system version|script",
       "digest": "7b8e8fa2b7a3b73d",
       "text": "Alias    svo (aliases, triggers) svo/(vversion) Show system version [script]"
@@ -1049,7 +1064,7 @@
     },
     {
       "id": "item|Script|svo (custom prompt, serverside)|Serverside|script",
-      "digest": "9d71f524f651f668",
+      "digest": "e48c9168082508b9",
       "text": "Script   svo (custom prompt, serverside) Serverside [script]"
     },
     {
@@ -1156,6 +1171,11 @@
       "id": "item|Script|svo (install me in module manager)|svo Utilities/Tree curing strats|script",
       "digest": "3e037ca3e3776ed7",
       "text": "Script   svo (install me in module manager) svo Utilities/Tree curing strats [script]"
+    },
+    {
+      "id": "item|Script|svo (install me in module manager)|svo Utilities/svo_autoslickprio|script",
+      "digest": "3ddd0f0a858a49f4",
+      "text": "Script   svo (install me in module manager) svo Utilities/svo_autoslickprio [script]"
     },
     {
       "id": "item|Script|svo (install me in module manager)|svo Utilities/svo_onimportant_aff|script",
