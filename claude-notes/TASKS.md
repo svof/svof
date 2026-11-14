@@ -104,8 +104,8 @@ and push it with no PR. Don't put drafts in `doc/` on a branch that merges:
 Sphinx builds every `.rst` there. Branches waiting for the pass:
 
 - `serverside-custom-docs`: `vconfig serverprios custom` and its commands,
-  step 10 of `serverside-custom-priorities-plan.md`. Its base is #916 before
-  defences, so it needs a rebase onto #916 first.
+  step 10 of `serverside-custom-priorities-plan.md`, based on #916's last
+  commit. Rebase it again if #916 changes.
 
 "Document GMCP first for script writers", further down, waits for the same
 pass. The package install steps stay out of the docs until the package is

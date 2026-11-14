@@ -7,15 +7,18 @@ Progress, 2026-11-13:
 
 - Step 0 is captured, step 1 needed no work, and step 2 is PR #915 (branch
   `serverside-custom-priorities`).
-- Steps 3 to 8 are draft PR #916 (branch `serverside-custom-mode`, stacked
-  on #915). Step 9, defences, is built in that branch's worktree
-  (`C:\work\svof-serverprios`) and not committed yet.
+- Steps 3 to 9 are draft PR #916 (branch `serverside-custom-mode`, stacked
+  on #915, worktree `C:\work\svof-serverprios`). Step 9, defences, is its
+  last commit, `63f76d15`.
 - Step 10, the docs, is written on branch `serverside-custom-docs`, pushed
-  with no PR. The owner holds every docs change until their tasks and the
-  single-source plan are done, and then makes one big docs change, so this
-  branch waits for that. Its base is #916 before step 9, so it needs a
-  rebase first.
+  with no PR and based on #916's last commit. The owner holds every docs
+  change until their tasks and the single-source plan are done, and then
+  makes one big docs change, so this branch waits for that.
 - Step 11, the live test, is owed, and needs asking first.
+- #917 (lust) and #918 (slickness) change the same send functions in
+  `Serverside.lua` that #916 does, so whichever merges second conflicts
+  there. Merging #915 and #916 last, rebased onto the others, is the
+  smaller job.
 
 The code references in "What svof does today" are from the day the plan was
 written, and the files have moved on since. "Built differently from the
@@ -572,7 +575,7 @@ instead, and the defence numbers are covered in the Defences section.
    Done in #916.
 9. **Defences**: the per-mode numbers and the mode command hooks,
    `vset <def> defences <n> server`, `vp serverdefs`, the keepup link, and
-   the `svo defup changed` listener. Built, not committed yet.
+   the `svo defup changed` listener. Done in #916.
 10. **Docs** for the option, `vp serveraffs` and `vp serverdefs`, the
     `server` forms of the list commands, and the `vignore` count. Written
     on branch `serverside-custom-docs`, held for the owner's one big docs
