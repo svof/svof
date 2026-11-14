@@ -494,8 +494,8 @@
     },
     {
       "id": "count|Trigger|svo (aliases, triggers)|svo",
-      "digest": "f1eaa19c2bf34259",
-      "text": "Trigger  svo (aliases, triggers) / 'svo': 2533 items originally, 2527 in merged"
+      "digest": "d863235624435d94",
+      "text": "Trigger  svo (aliases, triggers) / 'svo': 2533 items originally, 2526 in merged"
     },
     {
       "id": "gone|Script|svo (install me in module manager)|Check for system updates/svo_downloaded_file",
@@ -871,6 +871,11 @@
       "id": "gone|Trigger|svo (aliases, triggers)|svo/General/Tree cures/svo cure voided tree",
       "digest": "bb7b42be8d5a0e02",
       "text": "Trigger  svo (aliases, triggers) svo/General/Tree cures/svo cure voided tree [only in the originals]"
+    },
+    {
+      "id": "gone|Trigger|svo (aliases, triggers)|svo/General/Voice balance/svo lost voice",
+      "digest": "a842c2f874d66fa2",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Voice balance/svo lost voice [only in the originals]"
     },
     {
       "id": "gone|Trigger|svo (aliases, triggers)|svo/General/svo cure concussion",
