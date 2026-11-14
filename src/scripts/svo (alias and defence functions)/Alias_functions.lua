@@ -90,7 +90,8 @@ function svo.toggle_ignore(action)
 end
 
 function svo.show_ignore()
-  svo.echof("Things we're ignoring:%s", not next(svo.ignore) and " (none)" or '')
+  local stackignores = svo.sk.serverprios_stackignores()
+  svo.echof("Things we're ignoring:%s", not next(svo.ignore) and not stackignores[1] and " (none)" or '')
 
   setFgColor(unpack(svo.getDefaultColorNums))
   for key in pairs(svo.ignore) do
@@ -114,6 +115,17 @@ function svo.show_ignore()
       end
       echo("\n")
     end
+  end
+
+  -- one stack, which only the server ignores (vignore <aff> <count>)
+  for _, ignored in ipairs(stackignores) do
+    local name, stack, action = ignored[1], ignored[2], ignored[3]
+    echo(string.format("  %-18s", name.." (stack "..stack..")"))
+    echo("(")
+    setUnderline(true)
+    echoLink('remove', 'svo.sk.serverprios_stackignore("'..action..'", '..stack..')', 'Have the server cure '..name..' at '..stack..' stacks again', true)
+    setUnderline(false)
+    echo(") - the server leaves this stack alone\n")
   end
   svo.showprompt()
 end

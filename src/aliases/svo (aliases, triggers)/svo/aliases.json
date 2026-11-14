@@ -261,19 +261,19 @@
     "name": "Set an affliction priority",
     "isActive": "yes",
     "isFolder": "no",
-    "regex": "^vset (\\w+) (\\w+) (\\d+)$"
+    "regex": "^vset (\\w+)(?: (\\w+))? (\\d+)( server)?$"
   },
   {
     "name": "Swap slow mode affliction priorities",
     "isActive": "yes",
     "isFolder": "no",
-    "regex": "^vswapslow (\\w+) (\\w+)$"
+    "regex": "^vswapslow (\\w+) (\\w+)( server)?$"
   },
   {
     "name": "Clear all gaps in a prio mode",
     "isActive": "yes",
     "isFolder": "no",
-    "regex": "^vcleargaps (\\w+)$"
+    "regex": "^vcleargaps (\\w+)( server)?$"
   },
   {
     "name": "For unexpected aeon",
@@ -309,7 +309,7 @@
     "name": "Show priority lists",
     "isActive": "yes",
     "isFolder": "no",
-    "regex": "^(?:vshowprios|vp) (\\w+)$"
+    "regex": "^(?:vshowprios|vp) (\\w+)(?: (slowcuring))?$"
   },
   {
     "name": "Show affliction names",
@@ -327,7 +327,7 @@
     "name": "Import prios",
     "isActive": "yes",
     "isFolder": "no",
-    "regex": "^vimportprio(?: (\\w+))?$"
+    "regex": "^vimportprio(?: (\\w+))?( server)?$"
   },
   {
     "name": "(vlistprios) List all prios",

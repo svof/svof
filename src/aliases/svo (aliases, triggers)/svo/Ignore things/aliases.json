@@ -9,7 +9,7 @@
     "name": "Toggle ignore things",
     "isActive": "yes",
     "isFolder": "no",
-    "regex": "^vignore (\\w+)$"
+    "regex": "^vignore (\\w+)(?: (\\d+))?$"
   },
   {
     "name": "Show what can we ignore",

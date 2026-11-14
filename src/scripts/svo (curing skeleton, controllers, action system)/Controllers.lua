@@ -1004,6 +1004,12 @@ function svo.printorder(balance, limited_around)
   end
 
   local function echoserver(j, raffs, rdefs, balance, ssprioamount)
+    -- in custom mode the server's affliction numbers are the player's own,
+    -- not a place in this list (vp serveraffs shows them all)
+    if sk.customserverprios() and type(svo.dict[data[j]].aff) == 'table' and not rdefs[data[j]]
+      and not svo.dict[data[j]][balance].def then
+      return string.format("ss aff %"..ssprioamount..'s', sk.serverprios_number(data[j], 'normal') or '-')
+    end
     if raffs[data[j]] then
       return string.format("ss aff %"..ssprioamount..'s', (raffs[data[j]] <= 25 and raffs[data[j]] or '25'))
     elseif rdefs[data[j]] then

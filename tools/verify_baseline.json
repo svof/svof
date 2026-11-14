@@ -289,7 +289,7 @@
     },
     {
       "id": "added|Trigger|svo (aliases, triggers)|svo/General/Server-side commands/Curing priority lines",
-      "digest": "aec3cae023abdfa6",
+      "digest": "17ebe9dd92c207ed",
       "text": "Trigger  svo (aliases, triggers) svo/General/Server-side commands/Curing priority lines [only in the package]"
     },
     {
@@ -978,9 +978,69 @@
       "text": "Trigger  svo (aliases, triggers) svo/Harmonics/Paxmusicalis [only in the originals]"
     },
     {
+      "id": "item|Alias|svo (aliases, triggers)|svo/(avs) Toggle slickness and impatience|script",
+      "digest": "e0832aa916e5f460",
+      "text": "Alias    svo (aliases, triggers) svo/(avs) Toggle slickness and impatience [script]"
+    },
+    {
+      "id": "item|Alias|svo (aliases, triggers)|svo/(pva) Toggle paralysis & asthma priority|script",
+      "digest": "3d0f408675b5a55c",
+      "text": "Alias    svo (aliases, triggers) svo/(pva) Toggle paralysis & asthma priority [script]"
+    },
+    {
+      "id": "item|Alias|svo (aliases, triggers)|svo/(pvd) Toggle paralysis and darkshade|script",
+      "digest": "a953582fca6fd621",
+      "text": "Alias    svo (aliases, triggers) svo/(pvd) Toggle paralysis and darkshade [script]"
+    },
+    {
       "id": "item|Alias|svo (aliases, triggers)|svo/(vversion) Show system version|script",
       "digest": "7b8e8fa2b7a3b73d",
       "text": "Alias    svo (aliases, triggers) svo/(vversion) Show system version [script]"
+    },
+    {
+      "id": "item|Alias|svo (aliases, triggers)|svo/Clear all gaps in a prio mode|regex",
+      "digest": "db3ad74c9f4c8f71",
+      "text": "Alias    svo (aliases, triggers) svo/Clear all gaps in a prio mode [regex]"
+    },
+    {
+      "id": "item|Alias|svo (aliases, triggers)|svo/Clear all gaps in a prio mode|script",
+      "digest": "0381bb52ad5aa226",
+      "text": "Alias    svo (aliases, triggers) svo/Clear all gaps in a prio mode [script]"
+    },
+    {
+      "id": "item|Alias|svo (aliases, triggers)|svo/Export prios|script",
+      "digest": "48c84c6d575d491b",
+      "text": "Alias    svo (aliases, triggers) svo/Export prios [script]"
+    },
+    {
+      "id": "item|Alias|svo (aliases, triggers)|svo/Ignore things/Toggle ignore things|regex",
+      "digest": "50ab33394bc37702",
+      "text": "Alias    svo (aliases, triggers) svo/Ignore things/Toggle ignore things [regex]"
+    },
+    {
+      "id": "item|Alias|svo (aliases, triggers)|svo/Ignore things/Toggle ignore things|script",
+      "digest": "ce94c95f1c408403",
+      "text": "Alias    svo (aliases, triggers) svo/Ignore things/Toggle ignore things [script]"
+    },
+    {
+      "id": "item|Alias|svo (aliases, triggers)|svo/Import prios|regex",
+      "digest": "0f110b55aee33f30",
+      "text": "Alias    svo (aliases, triggers) svo/Import prios [regex]"
+    },
+    {
+      "id": "item|Alias|svo (aliases, triggers)|svo/Import prios|script",
+      "digest": "accc599763b21e28",
+      "text": "Alias    svo (aliases, triggers) svo/Import prios [script]"
+    },
+    {
+      "id": "item|Alias|svo (aliases, triggers)|svo/Set an affliction priority|regex",
+      "digest": "4d66fc2ba5c92c6c",
+      "text": "Alias    svo (aliases, triggers) svo/Set an affliction priority [regex]"
+    },
+    {
+      "id": "item|Alias|svo (aliases, triggers)|svo/Set an affliction priority|script",
+      "digest": "dbee219f3a96a706",
+      "text": "Alias    svo (aliases, triggers) svo/Set an affliction priority [script]"
     },
     {
       "id": "item|Alias|svo (aliases, triggers)|svo/Show hidelist|regex",
@@ -991,6 +1051,31 @@
       "id": "item|Alias|svo (aliases, triggers)|svo/Show hidelist|script",
       "digest": "f6002ce9a5d2cb57",
       "text": "Alias    svo (aliases, triggers) svo/Show hidelist [script]"
+    },
+    {
+      "id": "item|Alias|svo (aliases, triggers)|svo/Show priority lists|regex",
+      "digest": "0c74b540f320e5bb",
+      "text": "Alias    svo (aliases, triggers) svo/Show priority lists [regex]"
+    },
+    {
+      "id": "item|Alias|svo (aliases, triggers)|svo/Show priority lists|script",
+      "digest": "e5ce3422d6dcdc44",
+      "text": "Alias    svo (aliases, triggers) svo/Show priority lists [script]"
+    },
+    {
+      "id": "item|Alias|svo (aliases, triggers)|svo/Swap affliction priorities|script",
+      "digest": "84a230f477e08c9b",
+      "text": "Alias    svo (aliases, triggers) svo/Swap affliction priorities [script]"
+    },
+    {
+      "id": "item|Alias|svo (aliases, triggers)|svo/Swap slow mode affliction priorities|regex",
+      "digest": "99b6df05f8a1bd6c",
+      "text": "Alias    svo (aliases, triggers) svo/Swap slow mode affliction priorities [regex]"
+    },
+    {
+      "id": "item|Alias|svo (aliases, triggers)|svo/Swap slow mode affliction priorities|script",
+      "digest": "5b4be2eecdc1b2ce",
+      "text": "Alias    svo (aliases, triggers) svo/Swap slow mode affliction priorities [script]"
     },
     {
       "id": "item|Alias|svo (namedb)|NameDB/Enemies lists|script",
@@ -1009,12 +1094,12 @@
     },
     {
       "id": "item|Script|svo (alias and defence functions)|Alias functions|script",
-      "digest": "8014017d2ec6951b",
+      "digest": "b46af0ddaa336021",
       "text": "Script   svo (alias and defence functions) Alias functions [script]"
     },
     {
       "id": "item|Script|svo (alias and defence functions)|Defences|script",
-      "digest": "82be6efdf199e3fe",
+      "digest": "232ad6fb860ee3d6",
       "text": "Script   svo (alias and defence functions) Defences [script]"
     },
     {
@@ -1034,7 +1119,7 @@
     },
     {
       "id": "item|Script|svo (curing skeleton, controllers, action system)|Controllers|script",
-      "digest": "a13b10656c4e392c",
+      "digest": "cca27f6666c38153",
       "text": "Script   svo (curing skeleton, controllers, action system) Controllers [script]"
     },
     {
@@ -1049,7 +1134,7 @@
     },
     {
       "id": "item|Script|svo (custom prompt, serverside)|Serverside|script",
-      "digest": "8b7df2152b4e15d9",
+      "digest": "e265a54c01c6c2b7",
       "text": "Script   svo (custom prompt, serverside) Serverside [script]"
     },
     {
@@ -1158,13 +1243,18 @@
       "text": "Script   svo (install me in module manager) svo Utilities/Tree curing strats [script]"
     },
     {
+      "id": "item|Script|svo (install me in module manager)|svo Utilities/svo_autoslickprio|script",
+      "digest": "3ddd0f0a858a49f4",
+      "text": "Script   svo (install me in module manager) svo Utilities/svo_autoslickprio [script]"
+    },
+    {
       "id": "item|Script|svo (install me in module manager)|svo Utilities/svo_onimportant_aff|script",
       "digest": "caceef663b2b8413",
       "text": "Script   svo (install me in module manager) svo Utilities/svo_onimportant_aff [script]"
     },
     {
       "id": "item|Script|svo (install, config, pipes, rift, parry, prios)|Config system|script",
-      "digest": "42b36a13119af836",
+      "digest": "16351a4e69d0bb1d",
       "text": "Script   svo (install, config, pipes, rift, parry, prios) Config system [script]"
     },
     {
@@ -1274,7 +1364,7 @@
     },
     {
       "id": "item|Script|svo (setup, misc, empty, funnies, dor)|Setup|script",
-      "digest": "8f337d46e32cae44",
+      "digest": "9d4c4a2272be75b3",
       "text": "Script   svo (setup, misc, empty, funnies, dor) Setup [script]"
     },
     {
