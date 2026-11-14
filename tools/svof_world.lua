@@ -98,16 +98,25 @@ local function compile(code, name, env)
 end
 world.compile = compile
 
--- The loaders' sources, read once. Lua 5.1 reads an unknown escape such as
--- \w as the letter alone, and 5.2+ refuses to compile it; one string in
--- Main_trigger_functions has one, so on a newer Lua it gets 5.1's reading.
-local sources = {}
-for _, path in ipairs(world.SCRIPTS) do sources[path] = read_file(ROOT .. path) end
-for _, l in ipairs(world.LOADERS) do
-  local src = read_file(ROOT .. l[2])
-  if _VERSION ~= "Lua 5.1" then src = src:gsub("as \\w%+ draws", "as w+ draws") end
-  sources[l[1]] = src
+-- The loaders' sources, read once per tree. Lua 5.1 reads an unknown escape
+-- such as \w as the letter alone, and 5.2+ refuses to compile it; one string
+-- in Main_trigger_functions has one, so on a newer Lua it gets 5.1's reading.
+-- A tree is a checkout's root, "" for this one: tools/dict_behaviour.lua
+-- loads an older revision's src/ beside this one to compare the two.
+local trees = {}
+local function tree_sources(root)
+  if trees[root] then return trees[root] end
+  local sources = {}
+  for _, path in ipairs(world.SCRIPTS) do sources[path] = read_file(root .. ROOT .. path) end
+  for _, l in ipairs(world.LOADERS) do
+    local src = read_file(root .. ROOT .. l[2])
+    if _VERSION ~= "Lua 5.1" then src = src:gsub("as \\w%+ draws", "as w+ draws") end
+    sources[l[1]] = src
+  end
+  trees[root] = sources
+  return sources
 end
+world.tree_sources = tree_sources
 
 -- ===== the libraries svof requires =====
 
@@ -293,13 +302,81 @@ world.rex_stub = {
   match = function(subject, pattern) return subject:match(lua_pattern(pattern)) end,
 }
 
+-- ===== pairs() in one order =====
+
+-- numbers by value, then strings, then anything else by tostring
+local KEY_RANK = { number = 1, string = 2 }
+function world.key_less(a, b)
+  local ta, tb = type(a), type(b)
+  if ta ~= tb then return (KEY_RANK[ta] or 3) < (KEY_RANK[tb] or 3) end
+  if ta == "number" or ta == "string" then return a < b end
+  return tostring(a) < tostring(b)
+end
+
+-- t's keys in key_less order. Sorting with a Lua comparator is slow, and
+-- svof walks the same big tables (svo.dict, its lists) over and over, so
+-- the order is kept per table and used again while the keys are the same,
+-- which one pass over them checks.
+local sorted_cache = setmetatable({}, { __mode = "k" })
+local function sorted_keys_of(t)
+  local c = sorted_cache[t]
+  if c then
+    local n, same = 0, true
+    for k in next, t do
+      n = n + 1
+      if not c.set[k] then same = false break end
+    end
+    if same and n == #c.keys then return c.keys end
+  end
+  local keys, set = {}, {}
+  for k in next, t do
+    keys[#keys + 1] = k
+    set[k] = true
+  end
+  table.sort(keys, world.key_less)
+  sorted_cache[t] = { keys = keys, set = set }
+  return keys
+end
+-- shared, so never to be changed by its caller
+world.sorted_keys = sorted_keys_of
+
+-- pairs() over t's raw keys in key_less order; a key removed during the
+-- walk is skipped, as next() would
+function world.sorted_pairs(t)
+  local keys = sorted_keys_of(t)
+  local i = 0
+  return function()
+    while true do
+      i = i + 1
+      local k = keys[i]
+      if k == nil then return nil end
+      local v = rawget(t, k)
+      if v ~= nil then return k, v end
+    end
+  end, t, nil
+end
+
 -- ===== one svof =====
 
 -- opts.class: the class svof loads for (svo.me.class), default "Infernal"
 -- opts.paused: leave curing paused, so a prompt runs lifevision and the
 --   prompt queue but svof sends nothing of its own; default true
+-- opts.root: the checkout whose src/ to load, ending in a slash; default
+--   this one. The libraries svof requires come from this one either way.
+-- opts.priorities: load src/resources/default_prios at systemstart, as a
+--   fresh profile does; default false, so no action has a set place
+-- opts.repeatable: the same svof on every run and every Lua. pairs() walks
+--   keys in sorted order (5.4+ changes the order from run to run, so
+--   whatever svof derives with it), os.time and os.date give one fixed
+--   time in UTC, os.clock 0, and math.random the lowest value it can;
+--   default false, the real ones
+-- opts.patch: function(name, source) -> source, to load a changed copy of
+--   a loader (by its key, such as "dict") or a script (by its path), as a
+--   test that plants a mistake does
 function world.new(opts)
   opts = opts or {}
+  local root = opts.root or ""
+  local sources = tree_sources(root)
   local w = {
     sent = {}, echoes = {}, links = {}, events = {}, triggers = {}, timers = {}, handlers = {},
     unknown_globals = {}, now = 0,
@@ -395,7 +472,7 @@ function world.new(opts)
       if mode and mode:find("[wa+]") then return refuse("write")(path) end
       -- svof's own files, which muddler copies from src/resources to the
       -- package root, and Mudlet unpacks to svo.installationfolder()
-      if type(path) == "string" and path:sub(1, 7) == "./svof/" then path = "src/resources/" .. path:sub(8) end
+      if type(path) == "string" and path:sub(1, 7) == "./svof/" then path = root .. "src/resources/" .. path:sub(8) end
       return io.open(path, mode)
     end,
     -- io.write goes to whatever io.output last chose, and svof only ever
@@ -409,6 +486,24 @@ function world.new(opts)
   env.table = extend(table, mudlet_table)
   env.unpack = G.unpack or table.unpack
   env.require = new_require()
+  if opts.repeatable then
+    env.pairs = world.sorted_pairs
+    local fixed = 1700000000
+    env.os.time = function(t) if t then return os.time(t) end return fixed end
+    env.os.clock = function() return 0 end
+    env.os.date = function(fmt, t)
+      fmt = fmt or "%c"
+      if fmt:sub(1, 1) ~= "!" then fmt = "!" .. fmt end
+      return os.date(fmt, t or fixed)
+    end
+    env.math = extend(math, {
+      random = function(a, b)
+        if a == nil then return 0 end
+        return b and a or 1
+      end,
+      randomseed = function() end,
+    })
+  end
   for k, v in pairs(mudlet) do env[k] = v end
   -- not logged in: no Char.Name, so loading does not run the login handlers
   env.gmcp = { Char = { Status = {}, Vitals = {}, Defences = {}, Afflictions = {}, Items = {} },
@@ -422,11 +517,40 @@ function world.new(opts)
     return nil
   end })
 
+  -- A fresh profile in Mudlet has no saved priorities, so systemstart's
+  -- prio.import('current') reads default_prios from the installation
+  -- folder. The lfs stub has no files, so here that import finds nothing
+  -- and every action gets a place in pairs() order, which differs from run
+  -- to run on Lua 5.4+. opts.priorities serves the file, as Mudlet would.
+  if opts.priorities then
+    local attributes = env.lfs.attributes
+    env.lfs.attributes = function(path)
+      if path == "./svof/default_prios" then return { mode = "file" } end
+      return attributes(path)
+    end
+    env.io.input = function(path)
+      if path == "./svof/default_prios" then path = root .. "src/resources/default_prios" end
+      return io.input(path)
+    end
+    -- the import runs the file in a sandbox with Lua 5.1's loadstring and
+    -- setfenv, which 5.2+ doesn't have (Penlight defines a global setfenv
+    -- there, which env doesn't see)
+    if _VERSION ~= "Lua 5.1" then
+      env.loadstring = function(s, name) return load(s, name) end
+      env.setfenv = function(f, t) debug.setupvalue(f, 1, t) return f end
+    end
+  end
+
   -- svo_init_system runs the loaders in its own order, then systemstart,
   -- exactly as Mudlet's load event and a class change do
   env.svo = { me = { class = opts.class or "Infernal" } }
-  for _, path in ipairs(world.SCRIPTS) do compile(sources[path], path, env)() end
-  for _, l in ipairs(world.LOADERS) do compile(sources[l[1]], l[1], env)() end
+  local function source(name)
+    local src = sources[name]
+    if opts.patch then src = opts.patch(name, src) or src end
+    return src
+  end
+  for _, path in ipairs(world.SCRIPTS) do compile(source(path), path, env)() end
+  for _, l in ipairs(world.LOADERS) do compile(source(l[1]), l[1], env)() end
   env.svo_init_system()
   local svo = env.svo
   assert(svo.systemloaded, "svo_init_system did not finish loading svof")
