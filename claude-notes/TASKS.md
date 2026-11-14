@@ -93,6 +93,24 @@ affliction names, and a mucous capture for its recovery time.
 
 ## Deferred by the repo owner
 
+### Hold every docs change for one docs pass
+**Status: the owner's call, 2026-11-13: no change to `doc/` merges until
+their own tasks and the single-source plan are done. Then they make one big
+docs change. The docs can't describe a version that isn't out, because
+people reading them online would find commands that don't work yet.**
+
+Write docs where they belong, in `doc/index.rst`, on a branch of their own,
+and push it with no PR. Don't put drafts in `doc/` on a branch that merges:
+Sphinx builds every `.rst` there. Branches waiting for the pass:
+
+- `serverside-custom-docs`: `vconfig serverprios custom` and its commands,
+  step 10 of `serverside-custom-priorities-plan.md`. Its base is #916 before
+  defences, so it needs a rebase onto #916 first.
+
+"Document GMCP first for script writers", further down, waits for the same
+pass. The package install steps stay out of the docs until the package is
+ready, as #909 restored them.
+
 ### Bring svof's own class defences up to date with the game, as one batch
 **Status: the user's call, 2026-10-18: efreeti and waterweird go in the batch
 that updates the existing classes' defences (the "outdated classes" row of

@@ -3,10 +3,23 @@
 Written 2026-10-31, against `in-client-svof` at `6bd3c5e`. The game facts and
 decisions are also in the `achaea-serverside-priorities` memory.
 
-Progress, 2026-11-09: step 0 is captured, step 1 needed no work, and step 2
-is PR #915 (branch `serverside-custom-priorities`). The code references in
-"What svof does today" are from the day the plan was written, and the files
-have moved on since.
+Progress, 2026-11-13:
+
+- Step 0 is captured, step 1 needed no work, and step 2 is PR #915 (branch
+  `serverside-custom-priorities`).
+- Steps 3 to 8 are draft PR #916 (branch `serverside-custom-mode`, stacked
+  on #915). Step 9, defences, is built in that branch's worktree
+  (`C:\work\svof-serverprios`) and not committed yet.
+- Step 10, the docs, is written on branch `serverside-custom-docs`, pushed
+  with no PR. The owner holds every docs change until their tasks and the
+  single-source plan are done, and then makes one big docs change, so this
+  branch waits for that. Its base is #916 before step 9, so it needs a
+  rebase first.
+- Step 11, the live test, is owed, and needs asking first.
+
+The code references in "What svof does today" are from the day the plan was
+written, and the files have moved on since. "Built differently from the
+plan" near the end lists where the code and the plan part ways.
 
 ## The problem
 
@@ -547,19 +560,62 @@ instead, and the defence numbers are covered in the Defences section.
    line the gag trigger deletes.
 3. **Table, storage, the option, and the mode switches**, including the
    gates on the affliction sync, `PRIORITY RESET`, and the class-change
-   reset.
+   reset. Done in #916, with the login check (choice 11).
 4. **Overrides and the echo-loop guard**, safety reasons first, hooked to
    the events the sync listens on today (`Serverside.lua:754` to `761`).
+   Done in #916.
 5. **Tactical overrides**: autoslick in server numbers, `pva`, `avs`, `pvd`.
-6. **Stack entries and `vignore <aff> <count>`.**
-7. **Warnings.**
+   Done in #916.
+6. **Stack entries and `vignore <aff> <count>`.** Done in #916.
+7. **Warnings.** Done in #916.
 8. **The server forms of the list commands**, and the `ss aff` column.
+   Done in #916.
 9. **Defences**: the per-mode numbers and the mode command hooks,
    `vset <def> defences <n> server`, `vp serverdefs`, the keepup link, and
-   the `svo defup changed` listener.
+   the `svo defup changed` listener. Built, not committed yet.
 10. **Docs** for the option, `vp serveraffs` and `vp serverdefs`, the
-    `server` forms of the list commands, and the `vignore` count.
-11. **Live test** in `muddlertest`, after asking.
+    `server` forms of the list commands, and the `vignore` count. Written
+    on branch `serverside-custom-docs`, held for the owner's one big docs
+    change.
+11. **Live test** in `muddlertest`, after asking. Owed.
+
+## Built differently from the plan
+
+Decided with the owner while building, 2026-11-09 to 2026-11-13:
+
+- **The game's names.** An affliction's server name is its `gamename`, else
+  the name GMCP reports it by (`svo.dict.svotossa`). One with neither is
+  svof's own and has no server priority, so no flag is needed: paradox (a
+  Depthswalker condition svof tracks as an affliction), hoisted, insomnia,
+  and lust (svof's `lovers` action, which the game handles with `CURING
+  REJECTION`) are left out this way. sleep goes out as sleeping. A GMCP name
+  doesn't prove a priority: 12 afflictions svof cures itself, such as galed
+  (airfisted), have GMCP names and aren't on the captured list.
+- **The pending-send guard** keeps every number svof sent until the game
+  confirms it, and a send nobody confirms stops waiting after 60 seconds.
+  Defences have their own pending table, since blindness is both.
+- **Tactical overrides** never go into the table. `svo.serverprios.toggles`
+  keeps `pva`, `avs`, and `pvd` in the order they went on, and a later swap
+  moves what the earlier ones left.
+- **`vignore <aff> <count>`** works in custom mode only (choice 8), refuses
+  stack 1, and refuses an affliction svof cures itself. A stack entry svof
+  creates for an ignore is kept in `svo.serverprios.made` and follows the
+  plain entry's number afterwards, because the game can't remove one.
+- **Warnings.** "Your number is kept" fires only when the player sets a
+  number in game, not for auto's numbers taken at the switch. "Not on the
+  game's list" fires once a session, and doesn't say the name is wrong.
+- **`vset` server forms.** `vset <name> <number> server` sets a defence or
+  an affliction by its name. A name the game's list or svof's names have as
+  an affliction is the affliction: blindness, deafness, and retribution are
+  both, and the reply says how to set the defence. `defence` or
+  `affliction` before the number settles it, and the plurals work too. The
+  docs show only the plain forms.
+- **Defence numbers** go from 1 to 25, since the game's highest is unknown. A
+  defence with no number of the player's in a mode has svof's own order, so
+  a new mode starts with none. The defence list has no footer, so its read
+  ends at the prompt or the first line that isn't the list's.
+- **`vexportprio <name> server`** writes its own small Lua tables to
+  `svo/serverprios/<name>`, not through `pl.pretty`.
 
 ## Gates and tests
 
