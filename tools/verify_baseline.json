@@ -289,7 +289,7 @@
     },
     {
       "id": "added|Trigger|svo (aliases, triggers)|svo/General/Server-side commands/Curing priority lines",
-      "digest": "aec3cae023abdfa6",
+      "digest": "17ebe9dd92c207ed",
       "text": "Trigger  svo (aliases, triggers) svo/General/Server-side commands/Curing priority lines [only in the package]"
     },
     {
@@ -1059,7 +1059,7 @@
     },
     {
       "id": "item|Alias|svo (aliases, triggers)|svo/Show priority lists|script",
-      "digest": "d351bb3b3db31071",
+      "digest": "e5ce3422d6dcdc44",
       "text": "Alias    svo (aliases, triggers) svo/Show priority lists [script]"
     },
     {
@@ -1099,7 +1099,7 @@
     },
     {
       "id": "item|Script|svo (alias and defence functions)|Defences|script",
-      "digest": "82be6efdf199e3fe",
+      "digest": "232ad6fb860ee3d6",
       "text": "Script   svo (alias and defence functions) Defences [script]"
     },
     {
@@ -1134,7 +1134,7 @@
     },
     {
       "id": "item|Script|svo (custom prompt, serverside)|Serverside|script",
-      "digest": "0697888b58d93385",
+      "digest": "e265a54c01c6c2b7",
       "text": "Script   svo (custom prompt, serverside) Serverside [script]"
     },
     {

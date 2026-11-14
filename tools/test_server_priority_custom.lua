@@ -40,6 +40,10 @@ This covers:
 - vset, vswap and vswapslow with server at the end, which go into the table
   once the game confirms them, their refusals, vp serveraffs, the ss aff
   column of vp, export and import, and the reminder the plain forms give
+- defences: the switch taking the game's numbers into the mode in use, the
+  sync sending the player's numbers, edits in game and from vset, keepup
+  deciding what is on the list, defence modes, vp serverdefs, the login
+  check, and export and import
 
 It runs the real loaders through tools/svof_world.lua and feeds the game's
 lines to the handlers the trigger and the list's reader call. The lists are
@@ -91,7 +95,8 @@ local function new_game()
     w.env.isPrompt = function() return isprompt or false end
     local readers = {}
     for _, t in ipairs(w.triggers) do
-      if not t.killed and t.kind == "regex" and t.pattern == "^" and t.code:find("serverlist_line", 1, true) then
+      if not t.killed and t.kind == "regex" and t.pattern == "^"
+        and (t.code:find("serverlist_line", 1, true) or t.code:find("serverdeflist_line", 1, true)) then
         readers[#readers + 1] = t
       end
     end
@@ -210,8 +215,9 @@ do
 
   g.mode("custom")
   local sent = g.sent(true)
-  eq(sent, "\ncuringset switch slowcuring\ncuring priority list\ncuringset switch normal\ncuring priority list\n",
-    "the switch asks for both lists, the set in use last")
+  eq(sent, "\ncuringset switch slowcuring\ncuring priority list\ncuringset switch normal\ncuring priority list\n"
+    .. "curing priority defence list\n",
+    "the switch asks for both lists, the set in use last, and then for the defence list")
 
   -- svof handles impale itself by default, so the 26 the list has for it is
   -- svof's, and paralysis at 2 is the player's
@@ -1090,7 +1096,7 @@ do
   alias(g, "vset", "paralysis", nil, "27", " server")
   check("and a number past 26", g.echoed("the game's numbers go from 1 to 26"))
   alias(g, "vset", "paralysis", "herb", "3", " server")
-  check("and a balance in place of slowcuring", g.echoed("To set a serverside priority, use vset <affliction>"))
+  check("and a balance in place of slowcuring", g.echoed("To set a serverside priority, use vset <name> <number> server"))
   eq(any_affliction(g.sent()), nil, "none of those sends anything")
 
   alias(g, "vset", "impale", nil, "4", " server")
@@ -1190,6 +1196,183 @@ do
   local bad = sk.serverprios_importtext("normal = { paralysis = 30 }\nslowcuring = {}")
   eq(bad, nil, "an export with a number past 26 is refused")
   eq(sk.serverprios_importtext("normal = {}"), nil, "and one without both sets")
+end
+
+-- ===== defences =====
+
+do
+  local g = new_game()
+  local svo, sk = g.svo, g.sk
+  -- cloak on keepup, kept up by the server
+  svo.defkeepup.basic.cloak, svo.defkeepup.combat.cloak = true, true
+  svo.serverignore.cloak = true
+  -- another defence, off keepup
+  local other
+  local names = {}
+  for action, entry in pairs(svo.dict) do
+    for _, data in pairs(type(entry) == "table" and entry or {}) do
+      if type(data) == "table" and data.def and not data.undeffable and action ~= "cloak" and not entry.gamename then
+        names[#names + 1] = action
+        break
+      end
+    end
+  end
+  table.sort(names)
+  other = names[1]
+  check("this test's premise: a defence off keepup", other ~= nil and not svo.defkeepup.basic[other])
+  local function deflist(entries)
+    g.line("Your defence priorities for curing set normal:")
+    for name, number in pairs(entries) do g.line(("%-18s: %d"):format(name, number)) end
+    g.line("", true)
+  end
+  local function M() return svo.serverprios.defences and svo.serverprios.defences[svo.defs.mode] or {} end
+
+  g.sent()
+  g.mode("custom")
+  g.sent(true)
+  g.answer(LIST_SLOW, LIST_PLAIN)
+  deflist({ cloak = 3 })
+  eq(M().cloak, 3, "the switch takes the game's defence numbers into the mode in use")
+  check("and says so", g.echoed("Took your serverside defence numbers for basic mode from the game: 1 defences"))
+  g.sent()
+
+  sk.serverdefs_sendall()
+  local sent = g.sent()
+  check("the sync sends a defence the player's number", sent:find("curing priority defence cloak 3", 1, true) ~= nil, sent)
+  g.line("You have set the 'cloak' defence to the 3 priority.")
+  eq(M().cloak, 3, "and its confirmation is svof's own")
+  sk.serverdefs_sendall()
+  eq(g.sent():find("defence cloak", 1, true), nil, "with nothing sent again")
+
+  -- an edit in game
+  g.line("You have set the 'cloak' defence to the 7 priority.")
+  eq(M().cloak, 7, "an edit in game is the player's number in the mode in use")
+  check("svof says so", g.echoed("cloak is 7 in basic mode."))
+  sent = g.sent()
+  check("and the other curingset gets the same number",
+    sent:find("curingset switch slowcuring\ncuring priority defence cloak 7", 1, true) ~= nil, sent)
+  check("but not the one that has it", select(2, sent:gsub("defence cloak 7", "")) == 1, sent)
+
+  -- vset from svof
+  sk.serverprios_vset("cloak", nil, "6")
+  eq(M().cloak, 6, "vset <defence> <number> server sets the mode's number, as for an affliction")
+  check("and names the mode", g.echoed("cloak is 6 in basic mode."))
+  sent = g.sent()
+  check("and sends it", sent:find("defence cloak 6", 1, true) ~= nil, sent)
+  sk.serverprios_vset("cloak", "defences", "4")
+  eq(M().cloak, 4, "vset <defence> defences <number> server does too")
+  sk.serverprios_vset("cloak", "defence", "5")
+  eq(M().cloak, 5, "and so does defence, singular")
+  sent = g.sent()
+  check("and sends it", sent:find("curing priority defence[^\n]* cloak 5", 1) ~= nil, sent)
+
+  -- a name that is an affliction too sets the affliction, and says how to set the defence
+  sk.serverprios_vset("blindness", nil, "4")
+  sent = g.sent()
+  check("blindness, a defence and an affliction, sets the affliction",
+    sent:find("curing priority blind 4", 1, true) ~= nil and not sent:find("defence blind", 1, true), sent)
+  check("and says how to set the defence", g.echoed("blindness is a defence too. To set the defence's number, use vset blindness defence 4 server."))
+  g.w.echoes = {}
+  sk.serverprios_vset("blindness", "affliction", "6")
+  sent = g.sent()
+  check("affliction before the number sets the affliction", sent:find("curing priority blind 6", 1, true) ~= nil, sent)
+  check("without the note", not g.echoed("is a defence too"))
+  sk.serverprios_vset("blindness", "afflictions", "7")
+  sent = g.sent()
+  check("and so does afflictions", sent:find("curing priority blind 7", 1, true) ~= nil, sent)
+
+  -- a defence named like an affliction only the game's list has goes to the
+  -- affliction: svof's names for afflictions don't cover those
+  svo.dict.icebound = { gamename = nil, misc = { def = true } }
+  check("this test's premise: icebound is on the game's list and has no svof name",
+    svo.serverprios.normal.icebound ~= nil and sk.serverprionames().icebound == nil)
+  sk.serverprios_vset("icebound", nil, "3")
+  sent = g.sent()
+  check("a name on the game's list is an affliction, whatever else svof calls it",
+    sent:find("curing priority icebound 3", 1, true) ~= nil and not sent:find("defence icebound", 1, true), sent)
+  svo.dict.icebound = nil
+  sk.serverprios_vset("blind", nil, "4")
+  sent = g.sent()
+  check("blind, the defence's own name, sets the defence", sent:find("defence blind 4", 1, true) ~= nil
+    or g.echoed("blind is 4 in basic mode"), sent)
+  sk.serverprios_vset("cloak", "defences", "30")
+  check("a number past 25 is refused", g.echoed("use a number from 1 to 25"))
+  sk.serverprios_vset("notadefence", "defences", "3")
+  check("and a name that isn't a defence", g.echoed("notadefence isn't a defence Svof knows"))
+
+  -- an edit of a defence off keepup
+  g.line(("You have set the '%s' defence to the 4 priority."):format(other))
+  eq(M()[other], 4, "an edit of a defence off keepup is kept")
+  sent = g.sent()
+  check("but keepup decides: svof takes it back off", sent:find("defence " .. other .. " reset", 1, true) ~= nil, sent)
+  check("and says how to keep it up", g.echoed("isn't on your keepup there, so Svof took it back off"))
+
+  -- taken off in game
+  g.line("You have set the 'cloak' defence to the 0 priority.")
+  sent = g.sent()
+  check("a defence on keepup taken off in game goes back on", sent:find("defence cloak 5", 1, true) ~= nil, sent)
+  check("and svof says why", g.echoed("cloak is on your keepup in basic mode, so Svof put it back"))
+  eq(M().cloak, 5, "keeping the player's number")
+
+  -- another defence mode
+  svo.defs.mode = "combat"
+  svo.signals["svo switched defence mode"]:emit("combat")
+  sent = g.sent()
+  local auto = sk.serverdefs_expected().cloak
+  check("a mode with no numbers of its own has Svof's order", auto ~= 5 and sent:find("defence cloak " .. auto, 1, true) ~= nil, sent)
+  svo.defs.mode = "basic"
+  svo.signals["svo switched defence mode"]:emit("basic")
+  sent = g.sent()
+  check("and switching back sends the player's number", sent:find("defence cloak 5", 1, true) ~= nil, sent)
+
+  -- the mode commands
+  svo.copy_defmode("basic", "copied")
+  eq(svo.serverprios.defences.copied and svo.serverprios.defences.copied.cloak, 5, "vcopy defmode copies the numbers")
+  svo.rename_defmode("copied", "renamed")
+  eq(svo.serverprios.defences.renamed and svo.serverprios.defences.renamed.cloak, 5, "vrename defmode moves them")
+  eq(svo.serverprios.defences.copied, nil, "from the old name")
+  svo.delete_defmode("renamed")
+  eq(svo.serverprios.defences.renamed, nil, "vdelete defmode drops them")
+
+  -- vp serverdefs
+  g.w.echoes = {}
+  sk.serverdefs_show()
+  check("vp serverdefs shows the mode's numbers", g.echoed("Your serverside defence numbers in basic mode"))
+  check("with each defence at its number", g.echoed("   5: cloak"))
+  check("and the ones off keepup", g.echoed("Off your keepup, so not on the server's list: " .. other .. " (4)"))
+
+  -- the check at login
+  svo.logging_in = true
+  svo.signals.changecuring:emit()
+  svo.logging_in = false
+  svo.signals.changecuring:emit()
+  sent = g.sent(true)
+  check("login asks for the defence list too", sent:find("curing priority defence list", 1, true) ~= nil, sent)
+  g.answer(LIST_SLOW, LIST_PLAIN)
+  g.w.echoes = {}
+  deflist({ cloak = 9 })
+  check("a defence number changed elsewhere is shown", g.echoed("cloak is 9 in the game and 5 in Svof."))
+  sk.serverdefs_keepgame("normal")
+  eq(M().cloak, 9, "keeping the game's takes its number")
+
+  -- export and import carry every mode's numbers
+  local loaded = assert(sk.serverprios_importtext(sk.serverprios_exporttext("mine")))
+  eq(loaded.defences.basic.cloak, 9, "an export holds the defence numbers")
+  loaded.defences.nosuchmode = { cloak = 2 }
+  local skipped = sk.serverprios_takeexport(loaded)
+  eq(table.concat(skipped, " "), "nosuchmode", "an import leaves out a mode the player doesn't have")
+  eq(svo.serverprios.defences.nosuchmode, nil, "without making it")
+end
+
+do
+  -- auto mode keeps svof's numbers
+  local g = new_game()
+  g.svo.defkeepup.basic.cloak, g.svo.serverignore.cloak = true, true
+  g.sent()
+  g.line("You have set the 'cloak' defence to the 7 priority.")
+  eq(g.svo.serverprios.defences, nil, "auto: an edit in game isn't kept")
+  g.sk.serverprios_vset("cloak", "defences", "5")
+  check("and vset defences server is refused", g.echoed("in auto mode, Svof works out the server's numbers"))
 end
 
 -- ===== the game never lists =====

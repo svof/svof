@@ -105,6 +105,8 @@ function sk.sendpriorityswitch(action, balance, raffs, rdefs, cache, slow)
 
   -- caps at 25, so pool everything after on 25
   if priority > 25 then priority = 25 end
+  -- and a defence has the player's number for it in this mode, if any
+  if istype == 'defence' and sk.customserverprios() then priority = sk.serverdefs_number(action) or priority end
 
   -- if already in cache at same priority, don't send
   if cache[action] == priority then
@@ -115,6 +117,7 @@ function sk.sendpriorityswitch(action, balance, raffs, rdefs, cache, slow)
   end
 
   gamename = svo.dict[action].gamename and svo.dict[action].gamename or action
+  if istype == 'defence' then sk.serverdefs_sending(gamename, priority, slow) end
   svo.sendcuringprio(gamename .. " " .. priority, istype, slow)
 end
 
@@ -147,6 +150,8 @@ function sk.sendpriorityignore(action, balance, rignoreaffs, rignoredefs, cache,
   end
 
   gamename = svo.dict[action].gamename and svo.dict[action].gamename or action
+  -- the game confirms a reset as 0
+  if istype == 'defence' then sk.serverdefs_sending(gamename, 0, slow) end
 
   svo.sendcuringprio(gamename .. " " .. priority, istype, slow)
 end
@@ -614,6 +619,39 @@ function sk.serverlist_line(text, isprompt)
   end
 end
 
+-- The game's defence list: the header, then a "name : number" line for each
+-- defence on it, and no footer. It ends at the prompt or at the first line
+-- that isn't one of its own, such as the answer to the next command.
+-- read.defsets holds it by curingset
+function sk.serverdeflist_stop()
+  local read = sk.serverread
+  read.deflist = nil
+  if read.defreader then killTrigger(read.defreader); read.defreader = nil end
+end
+
+function sk.serverdeflist_line(text, isprompt)
+  local read = sk.serverread
+  local list = read.deflist
+  if not list then sk.serverdeflist_stop() return end
+  if text == "" and not isprompt then return end
+  if not isprompt and not next(list.entries) and text:match("^Your defence priorities for curing set %w+:$") then return end
+
+  local name, number = text:match("^([%w_]+)%s*:%s*(%d+)$")
+  if name and not isprompt then
+    list.lines = list.lines + 1
+    if list.lines > serverlist_longest * 3 then sk.serverdeflist_stop() return end
+    list.entries[name] = tonumber(number)
+    if list.asked then deleteLine() end
+    return
+  end
+
+  -- the list is over: what ends it isn't the list's, and stays
+  read.defsets = read.defsets or {}
+  read.defsets[list.set] = list.entries
+  sk.serverdeflist_stop()
+  sk.serverdefs_read(list.set, list.asked)
+end
+
 -- the game's lines about its affliction priorities, other than a list's own:
 -- a list's header, a curingset switch, a changed entry, a stack the
 -- affliction can't have, and a reset
@@ -638,6 +676,23 @@ function sk.serverprio_line(text)
   set = text:match("^You will now cure using the (%w+) set%.$")
   if set then
     read.active = set:lower()
+    return
+  end
+
+  set = text:match("^Your defence priorities for curing set (%w+):$")
+  if set then
+    sk.serverdeflist_stop()
+    read.active = set:lower()
+    read.deflist = {set = read.active, entries = {}, lines = 0, asked = read.defasked}
+    read.defasked = nil
+    if read.deflist.asked then deleteLine() end
+    read.defreader = tempRegexTrigger("^", "svo.sk.serverdeflist_line(line, isPrompt())")
+    return
+  end
+
+  local def, defnumber = text:match("^You have set the '(.-)' defence to the (%d+) priority%.$")
+  if def then
+    if read.active then sk.serverdefs_confirmed(read.active, def, tonumber(defnumber)) end
     return
   end
 
@@ -794,8 +849,10 @@ sk.serverprios_pending = {normal = {}, slowcuring = {}}
 -- in seconds, long enough for a whole table paced under the game's limit
 local serverpending_life = 60
 
-local function serverprios_pend(set, entry, number)
-  local pending = sk.serverprios_pending[set]
+-- defences have a table of their own, sk.serverdefs_pending: blindness is
+-- both an affliction and a defence
+local function serverprios_pend(set, entry, number, from)
+  local pending = (from or sk.serverprios_pending)[set]
   pending[entry] = pending[entry] or {}
   local list = pending[entry]
   list[#list+1] = {number = number, at = getEpoch()}
@@ -803,8 +860,8 @@ end
 
 -- whether a confirmed number is one svof sent. It and what was sent before it
 -- stop waiting: the game confirms in the order sent, so those were lost
-local function serverprios_unpend(set, entry, number)
-  local pending = sk.serverprios_pending[set]
+local function serverprios_unpend(set, entry, number, from)
+  local pending = (from or sk.serverprios_pending)[set]
   local list = pending[entry]
   if not list then return false end
 
@@ -1276,8 +1333,12 @@ function sk.serverprios_ask(why)
 
   local inuse, other = 'normal', 'slowcuring'
   if sys.sync then inuse, other = other, inuse end
+  -- the defence list too, of the set in use: both have the same numbers.
+  -- A reset in game leaves the defences alone
+  if why ~= 'reset' then read.defasked = why end
   sendAll("curingset switch "..other, "curing priority list",
     "curingset switch "..inuse, "curing priority list", false)
+  if why ~= 'reset' then send("curing priority defence list", false) end
 end
 
 local function serverprios_count(set)
@@ -1516,6 +1577,385 @@ function sk.serverprios_confirmed(set, entry, number)
   end
 end
 
+--[[ the player's own defence numbers ]]
+
+-- In custom mode the server's defence numbers are the player's too, one set
+-- of them for each defence mode, in svo.serverprios.defences[mode] by the
+-- game's name. What is on the server's list stays svof's: keepup and defup
+-- decide it, as in auto mode. A defence with no number of the player's in
+-- the mode has auto's, its place in svof's lists, so a new mode needs none.
+-- Both curingsets get the same numbers
+
+local servernormalbalances = {'herb', 'smoke', 'salve', 'sip', 'purgative', 'physical', 'moss', 'misc'}
+
+-- what svof sent for each defence of each curingset that the game hasn't
+-- confirmed yet, as for afflictions. A reset is confirmed as 0
+sk.serverdefs_pending = {normal = {}, slowcuring = {}}
+
+-- the name the game confirms a defence by
+local function serverdefname(action)
+  local name = svo.dict[action].gamename or action
+  return sk.serverlistnames[name] or name
+end
+
+-- a defence action's balances with the defence on them
+local function serverdefbalances(action)
+  local balances = {}
+  for balance, data in pairs(svo.dict[action] or {}) do
+    if type(data) == 'table' and data.def then balances[#balances+1] = balance end
+  end
+  return balances
+end
+
+-- the defence action the game's name stands for
+local function serverdefaction(name)
+  for action, entry in pairs(svo.dict) do
+    if type(entry) == 'table' and serverdefbalances(action)[1] and serverdefname(action) == name then return action end
+  end
+end
+
+-- whether svof puts a defence on the server's list now, by the rule the sync
+-- uses (sk.splitdefs)
+local function serverdefonlist(action)
+  local balance = serverdefbalances(action)[1]
+  if not balance or svo.dict[action][balance].undeffable then return false end
+  local mode = defs.mode
+  local wanted = (sys.deffing and defdefup[mode] and defdefup[mode][action])
+    or (not sys.deffing and defkeepup[mode] and defkeepup[mode][action])
+  return (wanted and not sk.shouldignoreserverside(action)) and true or false
+end
+
+local function servermodenumbers(mode)
+  svo.serverprios.defences = svo.serverprios.defences or {}
+  svo.serverprios.defences[mode] = svo.serverprios.defences[mode] or {}
+  return svo.serverprios.defences[mode]
+end
+
+-- the player's number for a defence action in the mode in use, or nil
+function sk.serverdefs_number(action)
+  local numbers = svo.serverprios.defences and svo.serverprios.defences[defs.mode]
+  return numbers and svo.dict[action] and numbers[serverdefname(action)] or nil
+end
+
+-- the sync is sending a defence its number, or 0 for a reset
+function sk.serverdefs_sending(gamename, number, slow)
+  local name = sk.serverlistnames[gamename] or gamename
+  serverprios_pend(slow and 'slowcuring' or 'normal', name, number, sk.serverdefs_pending)
+end
+
+-- the numbers svof expects on the server's defence list now: {name = number}
+-- for each defence it puts there, the player's number or auto's
+function sk.serverdefs_expected()
+  local expected, actions = {}, {}
+  for _, balance in ipairs(servernormalbalances) do
+    local _, defslist = sk.splitdefs(balance, svo.prio.getsortedlist(balance))
+    for index, action in pairs(defslist) do
+      local name = serverdefname(action)
+      local number = sk.customserverprios() and sk.serverdefs_number(action) or (index > 25 and 25 or index)
+      expected[name], actions[name] = number, action
+    end
+  end
+  return expected, actions
+end
+
+-- sends every defence on the server's list the number it should have, in both
+-- curingsets, where it differs from what was sent: after a switch of
+-- defence mode, or the player's numbers changing
+function sk.serverdefs_sendall()
+  if not conf.serverside or svo.logging_in then return end
+
+  for _, balance in ipairs(servernormalbalances) do
+    sk.priochangecache[balance] = sk.priochangecache[balance] or {}
+    local _, defslist = sk.splitdefs(balance, svo.prio.getsortedlist(balance))
+    local rdefs = {}
+    for index, action in pairs(defslist) do rdefs[action] = index end
+    for action in pairs(rdefs) do sk.sendpriorityswitch(action, balance, {}, rdefs, sk.priochangecache[balance], false) end
+  end
+
+  sk.priochangecache.slowcuring = sk.priochangecache.slowcuring or {}
+  for balance, list in pairs(sk.splitbals(svo.prio.getsortedlist('slowcuring'))) do
+    sk.priochangecache.slowcuring[balance] = sk.priochangecache.slowcuring[balance] or {}
+    local _, defslist = sk.splitdefs(balance, list)
+    local rdefs = {}
+    for index, action in pairs(defslist) do rdefs[action] = index end
+    for action in pairs(rdefs) do
+      sk.sendpriorityswitch(action, balance, {}, rdefs, sk.priochangecache.slowcuring[balance], true)
+    end
+  end
+end
+
+-- forgets what the sync sent a defence, so the next sendall sends it again
+local function serverdefs_forget(action)
+  for _, balance in ipairs(serverdefbalances(action)) do
+    if sk.priochangecache[balance] then sk.priochangecache[balance][action] = nil end
+    if sk.priochangecache.slowcuring and sk.priochangecache.slowcuring[balance] then
+      sk.priochangecache.slowcuring[balance][action] = nil
+    end
+  end
+end
+
+-- takes a defence off the server's list in both curingsets
+local function serverdefs_takeoff(action)
+  local gamename = svo.dict[action].gamename or action
+  for _, slow in ipairs({false, true}) do
+    sk.serverdefs_sending(gamename, 0, slow)
+    svo.sendcuringprio(gamename .. " reset", 'defence', slow)
+  end
+  serverdefs_forget(action)
+end
+
+local function serverdefs_vkeeplink(action)
+  setFgColor(unpack(svo.getDefaultColorNums))
+  setUnderline(true)
+  echoLink("vkeep "..action, 'svo.defs.keepup("'..action..'", true, nil, true)', "Keep "..action.." up in "..defs.mode.." mode", true)
+  setUnderline(false)
+end
+
+-- the game confirmed a defence's number in a curingset
+function sk.serverdefs_confirmed(set, name, number)
+  if not sk.customserverprios() then return end
+  if serverprios_unpend(set, name, number, sk.serverdefs_pending) then return end
+
+  local action = serverdefaction(name)
+  if not action then return end
+  local onlist = serverdefonlist(action)
+
+  if number == 0 then
+    -- taken off in game: keepup decides what is on the list
+    if onlist then
+      serverdefs_forget(action)
+      sk.serverdefs_sendall()
+      svo.echofn("%s is on your keepup in %s mode, so Svof put it back on the server's list. To take it off, use ",
+        action, defs.mode)
+      setFgColor(unpack(svo.getDefaultColorNums))
+      setUnderline(true)
+      echoLink("vkeep "..action, 'svo.defs.keepup("'..action..'", false, nil, true)', "Stop keeping "..action.." up", true)
+      setUnderline(false)
+      echo(".\n")
+    end
+    return
+  end
+
+  servermodenumbers(defs.mode)[name] = number
+  signals.saveconfig:emit()
+  if onlist then
+    -- the other curingset gets the same number
+    serverdefs_forget(action)
+    for _, balance in ipairs(serverdefbalances(action)) do
+      local cache = set == 'slowcuring' and sk.priochangecache.slowcuring or sk.priochangecache
+      if cache and cache[balance] then cache[balance][action] = number end
+    end
+    sk.serverdefs_sendall()
+    svo.echof("%s is %d in %s mode.", action, number, defs.mode)
+  else
+    serverdefs_takeoff(action)
+    svo.echofn("%s is %d in %s mode, but it isn't on your keepup there, so Svof took it back off the server's "
+      .."list. To keep it up, use ", action, number, defs.mode)
+    serverdefs_vkeeplink(action)
+    echo(".\n")
+  end
+end
+
+-- where the game's defence list differs from what svof expects of it, by name:
+-- {name, the game's number, svof's}, nil for one that isn't there
+local function serverdefs_compare(listed)
+  local expected = sk.serverdefs_expected()
+  local diffs = {}
+  for name, number in pairs(listed) do
+    if expected[name] ~= number then diffs[#diffs+1] = {name, number, expected[name]} end
+  end
+  for name, number in pairs(expected) do
+    if not listed[name] then diffs[#diffs+1] = {name, nil, number} end
+  end
+  table.sort(diffs, function(a, b) return a[1] < b[1] end)
+  return diffs
+end
+
+-- a defence list was read. asked is why svof asked for it, or nil when the
+-- player did
+function sk.serverdefs_read(set, asked)
+  if not sk.customserverprios() then return end
+  local listed = sk.serverread.defsets[set]
+  local expected, actions = sk.serverdefs_expected()
+
+  if asked == 'switch' then
+    -- auto mode's numbers, or the player's from before, are where custom starts
+    local numbers = servermodenumbers(defs.mode)
+    local count = 0
+    for name, number in pairs(listed) do
+      if serverdefaction(name) then numbers[name] = number; count = count + 1 end
+    end
+    signals.saveconfig:emit()
+    svo.echof("Took your serverside defence numbers for %s mode from the game: %d defences. Your other modes "
+      .."start from Svof's own order.", defs.mode, count)
+    return
+  end
+
+  if asked == 'login' then
+    local diffs = serverdefs_compare(listed)
+    if not diffs[1] then return end
+    svo.echof("Your serverside defences in the game aren't the ones Svof has for %s mode:", defs.mode)
+    for _, diff in ipairs(diffs) do
+      if not diff[2] then
+        svo.echof("  %s isn't on the game's list, and Svof keeps it up at %d.", diff[1], diff[3])
+      elseif not diff[3] then
+        svo.echof("  %s is on the game's list at %d, and isn't on your keepup.", diff[1], diff[2])
+      else
+        svo.echof("  %s is %d in the game and %d in Svof.", diff[1], diff[2], diff[3])
+      end
+    end
+    svo.echofn("Keep ")
+    setFgColor(unpack(svo.getDefaultColorNums))
+    setUnderline(true)
+    echoLink("the game's numbers", 'svo.sk.serverdefs_keepgame("'..set..'")', "Take the game's defence numbers into Svof", true)
+    setUnderline(false)
+    echo(", or send ")
+    setUnderline(true)
+    echoLink("Svof's", 'svo.sk.serverdefs_keepsvof("'..set..'")', "Send Svof's defences to the game", true)
+    setUnderline(false)
+    echo(". Your keepup decides which defences are on the list either way.\n")
+    return
+  end
+
+  -- a list the player asked for: the numbers of what svof keeps on it
+  local numbers = servermodenumbers(defs.mode)
+  local changed = false
+  for name, number in pairs(listed) do
+    if actions[name] and expected[name] ~= number then numbers[name] = number; changed = true end
+  end
+  if changed then signals.saveconfig:emit() end
+end
+
+-- after the login check: the game's numbers for what svof keeps up go into
+-- the mode's, and keepup puts the list right
+function sk.serverdefs_keepgame(set)
+  local listed = sk.serverread.defsets and sk.serverread.defsets[set]
+  if not listed or not sk.customserverprios() then return end
+  local expected, actions = sk.serverdefs_expected()
+  local numbers = servermodenumbers(defs.mode)
+  for name, number in pairs(listed) do
+    if actions[name] then numbers[name] = number end
+  end
+  signals.saveconfig:emit()
+  sk.serverdefs_keepsvof(set, true)
+  svo.echof("Kept the game's defence numbers for %s mode.", defs.mode)
+end
+
+-- after the login check: the game gets svof's defences and numbers
+function sk.serverdefs_keepsvof(set, quiet)
+  local listed = sk.serverread.defsets and sk.serverread.defsets[set]
+  if not listed or not sk.customserverprios() then return end
+  local expected, actions = sk.serverdefs_expected()
+  for name in pairs(listed) do
+    local action = serverdefaction(name)
+    if action and not expected[name] then serverdefs_takeoff(action) end
+  end
+  for name, number in pairs(expected) do
+    if listed[name] ~= number then serverdefs_forget(actions[name]) end
+  end
+  sk.serverdefs_sendall()
+  if not quiet then svo.echof("Sent Svof's defences for %s mode to the game.", defs.mode) end
+end
+
+-- the defence action a word a player types names, by svof's name or the game's
+local function serverdefword(word)
+  return (svo.dict[word] and serverdefbalances(word)[1] and word) or serverdefaction(word)
+end
+
+-- vset <defence> [defence] <number> server
+function sk.serverdefs_vset(word, number)
+  if not conf.serverside then svo.echof("Can't set that serverside defence number: serverside is off (tn serverside).") return end
+  if not sk.customserverprios() then
+    svo.echof("Can't set that serverside defence number: in auto mode, Svof works out the server's numbers from "
+      .."its own lists. To set them yourself, use vconfig serverprios custom.")
+    return
+  end
+  local action = serverdefword(word)
+  if not action then svo.echof("Can't set that serverside defence number: %s isn't a defence Svof knows.", tostring(word)) return end
+  number = tonumber(number)
+  if not number or number < 1 or number > 25 then
+    svo.echof("Can't set that serverside defence number: use a number from 1 to 25.")
+    return
+  end
+
+  servermodenumbers(defs.mode)[serverdefname(action)] = number
+  signals.saveconfig:emit()
+  if serverdefonlist(action) then
+    sk.serverdefs_sendall()
+    svo.echof("%s is %d in %s mode.", action, number, defs.mode)
+  else
+    svo.echofn("%s is %d in %s mode. It isn't on your keepup there, so the server doesn't keep it up: ", action,
+      number, defs.mode)
+    serverdefs_vkeeplink(action)
+    echo(".\n")
+  end
+end
+
+-- vp serverdefs: the defence numbers of the mode in use
+function sk.serverdefs_show()
+  local custom = sk.customserverprios()
+  local expected, actions = sk.serverdefs_expected()
+  local levels = {}
+  for name, number in pairs(expected) do
+    levels[number] = levels[number] or {}
+    local own = custom and sk.serverdefs_number(actions[name])
+    table.insert(levels[number], name .. ((custom and not own) and " (Svof's order)" or ""))
+  end
+
+  if custom then
+    svo.echof("Your serverside defence numbers in %s mode, for what your keepup puts on the server's list:", defs.mode)
+  else
+    svo.echof("The serverside defence numbers Svof works out from its own lists in %s mode:", defs.mode)
+  end
+  local numbers = {}
+  for number in pairs(levels) do numbers[#numbers+1] = number end
+  table.sort(numbers)
+  setFgColor(112, 112, 112)
+  for _, number in ipairs(numbers) do
+    table.sort(levels[number])
+    echo(string.format("  %2d: %s\n", number, table.concat(levels[number], ", ")))
+  end
+  resetFormat()
+
+  if custom then
+    local off = {}
+    for name, number in pairs(svo.serverprios.defences and svo.serverprios.defences[defs.mode] or {}) do
+      if not expected[name] then off[#off+1] = ("%s (%d)"):format(name, number) end
+    end
+    table.sort(off)
+    if off[1] then svo.echof("Off your keepup, so not on the server's list: %s.", table.concat(off, ", ")) end
+    svo.echof("To change one, use vset <defence> <number> server.")
+  else
+    svo.echof("To set these yourself, use vconfig serverprios custom.")
+  end
+  svo.showprompt()
+end
+
+-- vcreate, vcopy, vrename and vdelete defmode: the mode's numbers go with it.
+-- A new mode has none, so it has Svof's order
+function sk.serverdefs_modechanged(what, mode, other)
+  local all = svo.serverprios.defences
+  if not all then return end
+  if what == 'copy' then
+    all[other] = all[mode] and svo.deepcopy(all[mode]) or nil
+  elseif what == 'rename' then
+    all[other], all[mode] = all[mode], all[other]
+  elseif what == 'delete' then
+    all[mode] = nil
+  end
+  signals.saveconfig:emit()
+end
+
+-- a switch of defence mode sends the numbers that differ between the modes
+signals["svo switched defence mode"]:connect(function()
+  if sk.customserverprios() then sk.serverdefs_sendall() end
+end, "custom server defence numbers for the new mode")
+
+-- a defup change while deffing up reaches the server at once, in both modes
+signals["svo defup changed"]:connect(function(mode)
+  if conf.serverside and sys.deffing and mode == defs.mode then sk.handleserversideswitch() end
+end, "send defup changes to the server while deffing up")
+
 --[[ svof's list commands with server as the last word ]]
 
 -- the player's edits sent from svof, for each curingset, until the game
@@ -1616,14 +2056,38 @@ end
 
 -- vset <aff> [slowcuring] <number> server
 function sk.serverprios_vset(word, setword, number)
-  if setword == 'defences' then
-    svo.echof("Svof doesn't set serverside defence numbers yet.")
+  -- defence or affliction in place of slowcuring says which a name is; the
+  -- plural works too
+  if setword == 'defence' or setword == 'defences' then
+    sk.serverdefs_vset(word, number)
     return
+  end
+  local affonly = setword == 'affliction' or setword == 'afflictions'
+  if affonly then setword = nil end
+
+  -- a defence's name sets its number. A name that is an affliction too sets
+  -- the affliction, and svof says how to set the defence: blindness,
+  -- deafness and retribution are both, and an affliction is any name svof
+  -- has for one or the game's list has
+  local defnote
+  if not affonly and (setword == nil or setword == "" or setword == 'slowcuring') then
+    local def = serverdefword(word)
+    if def then
+      local toserver, toaction = sk.serverprionames()
+      local base = tostring(word):match("^(%a[%a_]-)%d+$") or tostring(word)
+      local listed = (svo.serverprios.normal or {})[base] or (svo.serverprios.slowcuring or {})[base]
+      if not (toaction[base] or toserver[base] or listed) then
+        sk.serverdefs_vset(def, number)
+        return
+      end
+      defnote = ("%s is a defence too. To set the defence's number, use vset %s defence %s server."):format(word,
+        word, tostring(number))
+    end
   end
   local set = serverprios_setof(setword)
   if not set then
-    svo.echof("To set a serverside priority, use vset <affliction> <number> server, or vset <affliction> "
-      .."slowcuring <number> server for the slowcuring set.")
+    svo.echof("To set a serverside priority, use vset <name> <number> server, or put slowcuring, defence, or "
+      .."affliction before the number: vset <affliction> slowcuring <number> server sets the slowcuring set.")
     return
   end
   local why = serverprios_cantedit(set)
@@ -1639,6 +2103,7 @@ function sk.serverprios_vset(word, setword, number)
   if not entry then svo.echof("Can't set that serverside priority: %s.", why) return end
 
   serverprios_edit(set, entry, number)
+  if defnote then svo.echof(defnote) end
 end
 
 -- vswap <aff> <aff> server, and vswapslow <aff> <aff> server for the
@@ -1782,12 +2247,12 @@ local function serverprios_serialise(value, depth)
   return table.concat(out, "\n")
 end
 
--- vexportprio <name> server: both curingsets, the swaps that are on, and the
--- stacks ignored
+-- vexportprio <name> server: both curingsets, the swaps that are on, the
+-- stacks ignored, and every defence mode's numbers
 function sk.serverprios_exporttext(name)
   local s = {("-- Serverside priorities '%s' by %s, exported @ %s"):format(name, svo.sys.charname or "Unknown",
     os.date())}
-  for _, key in ipairs({'normal', 'slowcuring', 'toggles', 'stackignore'}) do
+  for _, key in ipairs({'normal', 'slowcuring', 'toggles', 'stackignore', 'defences'}) do
     s[#s+1] = key .. " = " .. serverprios_serialise(svo.serverprios[key] or {})
   end
   return table.concat(s, "\n") .. "\n"
@@ -1848,6 +2313,17 @@ function sk.serverprios_importtext(text)
       end
     end
   end
+  loaded.defences = {}
+  for mode, numbers in pairs(type(env.defences) == 'table' and env.defences or {}) do
+    if type(mode) == 'string' and type(numbers) == 'table' then
+      loaded.defences[mode] = {}
+      for def, number in pairs(numbers) do
+        if type(def) == 'string' and type(number) == 'number' and number >= 1 and number <= 25 then
+          loaded.defences[mode][def] = number
+        end
+      end
+    end
+  end
   return loaded
 end
 
@@ -1865,6 +2341,17 @@ function sk.serverprios_takeexport(loaded)
       end
     end
   end
+  -- the defence numbers of the modes the player has
+  local skipped = {}
+  for mode, numbers in pairs(loaded.defences or {}) do
+    if defkeepup[mode] then
+      servermodenumbers(mode)
+      svo.serverprios.defences[mode] = numbers
+    else
+      skipped[#skipped+1] = mode
+    end
+  end
+  table.sort(skipped)
   signals.saveconfig:emit()
 
   -- what was sent stands for what the game has, so only what differs goes
@@ -1879,6 +2366,8 @@ function sk.serverprios_takeexport(loaded)
     end
   end
   for action in pairs(serverprios_overridden(toserver, toaction)) do sk.serverprios_refresh(action, toserver) end
+  sk.serverdefs_sendall()
+  return skipped
 end
 
 -- vimportprio <name> server
@@ -1894,8 +2383,12 @@ function sk.serverprios_import(name)
   local loaded
   loaded, why = sk.serverprios_importtext(text)
   if not loaded then svo.echof("Can't import serverside priorities from %s: %s.", name, tostring(why)) return end
-  sk.serverprios_takeexport(loaded)
+  local skipped = sk.serverprios_takeexport(loaded)
   svo.echof("Imported your serverside priorities from %s, and sent the game what differs.", name)
+  if skipped[1] then
+    svo.echof("You have no %s defence mode%s, so Svof left out %s defence numbers.", svo.concatand(skipped),
+      skipped[2] and "s" or "", skipped[2] and "their" or "its")
+  end
 end
 
 -- the list commands without server change only svof's own lists: in custom
