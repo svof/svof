@@ -232,7 +232,7 @@ cpp.compute_gametarget_colour = function()
 end
 
 
-if svo.haveskillset('voicecraft') then
+if svo.haveskillset('sagas') then
 cpp.compute_voicebal = function()
   return (bals.voice and 'v' or "")
 end
@@ -546,7 +546,7 @@ cp.definitions["^w"]                = "'<a_white>'"
 cp.definitions["^W"]                = "'<a_darkwhite>'"
 cp.definitions["^gametarget"]       = "svo.cpp.compute_gametarget_colour()"
 
-if svo.haveskillset('voicecraft') then
+if svo.haveskillset('sagas') then
   cp.definitions["@voicebal"]      = "svo.cpp.compute_voicebal()"
 else
 	cp.definitions["@voicebal"]      = "''"

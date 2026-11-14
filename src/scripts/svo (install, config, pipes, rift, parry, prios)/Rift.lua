@@ -262,21 +262,6 @@ rift.herb_conversions = {
   valerian   = 'realgar',
 }
 
-rift.vial_conversions = {
-  caloric     = 'exothermic',
-  epidermal   = 'sensory',
-  frost       = 'endothermia',
-  health      = 'vitality',
-  immunity    = 'antigen',
-  levitation  = 'hovering',
-  mana        = 'mentality',
-  mass        = 'density',
-  mending     = 'renewal',
-  restoration = 'reconstructive',
-  speed       = 'haste',
-  venom       = 'toxin',
-}
-
 function svo.intlen(number)
   return number == 0 and 1 or math.floor(math.log10(number)+1)
 end
@@ -656,14 +641,17 @@ function sk.asyncfill(what, where)
   end
 
   sys.last_used['fill'..orig..'_physical'] = what
-  pipes[orig].filledwith = what
+  -- the herb's second pipe has fields of its own
+  local second = where == pipes[orig].id2 and where ~= pipes[orig].id
+  local puffs = second and 'puffs2' or 'puffs'
+  pipes[orig][second and 'filledwith2' or 'filledwith'] = what
 
   if rift.invcontents[what] > 0 then
-    if pipes[orig].puffs > 0 then
+    if pipes[orig][puffs] > 0 then
       if not svo.defc.selfishness then
         send("empty "..where, conf.commandecho)
       else
-        for _ = 1, (pipes[orig].puffs + 1) do
+        for _ = 1, (pipes[orig][puffs] + 1) do
           send("smoke "..where, conf.commandecho)
         end
       end
@@ -672,11 +660,11 @@ function sk.asyncfill(what, where)
     send("put " .. what .. " in " .. where, conf.commandecho)
   else
     rift.outr(what)
-    if pipes[orig].puffs > 0 then
+    if pipes[orig][puffs] > 0 then
       if not svo.defc.selfishness then
         send("empty "..where, conf.commandecho)
       else
-        for _ = 1, (pipes[orig].puffs + 1) do
+        for _ = 1, (pipes[orig][puffs] + 1) do
           send("smoke "..where, conf.commandecho)
         end
       end
@@ -711,9 +699,12 @@ function sk.syncfill(what, where)
   end
 
   sys.last_used['fill'..orig..'_physical'] = what
-  pipes[orig].filledwith = what
+  -- the herb's second pipe has fields of its own
+  local second = where == pipes[orig].id2 and where ~= pipes[orig].id
+  local puffs = second and 'puffs2' or 'puffs'
+  pipes[orig][second and 'filledwith2' or 'filledwith'] = what
 
-  if pipes[orig].puffs > 0 then
+  if pipes[orig][puffs] > 0 then
     if svo.defc.selfishness then svo.echof("Problem - can't refill while selfish :/") return end
     send("empty "..where, conf.commandecho)
   elseif rift.invcontents[what] > 0 then

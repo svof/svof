@@ -24,7 +24,7 @@ local affs = svo.affs
 -- (svo.gmcp_refuse_remove in Setup.lua), so handing it the whole list removes
 -- only what the game no longer lists. That one check used to be a second copy
 -- here, which read svo.gaffl through svotossa and so missed sleep and
--- seriousconcussion under their other game names, and which went on trusting
+-- mangledhead under their other game names, and which went on trusting
 -- gaffl after a blackout had left it stale, keeping and re-curing forever an
 -- affliction cured during the blackout. rmaff's check does neither: it knows
 -- both names, and it stands down until the next List.
@@ -118,7 +118,7 @@ end
 -- Ten names were added on 2026-09-23, nine on the repo owner confirming tree
 -- cures them and tension on his judgement that an ordinary affliction most
 -- likely is tree-curable. The game's record below took three of the nine
--- back out (laceratedthroat, latched and mildconcussion), and disrupt, which
+-- back out (laceratedthroat, latched and damagedhead), and disrupt, which
 -- was already here. Two weaker kinds of evidence were tried first and both
 -- turned out to be worthless:
 --
@@ -147,7 +147,7 @@ end
 -- random affliction cures it, tree, shrugging and panacea included. Checked
 -- against the whole record (captured 2026-10-21): crescendo, degenerate,
 -- deteriorate, disrupt, dissonance, horror, laceratedthroat, latched,
--- madness, mildconcussion and pyre are Yes and left; indifference, manaleech,
+-- madness, damagedhead and pyre are Yes and left; indifference, manaleech,
 -- phlogistication and unweavingspirit are No and added, phlogistication
 -- though it is timed. paralysis, the three fractures, torntendons and
 -- tension, once doubted here, are No and stay.
@@ -168,9 +168,12 @@ empty.treecurables = {'ablaze', 'addiction', 'aeon', 'agoraphobia', 'anorexia', 
 -- treecurables: svo.gettreeableaffs removes it by its index there.
 -- Whispering madness blocks nothing: its ability file says only that focus
 -- takes longer to recover from. Its block here was from before the 2020
--- Occultist rework
+-- Occultist rework. While condemned, ablaze can't be cured (AFFLICTION SHOW),
+-- so a tree touch can't cure it either, and an empty touch says nothing
+-- about it
 empty.treeblocks = {
   hypothermia = {'frozen', 'shivering'},
+  condemned = {'ablaze'},
 }
 -- expose publicly
 svo.treecurables = empty.treecurables
@@ -257,13 +260,20 @@ end
 -- keeps anything GMCP reports, and when it keeps a counted affliction it puts
 -- GMCP's level back at the prompt (svo.gmcp_refuse_remove in Setup.lua), so
 -- the reset here cannot leave a kept affliction at a count of 0.
+-- While condemned, burning can't be cured (AFFLICTION SHOW), so an empty
+-- mending says nothing about it, as for the tree
+local condemned_keeps = { ablaze = true }
 empty.apply_mending = function()
   svo.dict.unknowncrippledlimb.count = 0
   svo.dict.unknowncrippledarm.count = 0
   svo.dict.unknowncrippledleg.count = 0
-  svo.rmaff({'selarnia', 'crippledleftarm', 'crippledleftleg', 'crippledrightarm', 'crippledrightleg', 'ablaze',
-    'severeburn', 'extremeburn', 'charredburn', 'meltingburn', 'unknowncrippledarm', 'unknowncrippledleg',
-    'unknowncrippledlimb'})
+  local gone = {}
+  for _, aff in ipairs({'selarnia', 'crippledleftarm', 'crippledleftleg', 'crippledrightarm', 'crippledrightleg', 'ablaze',
+    'unknowncrippledarm', 'unknowncrippledleg',
+    'unknowncrippledlimb'}) do
+    if not (affs.condemned and condemned_keeps[aff]) then gone[#gone + 1] = aff end
+  end
+  svo.rmaff(gone)
 end
 
 empty.noeffect_mending_arms = function()

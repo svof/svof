@@ -70,19 +70,25 @@ function svo.valid.symp_asleep()
     return
   end
 
-  if not affs.sleep and not actions.sleep_aff then
-    svo.checkaction(svo.dict.sleep.aff, true)
-    lifevision.add(actions['sleep_aff'].p, 'symptom', nil, 1)
+  -- svo.reset non-wait things we were doing, because they got cancelled by the sleep.
+  -- This line is the game refusing a command sent while asleep, so what svof
+  -- had in flight failed, and goes again once awake: nothing is sent while
+  -- asleep. It checked a key named asleep, which svof never had, so until
+  -- 2026-10-31 it never ran, and only the first symptom (sleep.aff.symptom)
+  -- cleared them. The wake stays, as there, and so does a gone, a cure being
+  -- recorded (svo.cancel_sent_actions)
+  -- in a deepsleep, this is that, not a sleep svof would try waking from
+  if affs.sleep or affs.deepsleep then
+    svo.cancel_sent_actions('sleep_misc')
+    return
   end
 
-  -- svo.reset non-wait things we were doing, because they got cancelled by the sleep
-  if affs.asleep or actions.asleep_aff then
-    for _,v in actions:iter() do
-      if v.p.balance ~= 'waitingfor' and v.p.balance ~= 'aff' then
-        svo.killaction(svo.dict[v.p.action_name][v.p.balance])
-      end
-    end
-  end
+  -- A sleep svof doesn't hold yet is only a claim until the prompt, and GMCP
+  -- can refuse it there, so the symptom clears what's in flight once it's
+  -- accepted. It takes over a claim an earlier line in the paragraph made
+  local first_claim = not actions.sleep_aff
+  svo.checkaction(svo.dict.sleep.aff, true)
+  lifevision.add(actions.sleep_aff.p, 'symptom', nil, first_claim and 1 or nil)
 end
 
 function svo.valid.cured_lovers()
@@ -590,13 +596,10 @@ function svo.valid.symp_stun()
     sk.stun_symptom()
   end
 
-  -- svo.reset non-wait things we were doing, because they got cancelled by the stun
+  -- svo.reset non-wait things we were doing, because they got cancelled by the
+  -- stun. A cure the paragraph already showed stays (svo.cancel_sent_actions)
   if affs.stun or actions.stun_aff then
-    for _,v in actions:iter() do
-      if v.p.balance ~= 'waitingfor' and v.p.balance ~= 'aff' then
-        svo.killaction(svo.dict[v.p.action_name][v.p.balance])
-      end
-    end
+    svo.cancel_sent_actions()
   end
 end
 
@@ -745,7 +748,13 @@ function svo.valid.transfixily()
 
   -- special workaround for waking up not showing up in blackout: clear sleep if we saw this msg
   -- it's an issue otherwise to miss the sleep msg from a totem while in blackout and think you're still asleep
-  if affs.asleep then svo.rmaff('asleep') end
+  if affs.sleep then svo.rmaff('sleep') end
+  -- and the wake and its wait (999s), as waking ends them: left in flight,
+  -- the next sleep sent no wake
+  if not affs.sleep then
+    if actions.curingsleep_waitingfor then svo.killaction(svo.dict.curingsleep.waitingfor) end
+    if actions.sleep_misc then svo.killaction(svo.dict.sleep.misc) end
+  end
 end
 
 function svo.valid.symp_roped()
@@ -912,8 +921,9 @@ function svo.valid.disruptingshiver()
 end
 
 function svo.valid.check_dragonform()
-  -- show xp? ignore!
-  if svo.lastpromptnumber+1 == getLastLineNumber('main') or not svo.find_until_last_paragraph(me.name, 'substring') then return end
+  -- show xp? ignore! The paragraph's first line, counted in game lines: a
+  -- buffer line count took wrapped pieces and echoes for lines
+  if svo.paragraph_length == 1 or not svo.find_until_last_paragraph(me.name, 'substring') then return end
 
   if defc.dragonform and not svo.find_until_last_paragraph("Dragon)", 'substring') then
     echo"\n" svo.echof("Apparently we aren't in Dragon.")
@@ -946,145 +956,33 @@ function svo.valid.proper_daeggerimpale()
   end
 end
 
-function svo.valid.swachbuckling_pesante()
-  if (not svo.find_until_last_paragraph("The attack rebounds back onto", 'substring')) and (svo.find_until_last_paragraph('jabs', 'substring')) and (svo.find_until_last_paragraph('you', 'substring')) then
-    if (not conf.aillusion) or (defc.deaf or affs.deafaff) then
-      valid.simplestun(.5)
+local bard_tempos = {'adagio', 'moderato', 'allegro', 'vivace'}
+
+-- the game named the tempo you're dancing to. Its action takes the others off
+function svo.valid.bard_tempo(tempo)
+  tempo = tempo:lower()
+  local got = table.contains(bard_tempos, tempo) and svo.defs['got_'..tempo]
+  if got then got() end
+end
+
+-- DEF named the tempo: it's listed, so a DEF without one takes the tempo off
+function svo.valid.bard_tempo_shown(tempo)
+  local name = tempo:lower()
+  if actions.defcheck_physical and table.contains(bard_tempos, name) and svo.defs['got_'..name] then
+    defences.def_def_list[name] = true
+  end
+  svo.valid.bard_tempo(tempo)
+end
+
+-- "You are already dancing to that tempo." doesn't say which: the one svof sent
+function svo.valid.bard_tempo_already()
+  for _, name in ipairs(bard_tempos) do
+    if svo.doingaction(name) then
+      svo.defs['got_'..name]()
+      return
     end
   end
 end
-
---[[
-  Martellato can get tricked by the following, avoid it:
-
-  Lightning-quick, Bob jabs you with a Soulpiercer.
-  A prickly, stinging sensation spreads through your body.
-  The songblessing upon the rapier sings out with a piercing high note.
-  Mary viciously jabs an elegant Mhaldorian rapier into Bob.
-  The songblessing upon the rapier swells with a rich, vibrant hum.
-
-]]
-function svo.valid.swachbuckling_martellato()
-  if not svo.find_until_last_paragraph("The attack rebounds back onto", 'substring') and
-     svo.find_until_last_paragraph('jabs', 'substring') and
-     svo.find_until_last_paragraph('you', 'substring') and
-     not svo.find_until_last_paragraph("^%w+ viciously jabs", 'pattern') then
-    valid.simpleprone()
-  end
-end
-
-local last_jabber = ""
-function svo.valid.swashbuckling_jab(name)
-  if sk.swashbuckling_jab then killTimer(sk.swashbuckling_jab) end
-  sk.swashbuckling_jab = tempTimer(.5, function() sk.swashbuckling_jab = nil end)
-  last_jabber = name
-end
-
-function svo.valid.voicecraft_tremolo(name, side)
-  local known_class = (ndb and ndb.getclass(name))
-  if not conf.aillusion or ((affs['crippled'..side..'leg'] or sk['delayvenom_'..side..'leg'] or sk['delayacciaccatura_'..side..'leg']) and ((sk.swashbuckling_jab and last_jabber == name) or known_class == 'bard')) then
-
-    -- when we've accepted that the Tremolo is legitimate, record the side - to be checked later in the mangle trigger for verification
-    sk.tremoloside = sk.tremoloside or {}
-    sk.tremoloside[side] = true
-    svo.prompttrigger("clear tremolo", function()
-      -- the svo.prompttrigger happens after the mangle should have been processed:
-      -- so if we still have tremoloside setup, it means no mangle happened as the
-      -- mangle would have cleared it. Hence, make the venom timer go off at the
-      -- earlist possible time.
-      if sk.tremoloside and sk.tremoloside[side] and sk['delayvenom_'..side..'leg'] then
-        killTimer(sk['delayvenom_'..side..'leg'])
-        sk['delayvenom_'..side..'leg'] = nil
-        -- we can't use valid here, but we can use addaff
-        svo.addaffdict(svo.dict['crippled'..side..'leg'])
-
-        signals.after_lifevision_processing:unblock(cnrl.checkwarning)
-        signals.canoutr:emit()
-      end
-
-      sk.tremoloside = nil
-    end)
-  end
-end
-
-function svo.valid.voicecraft_vibrato(name, side)
-  local known_class = (ndb and ndb.getclass(name))
-  if not conf.aillusion or ((affs['crippled'..side..'arm'] or sk['delayvenom_'..side..'arm'] or sk['delayacciaccatura_'..side..'arm']) and ((sk.swashbuckling_jab and last_jabber == name) or known_class == 'bard')) then
-    valid['simplemangled'..side..'arm']()
-  end
-end
-
--- for a Bard tremolo/vibrato hit, avoid curing the crippled limb right away
--- because that will use up our salve balance and delay the mangled break, which
--- follows soon after. Hence this, upon detecting a jab form a Bard with
--- epteth/epseth, delays adding the crippled affliction until after the tremolo
--- or vibrato
-function svo.valid.swashbuckling_poison()
-  if not conf.aillusion or (svo.paragraph_length == 2 and not conf.batch) then
-    for _, limb in ipairs{'rightleg', 'rightarm', 'leftarm', 'leftleg'} do
-      if actions['crippled'..limb..'_aff'] then
-        svo.killaction(svo.dict['crippled'..limb].aff)
-
-        sk['delayvenom_'..limb] = tempTimer(.25, function()
-          if not affs['mangled'..limb] then
-            svo.addaffdict(svo.dict['crippled'..limb])
-
-            signals.after_lifevision_processing:unblock(cnrl.checkwarning)
-            signals.canoutr:emit()
-            svo.make_gnomes_work()
-          end
-
-          sk['delayvenom_'..limb] = nil
-        end)
-        break
-      end
-    end
-  end
-end
-
-function svo.valid.swashbuckling_acciaccatura(side, limb)
-  local aff = side..limb
-
-  sk['delayacciaccatura_'..aff] = tempTimer(.25, function()
-    if not affs['mangled'..aff] then
-      svo.addaffdict(svo.dict['crippled'..aff])
-
-      signals.after_lifevision_processing:unblock(cnrl.checkwarning)
-      signals.canoutr:emit()
-      svo.make_gnomes_work()
-    end
-
-    sk['delayacciaccatura_'..aff] = nil
-  end)
-end
-
--- handle cancelling of delayvenom in case of this being a DSL:
--- apply the cripples right away, so the cure of a potential mangled limb in the
--- dsl, the venoms and the limb break get computed for cure at once on the prompt
-signals.limbhit:connect(function(attacktype)
-  if attacktype ~= 'weapon' then return end
-
-  sk.weapon_hits = (sk.weapon_hits or 0) + 1
-  sk.onprompt_beforeaction_add("track a dsl", function()
-    -- if we got a DSL, apply the delayvenoms right now
-    if sk.weapon_hits == 2 then
-      for _, aff in ipairs{'rightleg', 'rightarm', 'leftarm', 'leftleg'} do
-        if sk['delayvenom_'..aff] then
-          if not affs['mangled'..aff] then
-            svo.addaffdict(svo.dict['crippled'..aff])
-            signals.after_lifevision_processing:unblock(cnrl.checkwarning)
-            signals.canoutr:emit()
-          end
-
-          killTimer(sk['delayvenom_'..aff])
-          sk['delayvenom_'..aff] = nil
-        end
-      end
-    end
-
-    sk.weapon_hits = nil
-  end)
-end, 'handle mangle/venom combo')
 
 function svo.valid.bloodleech()
   sk.bloodleech_hit = true
@@ -1100,7 +998,6 @@ function svo.valid.defstrip(which)
     ["anti-weapon field"]      = 'rebounding',
     ["caloric salve"]          = 'caloric',
     ["cold resistance"]        = 'coldresist',
-    ['density']                = 'mass',
     ["electricity resistance"] = 'electricresist',
     ["fire resistance"]        = 'fireresist',
     ['gripping']               = 'grip',
@@ -1132,7 +1029,7 @@ function svo.valid.defstrip(which)
     t["thermal spiritshield"]   = 'thermalblessing'
     t["willpower spiritshield"] = 'willpowerblessing'
   end
-  if svo.haveskillset('pranks') or svo.haveskillset('swashbuckling') then
+  if svo.haveskillset('pranks') then
     t["arrow catching"]         = 'arrowcatch'
   end
   if svo.haveskillset('metamorphosis') then
@@ -1292,13 +1189,15 @@ function svo.valid.curse_dispel()
   if defc.shroud then defs.lost_shroud() return end
 end
 
+-- only as the paragraph's second line, counted in game lines: a buffer line
+-- count took a wrapped first line or an echo for a line
 function svo.valid.subterfuge_hallucinations()
-  if getLineNumber('main') ~= svo.lastpromptnumber+2 then return end
+  if svo.paragraph_length ~= 2 then return end
   valid.simplehallucinations()
 end
 
 function svo.valid.subterfuge_confusion()
-  if getLineNumber('main') ~= svo.lastpromptnumber+2 then return end
+  if svo.paragraph_length ~= 2 then return end
   valid.simpleconfusion()
 end
 
@@ -1379,7 +1278,7 @@ function svo.valid.relapsing_asthma()
 end
 
 function svo.valid.subterfuge_bind()
-  if not conf.aillusion or affs.sleep then
+  if not conf.aillusion or affs.sleep or affs.deepsleep then
     valid.simplebound()
   end
 end
@@ -1403,6 +1302,22 @@ valid.vodun_throttle = valid.kaido
 function svo.valid.proper_sensitivity()
   svo.checkaction(svo.dict.sensitivity.aff, true)
   lifevision.add(actions.sensitivity_aff.p, 'checkdeaf')
+end
+
+-- A jester's puppet ties your tongue with two lines: the attack naming you,
+-- and the game's gain line. GMCP reports tonguetied, so outside blackout a
+-- claim stands only if GMCP agrees. In blackout GMCP is silent and either line
+-- could be an illusion, so with anti-illusion on it takes both in one
+-- paragraph. The attack alone never counts, as it can fail. Whichever line
+-- comes second makes the claim, as no capture shows their order.
+local tongue_lines = {}
+function svo.valid.tonguetied_line(which)
+  tongue_lines[which] = true
+  sk.onprompt_beforeaction_add('tonguetied lines', function() tongue_lines = {} end)
+
+  if tongue_lines.gain and (tongue_lines.puppet or not (conf.aillusion and affs.blackout)) then
+    valid.simpletonguetied()
+  end
 end
 
 function svo.valid.webbed_buckawns()
@@ -1511,7 +1426,7 @@ end
 
 
 do
-  local afflist = {'hamstring', 'galed', 'voided', 'inquisition', 'flamefisted', 'icing', 'phlogistication', 'vitrification', 'corrupted', 'mucous', 'rixil', 'palpatar', 'cadmus', 'hecate', 'ninkharsag', 'swellskin', 'pinshot', 'dehydrated', 'timeflux', 'lullaby', 'numbedleftarm', 'numbedrightarm', 'unconsciousness', 'degenerate', 'deteriorate', 'hatred', 'ensorcelled', 'latency', 'indifference', 'revealed', 'scalded', 'enmesh'}
+  local afflist = {'hamstring', 'galed', 'voided', 'inquisition', 'flamefisted', 'icing', 'phlogistication', 'vitrification', 'corrupted', 'rixil', 'palpatar', 'cadmus', 'hecate', 'ninkharsag', 'swellskin', 'pinshot', 'dehydrated', 'timeflux', 'lullaby', 'numbedleftarm', 'numbedrightarm', 'unconsciousness', 'degenerate', 'deteriorate', 'hatred', 'ensorcelled', 'latency', 'indifference', 'revealed', 'scalded', 'enmesh', 'constricted', 'snared', 'vinewreathed', 'condemned'}
   if svo.haveskillset('metamorphosis') then
     afflist[#afflist+1] = 'cantmorph'
   end
@@ -1720,7 +1635,7 @@ end
 
 function svo.valid.gotsalve()
   if conf.aillusion and svo.paragraph_length ~= 1 then
-    local lastline = getLines(getLineNumber()-1, getLineNumber())[1]
+    local lastline = svo.previous_paragraph_line()
 
     local lines = {
       ["Your left leg feels stronger and healthier."] = {affs = {'curingmutilatedrightleg', 'curingmutilatedleftleg', 'curingmangledrightleg', 'curingmangledleftleg', 'curingparestolegs'}, location = 'legs'},
@@ -1926,11 +1841,13 @@ function svo.valid.got_pressure(calc)
 	end
 end
 
+-- count is how many times the line says the humour was tempered, which the
+-- aff handler would take as its level: a tempering line can't say the level,
+-- and can be an illusion, so it passes none. Kept for scripts that pass it
 function svo.valid.got_humour(which,count)
   svo.assert(svo.dict[which..'humour'], "svo.valid.got_humour: which humour to add?")
-  local humourlevels = count or 1
   svo.checkaction(svo.dict[which..'humour'].aff, true)
-  lifevision.add(actions[which..'humour_aff'].p, nil, humourlevels)
+  lifevision.add(actions[which..'humour_aff'].p)
 end
 
 function svo.valid.sanguine_inundate()
@@ -2137,6 +2054,9 @@ function svo.valid.fillskullcap()
   svo.checkaction(svo.dict.fillskullcap.physical)
   if actions.fillskullcap_physical then
     lifevision.add(actions.fillskullcap_physical.p)
+  elseif conf.serverside then
+    -- the server's own refill
+    svo.pipe_refilled('skullcap')
   end
 end
 
@@ -2144,6 +2064,9 @@ function svo.valid.fillelm()
   svo.checkaction(svo.dict.fillelm.physical)
   if actions.fillelm_physical then
     lifevision.add(actions.fillelm_physical.p)
+  elseif conf.serverside then
+    -- the server's own refill
+    svo.pipe_refilled('elm')
   end
 end
 
@@ -2151,6 +2074,9 @@ function svo.valid.fillvalerian()
   svo.checkaction(svo.dict.fillvalerian.physical)
   if actions.fillvalerian_physical then
     lifevision.add(actions.fillvalerian_physical.p)
+  elseif conf.serverside then
+    -- the server's own refill
+    svo.pipe_refilled('valerian')
   end
 end
 
@@ -2395,6 +2321,8 @@ function svo.valid.smoke2()
       lifevision.add(actions[r.name].p, 'empty')
     elseif actions.checkasthma_smoke then
       lifevision.add(actions.checkasthma_smoke.p, 'onclear')
+    else
+      svo.pipe_smoked()
     end
   end
 
@@ -2618,7 +2546,12 @@ function svo.valid.smoke_failed_asthma()
   end
 end
 
-function svo.valid.got_mucous()
+-- Mucous in your lungs is a longer smoke recovery, not an affliction: see
+-- svo.dict.mucouslungs, which does what these lines say at the prompt.
+--   "As you attempt to inhale the smoke, your lungs fill with a thick mucous."
+--   "Your lungs are too clogged with mucous for you to attempt smoking."
+-- Both answer svof's own asthma check, which can't tell anything from them
+local function lungs_clogged_line()
   if conf.aillusion and svo.paragraph_length ~= 1 and not conf.batch then svo.ignore_illusion("not first") return end
 
   if actions.checkasthma_smoke then
@@ -2627,33 +2560,27 @@ function svo.valid.got_mucous()
 
   local r = svo.findbybal('smoke')
   if r or not conf.aillusion then
-
-    if not affs.mucous then
-      lifevision.answering(r, function()
-        svo.checkaction(svo.dict.mucous.aff, true)
-        lifevision.add(actions['mucous_aff'].p, nil, nil, 1)
-      end)
-    end
+    svo.checkaction(svo.dict.mucouslungs.happened, true)
+    -- alone in its paragraph, as the old mucous affliction's claim was: a
+    -- longer one is taken for an illusion at the prompt
+    lifevision.add(actions.mucouslungs_happened.p, nil, nil, 1)
   elseif conf.aillusion then
     svo.ignore_illusion("Not actually trying to smoke anything right now (or we were forced).")
   end
 end
 
-function svo.valid.have_mucous()
-  if conf.aillusion and svo.paragraph_length ~= 1 and not conf.batch then svo.ignore_illusion("not first") return end
+svo.valid.got_mucous = lungs_clogged_line
+svo.valid.have_mucous = lungs_clogged_line
 
-  local r = svo.findbybal('smoke')
-  if r or not conf.aillusion then
-
-    if not affs.mucous then
-      lifevision.answering(r, function()
-        svo.checkaction(svo.dict.mucous.aff, true)
-        lifevision.add(actions['mucous_aff'].p, nil, nil, 1)
-      end)
-    end
-  elseif conf.aillusion then
-    svo.ignore_illusion("Not actually trying to smoke anything right now (or we were forced).")
-  end
+-- "You manage to cough away the mucous filling your lungs."
+function svo.valid.mucous_woreoff()
+  -- a clog line earlier in this paragraph shares this claim, and only the last
+  -- one filed runs, so the claim has to do both (only reachable with vconfig
+  -- batch: otherwise the clog line's lineguard throws the paragraph out)
+  local pending = lifevision.l.mucouslungs_happened
+  local clogged = pending and not pending.other_action
+  svo.checkaction(svo.dict.mucouslungs.happened, true)
+  lifevision.add(actions.mucouslungs_happened.p, clogged and 'clogged_then_coughed' or 'coughed')
 end
 
 function svo.valid.unlit_pipe()
@@ -2737,7 +2664,7 @@ end
 function svo.valid.pipe_emptied()
   local r = svo.checkany(svo.dict.fillskullcap.physical, svo.dict.fillelm.physical, svo.dict.fillvalerian.physical)
 
-  if not r then return end
+  if not r then return svo.pipe_tapped_out() end
 
   if svo.dict[r.action_name].fillingid == pipes[svo.dict[r.action_name].physical.herb].id then
     pipes[svo.dict[r.action_name].physical.herb].puffs = 0
@@ -2832,7 +2759,7 @@ end
 for _, restoration in pairs({
   restorationlegs = {'mutilatedrightleg', 'mutilatedleftleg', 'mangledrightleg', 'mangledleftleg', 'parestolegs'},
   restorationarms = {'mutilatedrightarm', 'mutilatedleftarm', 'mangledrightarm', 'mangledleftarm', 'parestoarms'},
-  restorationother = {'calcifiedtorso', 'calcifiedskull', 'mildtrauma', 'serioustrauma', 'mildconcussion', 'seriousconcussion', 'laceratedthroat', 'heartseed', 'tonguetied'}}) do
+  restorationother = {'calcifiedtorso', 'calcifiedskull', 'mildtrauma', 'serioustrauma', 'damagedhead', 'mangledhead', 'concussion', 'laceratedthroat', 'heartseed', 'tonguetied'}}) do
   local other_restoration_affs = {}
 
   -- compile a list of other things we can cure but aren't intending to with this action
@@ -3313,9 +3240,23 @@ function svo.missing_tinderbox()
   echo"\n" svo.echof("Looks like you don't have a tinderbox! I've put lighting your pipes (lightpipes) on the ignore list. To unignore it, check vshow ignore.")
 end
 
+-- "Your head feels stronger and healthier." is the cure line of damagedhead
+-- and concussion both (AFFLICTION SHOW), and doesn't say which restoration
+-- cured. It claims the one svof applied for. Outside blackout that is only
+-- the cure: GMCP removes the one cured, and rmaff keeps the other while GMCP
+-- still reports it. In blackout it's a guess, which DIAGNOSE corrects (the
+-- user, 2026-10-31)
+function svo.valid.head_feels_stronger()
+  if actions.curingconcussion_waitingfor then
+    valid.curingconcussion()
+  else
+    valid.curingdamagedhead()
+  end
+end
+
 function svo.valid.restoration_noeffect()
   local r = svo.checkany(
-  svo.dict.curingheartseed.waitingfor, svo.dict.curingmangledleftleg.waitingfor, svo.dict.curingmangledrightleg.waitingfor, svo.dict.curingmangledrightarm.waitingfor, svo.dict.curingmangledleftarm.waitingfor, svo.dict.curingmutilatedrightarm.waitingfor, svo.dict.curingmutilatedleftarm.waitingfor, svo.dict.curingparestolegs.waitingfor, svo.dict.curingmildtrauma.waitingfor, svo.dict.curingserioustrauma.waitingfor, svo.dict.curingmutilatedrightleg.waitingfor, svo.dict.curingmutilatedleftleg.waitingfor, svo.dict.curingseriousconcussion.waitingfor, svo.dict.curingmildconcussion.waitingfor, svo.dict.curinglaceratedthroat.waitingfor)
+  svo.dict.curingheartseed.waitingfor, svo.dict.curingmangledleftleg.waitingfor, svo.dict.curingmangledrightleg.waitingfor, svo.dict.curingmangledrightarm.waitingfor, svo.dict.curingmangledleftarm.waitingfor, svo.dict.curingmutilatedrightarm.waitingfor, svo.dict.curingmutilatedleftarm.waitingfor, svo.dict.curingparestolegs.waitingfor, svo.dict.curingmildtrauma.waitingfor, svo.dict.curingserioustrauma.waitingfor, svo.dict.curingmutilatedrightleg.waitingfor, svo.dict.curingmutilatedleftleg.waitingfor, svo.dict.curingmangledhead.waitingfor, svo.dict.curingdamagedhead.waitingfor, svo.dict.curingconcussion.waitingfor, svo.dict.curinglaceratedthroat.waitingfor)
 
   if not r then return end
 
@@ -3661,13 +3602,6 @@ function svo.valid.dragonflex()
   svo.checkaction (svo.dict.dragonflex.misc)
   if actions.dragonflex_misc then
     lifevision.add(actions.dragonflex_misc.p)
-  end
-end
-
-function svo.valid.dwinnu()
-  svo.checkaction (svo.dict.dwinnu.misc)
-  if actions.dwinnu_misc then
-    lifevision.add(actions.dwinnu_misc.p)
   end
 end
 
@@ -4024,27 +3958,20 @@ for _,name in ipairs({'rightarm', 'leftarm', 'leftleg', 'rightleg'}) do
         local limb = string.format("%s %s", string.match(name, "(%w+)(%w%w%w)"))
         local plural = name:sub(-3)..'s'
 
-        -- last line doesn't work with stuff like bm breaks, where it is limb\anothermsg\actualbreak. So go until the prompt.
-        local previouslinenumber, currentlinenumber = svo.lastpromptnumber+1, getLastLineNumber('main')
-
-        -- workaround for deleteLine() making svo.lastpromptnumber's tracking get invalidated
-        if currentlinenumber <= previouslinenumber then
-          previouslinenumber = currentlinenumber - 1
-        end
-
-        -- this, with short enough wrapping, might not get the line that the rend starts on. So if this line doesn't start with a capital, pull in one more line
-        local combined = table.concat(getLines(previouslinenumber, currentlinenumber))
-
-        if not combined:sub(1,1):match("%u") then
-          combined = table.concat(getLines(previouslinenumber-1, currentlinenumber))
-        end
+        -- last line doesn't work with stuff like bm breaks, where it is limb\anothermsg\actualbreak. So go until the prompt,
+        -- in the lines the game sent: the buffer's were cut where they wrapped, joined with no space at the cut, and
+        -- counted from a prompt line number that deleteLine() moved
+        local combined = table.concat(svo.paragraph_so_far(), "\n")
 
         -- remember blackout, don't check this in it
         if not affs.blackout and (combined:find(limb, 1, true) or combined:find(plural, 1, true)) then
           -- special exception for blademaster breaks, which do so little damage, you can regen it:
           --[[Spinning to the right as he draws 11 11 from its sheath, 11 delivers a precise slash across your arms.
               Your left arm is greatly damaged from the beating. (+65h, 0.8%, +75m, 1.1%) ]]
-          if svo.find_until_last_paragraph("^Spinning to the right as \w+ draws %w+ %w+ from its sheath, %w+ delivers a precise slash across your arms%.$", 'pattern') then
+          -- The blademaster spins to the left or the right (Two Arts' Limb
+          -- damage 3), and the slash is across the arms, so it makes only an
+          -- arm break a simple one: a leg broken in the same paragraph isn't
+          if (name == 'leftarm' or name == 'rightarm') and svo.find_until_last_paragraph("^Spinning to the %a+ as %w+ draws %w+ %w+ from its sheath, %w+ delivers a precise slash across your arms%.$", 'pattern') then
             valid['simple'..status..name]()
           elseif saw_tekura_in_paragraph() then
             svo.checkaction(svo.dict[status..name].aff, true)
@@ -4106,7 +4033,7 @@ for _,name in ipairs({'rightarm', 'leftarm', 'leftleg', 'rightleg'}) do
   end
 end
 
-for _, name in ipairs({'serioustrauma', 'mildtrauma', 'mildconcussion', 'seriousconcussion'}) do
+for _, name in ipairs({'serioustrauma', 'mildtrauma', 'damagedhead', 'mangledhead', 'concussion'}) do
   valid['proper_'..name] = function ()
     svo.checkaction(svo.dict[name].aff, true)
     lifevision.add(actions[name..'_aff'].p, nil, stats.currenthealth)
@@ -4512,6 +4439,9 @@ function svo.valid.pyradius()
   -- no affs cured?
   if #cures == 0 then return end
 
+  -- feedTriggers saves each of them again (svo.note_paragraph_line), so
+  -- forget the copies saved as they first arrived
+  svo.forget_paragraph_so_far()
   for i = 1, #cures do
     moveCursor(0, startline-i)
     deleteLine()
@@ -4574,7 +4504,7 @@ if svo.haveskillset('venom') then
   end
 end
 
-if svo.haveskillset('voicecraft') then
+if svo.haveskillset('sagas') then
   function svo.valid.usedvoicebalance()
     svo.checkaction(svo.dict.stolebalance.happened, true)
     lifevision.add(actions.stolebalance_happened.p, nil, 'voice')
@@ -4686,7 +4616,7 @@ function svo.valid.skirmish_drag()
 end
 
 function svo.valid.cured_burn_health()
-  local result = svo.checkany(svo.dict.ablaze.salve, svo.dict.severeburn.salve, svo.dict.extremeburn.salve, svo.dict.charredburn.salve, svo.dict.meltingburn.salve)
+  local result = svo.checkany(svo.dict.ablaze.salve)
 
   if not result then return end
 
@@ -4697,7 +4627,7 @@ function svo.valid.cured_burn_health()
 end
 
 function svo.valid.cured_burns_health()
-  local result = svo.checkany(svo.dict.ablaze.salve, svo.dict.severeburn.salve, svo.dict.extremeburn.salve, svo.dict.charredburn.salve, svo.dict.meltingburn.salve)
+  local result = svo.checkany(svo.dict.ablaze.salve)
 
   if not result then return end
 
@@ -4812,10 +4742,20 @@ function svo.valid.smash_high()
   svo.lostbal_focus()
 end
 
+-- catching fire again raises burning a level (the user, 2026-10-31)
 function svo.valid.proper_ablaze()
-  if not affs.severeburn and not affs.extremeburn and not affs.charredburn and not affs.meltingburn then
-    valid.simpleablaze()
-  end
+  valid.simpleablaze()
+end
+
+-- "Flames lick around you - you are on fire!" and the firewall and firestorm
+-- lines only show you're burning, and raise no level (the user, 2026-11-06).
+-- They add burning at level 1 when svof isn't tracking it, and otherwise
+-- leave the level, a line in the same paragraph claiming it included. The
+-- claim is level 1, not an ignite line's, so an ignite line after it in the
+-- paragraph doesn't count it as a level too
+function svo.valid.symptom_ablaze()
+  if affs.ablaze or lifevision.l.ablaze_aff then return end
+  valid.simpleablaze(1)
 end
 
 function svo.valid.riding_alreadyon()
@@ -4855,6 +4795,16 @@ function svo.valid.skirmish_gouge()
       valid.simplesensitivity()
     end
   end)
+end
+
+-- The old names of the renamed afflictions (svo.renamed_affs), which a
+-- player's own triggers may still call, as svof's help tells them to call
+-- svo.valid functions. Deprecated: call the new ones. Each passes the call on
+-- when it's made, so it follows the function svof has then
+for old, new in pairs(svo.renamed_affs) do
+  for _, kind in ipairs({'simple', 'proper_', 'curing'}) do
+    valid[kind..old] = function(...) return valid[kind..new](...) end
+  end
 end
 
 end -- end of svo valid_main loader
