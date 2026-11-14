@@ -586,6 +586,118 @@ do
   eq(type(w.svo.valid.simplecrescendo), "function", "both of them")
 end
 
+-- ===== Voice balance, from GMCP =====
+-- "Voice: No" is assumed, not captured: the game's one seen value is "Yes"
+do
+  -- creating a world raises got balance for the balances it resets
+  local function fresh(class)
+    local w = world.new({ class = class })
+    w.events = {}
+    return w
+  end
+  local function count(w, name)
+    local n = 0
+    for _, e in ipairs(w.events) do
+      if e.name == name and e.args[1] == "voice" then n = n + 1 end
+    end
+    return n
+  end
+
+  local w = fresh("Bard")
+  local svo = w.svo
+  w.gmcp_vitals({ "Bleed: 0", "Rage: 0", "Voice: Yes" })
+  eq(svo.bals.voice, true, "voice: Yes with the balance up changes nothing")
+  eq(count(w, "svo lost balance"), 0, "voice: Yes with the balance up raises no lost balance")
+  eq(count(w, "svo got balance"), 0, "voice: Yes with the balance up raises no got balance")
+  eq(svo.sk.voice_gmcp, true, "voice: GMCP's Yes is kept")
+
+  w.gmcp_vitals({ "Bleed: 0", "Rage: 0", "Voice: No" })
+  eq(svo.bals.voice, false, "voice: No takes the balance down")
+  eq(count(w, "svo lost balance"), 1, "voice: No raises lost balance once")
+  eq(svo.sk.voice_gmcp, false, "voice: GMCP's No is kept")
+  w.gmcp_vitals({ "Bleed: 0", "Rage: 0", "Voice: No" })
+  eq(svo.bals.voice, false, "voice: a second No leaves it down")
+  eq(count(w, "svo lost balance"), 1, "voice: and raises nothing")
+
+  -- the fallback timer's guess stays down while GMCP says No
+  w.advance(11)
+  eq(svo.bals.voice, false, "voice: the fallback timer doesn't restore it while GMCP says No")
+  eq(count(w, "svo got balance"), 0, "voice: and raises no got balance")
+  w.advance(100)
+  eq(svo.bals.voice, false, "voice: a long recovery stays down")
+  w.gmcp_vitals({ "Voice: No" })
+  eq(count(w, "svo lost balance"), 1, "voice: and Vitals through it raise no lost/got pair")
+
+  -- in blackout GMCP says nothing, so the guess stands
+  svo.affs.blackout = { p = {} }
+  svo.bals.voice = true
+  svo.lostbal_voice()
+  eq(count(w, "svo lost balance"), 2, "voice: lost again")
+  w.advance(11)
+  eq(svo.bals.voice, true, "voice: in blackout the fallback timer restores it")
+  svo.affs.blackout = nil
+
+  -- and GMCP's Yes brings it back, once
+  svo.bals.voice = true
+  w.events = {}
+  w.gmcp_vitals({ "Voice: No" })
+  w.gmcp_vitals({ "Voice: Yes" })
+  eq(svo.bals.voice, true, "voice: Yes brings it back")
+  eq(count(w, "svo got balance"), 1, "voice: Yes raises got balance once")
+  w.gmcp_vitals({ "Voice: Yes" })
+  eq(count(w, "svo got balance"), 1, "voice: a second Yes raises nothing")
+  eq(count(w, "svo lost balance"), 1, "voice: and the lost balance stays one")
+  w.advance(100)
+  eq(count(w, "svo got balance"), 1, "voice: the old fallback timer adds nothing")
+
+  -- the text path and GMCP for one use
+  w = fresh("Bard")
+  svo = w.svo
+  svo.lostbal_voice()
+  w.gmcp_vitals({ "Voice: No" })
+  eq(count(w, "svo lost balance"), 1, "voice: the text path then GMCP raise one lost balance")
+  svo.valid.gotvoicebalance()
+  w.prompt()
+  w.gmcp_vitals({ "Voice: Yes" })
+  eq(svo.bals.voice, true, "voice: got voice then Yes leaves it up")
+  eq(count(w, "svo got balance"), 1, "voice: and raises one got balance")
+
+  -- values it doesn't know
+  w = fresh("Bard")
+  svo = w.svo
+  w.gmcp_vitals({ "Voice: Maybe" })
+  eq(svo.bals.voice, true, "voice: an unknown value leaves it up")
+  eq(svo.sk.voice_gmcp, nil, "voice: and GMCP has said nothing")
+  w.gmcp_vitals({ "Voice: No" })
+  w.gmcp_vitals({ "Voice: Maybe" })
+  eq(svo.bals.voice, false, "voice: an unknown value leaves it down")
+  eq(svo.sk.voice_gmcp, false, "voice: and keeps what GMCP last said")
+  eq(count(w, "svo got balance"), 0, "voice: and raises nothing")
+  w.gmcp_vitals({ "Bleed: 0", "Rage: 0" })
+  eq(svo.bals.voice, false, "voice: charstats with no Voice leave it down")
+  eq(count(w, "svo lost balance"), 1, "voice: and raise nothing")
+  w = fresh("Bard")
+  w.gmcp_vitals({ "Bleed: 0", "Rage: 0" })
+  eq(w.svo.bals.voice, true, "voice: charstats with no Voice leave it up")
+  eq(count(w, "svo lost balance"), 0, "voice: and raise nothing")
+
+  -- GMCP not said anything: the fallback timer restores it
+  w = fresh("Bard")
+  svo = w.svo
+  svo.lostbal_voice()
+  w.advance(11)
+  eq(svo.bals.voice, true, "voice: with GMCP silent the fallback timer restores it")
+  eq(count(w, "svo got balance"), 1, "voice: and raises got balance once")
+
+  -- a class without Sagas connects nothing
+  w = fresh("Monk")
+  local before = w.svo.bals.voice
+  w.gmcp_vitals({ "Voice: No" })
+  eq(w.svo.bals.voice, before, "voice: a Monk's balance is untouched by Voice: No")
+  eq(w.svo.sk.voice_gmcp, nil, "voice: and a Monk records nothing")
+  eq(count(w, "svo lost balance"), 0, "voice: and raises nothing")
+end
+
 print(string.format("%d checks, %d failures", checks, #failures))
 for _, f in ipairs(failures) do print("FAIL: " .. f) end
 if #failures > 0 then os.exit(1) end

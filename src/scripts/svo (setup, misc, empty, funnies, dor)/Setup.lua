@@ -671,6 +671,41 @@ signals.gmcpcharvitals:connect(function()
 end, 'update wrathbal balance')
 end
 
+-- A Bard's Char.Vitals charstats carry the voice balance, such as
+-- { "Bleed: 0", "Rage: 0", "Voice: Yes" }. "Voice: No" for voice down is
+-- assumed, not captured, so only exactly "Yes" and "No" count and any other
+-- value leaves the balance alone. That is the game's word on it, so it takes
+-- the balance down or brings it back; sk.voice_gmcp keeps what it last said,
+-- for lostbal_voice's fallback timer. GMCP stops in blackout, so the text
+-- triggers (svo missing voice, svo got voice) remain for that. Vitals come
+-- with nearly every prompt: nothing changes, and nothing is raised, when
+-- they agree with svof
+if svo.haveskillset('sagas') then
+signals.gmcpcharvitals:connect(function()
+  if not gmcp.Char.Vitals.charstats then return end
+  for _, val in ipairs(gmcp.Char.Vitals.charstats) do
+    local voice = val:match("^Voice: (%w+)$")
+    if voice then
+      if voice == "No" then
+        sk.voice_gmcp = false
+        if svo.bals.voice then svo.lostbal_voice() end
+      elseif voice == "Yes" then
+        sk.voice_gmcp = true
+        if svo.bals.voice == false then
+          -- what svo.dict.gotbalance.happened does for one balance, without
+          -- waiting for lifevision's prompt, and as the fallback timer does
+          svo.bals.voice = true
+          raiseEvent("svo got balance", 'voice')
+          svo.endbalancewatch('voice')
+          svo.make_gnomes_work()
+        end
+      end
+      break
+    end
+  end
+end, 'update voice balance')
+end
+
 -- End of class resources
 
 signals.gmcpiretimelist = signals.gmcpiretimelist or luanotify.signal.new()

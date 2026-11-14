@@ -1792,6 +1792,10 @@ svo.lostbal_voice = function()
 
   tempTimer(10+svo.getping(), function ()
     if not bals.voice and sk.voicetick == oldvoicetick then
+      -- GMCP says voice is still down: its next Vitals would only take the
+      -- balance down again, so leave it for GMCP's "Yes". It says nothing in
+      -- blackout, so there the guess stands
+      if sk.voice_gmcp == false and not affs.blackout then return end
       bals.voice = true
       svo.make_gnomes_work()
       raiseEvent("svo got balance", 'voice')
