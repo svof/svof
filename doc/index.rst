@@ -210,6 +210,8 @@ To view a list of all things you can ignore, you can use the ``vshow ignorelist`
 
 To ignore an affliction, you can do ``vignore <affliction>``. It acts as a toggle - so doing it again will remove it from the list.
 
+With serverside on and ``vconfig serverprios custom``, you can also have the server leave one stack of an affliction alone: ``vignore unweavingmind 2`` stops the server curing unweavingmind at exactly 2 stacks, and leaves the other stacks as they were. It works for the afflictions Svof counts stacks of, and only for those the server cures. Doing it again cures that stack again.
+
 Lastly, you can use ``vshow ignore`` to view all items you've set to ignore (or check the ``svo.ignore`` table via script, and use :func:`svo.setignore` and :func:`svo.unsetignore` to set/unset). You can also remove items from ignore right on the menu by clicking the 'remove' button besides them.
 
 .. image:: images/vshow-ignore.png
@@ -247,6 +249,35 @@ Svof automatically adjusts priorities on serverside for you, depending on what t
 The system also makes use of **2** curingsets - **normal** and **slowcuring**. These do not correspond to your defence modes, but instead to the normal and slowcuring (aeon/retardation) priorities - the idea is that when you enter aeon or retardation, all of your priorities can be switched over instantly with a single command for fast curing without the burden of changing many priorities that'll slow you down.
 
 Since the system also allows you many defence modes, you are not restricted to just 3 priority lists that serverside provides but can add any new ones for free.
+
+Your own serverside priorities
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+By default, Svof works out your serverside numbers from its own priority lists, and sends them again whenever they change. The server only has numbers from 1 to 25, plus 26 for ignore, so a long herb list leaves many afflictions sharing a number, and a number you set in game doesn't last.
+
+To set the numbers yourself, do ``vconfig serverprios custom``. Svof reads both curingsets and your defence list from the game, and takes the numbers as they are, so nothing changes until you change it. From then on, Svof doesn't work out affliction numbers from its lists. To go back, do ``vconfig serverprios auto``.
+
+You can change a number in either of two ways:
+
+- in game, with ``curing priority <affliction> <number>``. Svof sees the game's confirmation and keeps your number.
+- in Svof, with ``vset <name> <number> server``. Put ``slowcuring`` before the number for the slowcuring set, as in ``vset paralysis slowcuring 3 server``. A stack has its count after the name, as in ``vset unweavingmind2 6 server``.
+
+``vp serveraffs`` shows your numbers the way the game's list does, grouped by number, and ``vp serveraffs slowcuring`` shows the slowcuring set. Click the arrows beside an affliction to move it one number up or down.
+
+Some things Svof still does on top of your numbers, and undoes afterwards:
+
+- an affliction Svof cures itself, or one you ignore with ``vignore``, goes to 26, so the server doesn't cure it too. ``vp serveraffs`` marks it, along with your own number for it.
+- ``pva``, ``avs``, and ``pvd`` swap the two afflictions' numbers on the server, until you use them again. They stay on when you log out and back in.
+- ``autoslick`` puts asthma first on the server when you have asthma and slickness, and paralysis or impatience is at asthma's number or before it.
+
+Defences work the same way, with one set of numbers for each defence mode. Your keepup and defup still decide which defences are on the server's list, so ``vkeep`` and ``vdefs`` work as before. To change a defence's number in the mode you're in, do ``vset <defence> <number> server``, and ``vp serverdefs`` shows them. Blindness, deafness, and retribution are both a defence and an affliction, so for the defence, put ``defence`` before the number: ``vset blindness defence 4 server``.
+
+When you log in, Svof compares the game's numbers with its own. If they differ, for example because you changed them from another client, it lists the differences, with a link to keep the game's numbers and one to send Svof's.
+
+Svof also tells you when a number doesn't do what it looks like it does: an affliction the server is meant to cure that is at 26, so nothing cures it, or a number you set for something Svof keeps at 26.
+
+To save your serverside numbers, do ``vexportprio <name> server``, and to load them back, ``vimportprio <name> server``. The file holds both curingsets, the swaps that are on, the stacks you ignore, and every defence mode's numbers.
+
+Svof's list commands without ``server`` at the end change only Svof's own lists, as before.
 
 tn/tf affs
 ^^^^^^^^^^
@@ -1079,6 +1110,9 @@ vconfig options
 
   restorefunc
    shows a menu where you can toggle which restore strategies are in use - see `Adding your own restore / dragonheal / shrugging / rage scenarios`_ on how to add new ones to it.
+
+  serverprios
+    sets who decides your serverside priority numbers when serverside is on. With ``auto``, the default, Svof works them out from its own priority lists. With ``custom``, the numbers are your own: Svof reads them from the game and leaves them as you set them. See `Your own serverside priorities`_.
 
   showafftimes
    sets whenever the system will tell you how long an affliction took to cure. With this on, you'll see an orange number in seconds besides the line that shows which affliction was cured.
@@ -2027,6 +2061,12 @@ General aliases
   vp or vshowprios *<balance>*
     shows the current priority lists for a particular balance. Possible balances are: herb, focus, salve, purgative, sip, balance, misc and slowcuring. The misc balance is for all things that work on their own balances and typically don't make sense to prioritize. slowcuring is referred to slow curing - where since you can only be doing one thing at a time, all cures are placed into one priority and you can change them about as you wish.
 
+  vp serveraffs [slowcuring]
+    with ``vconfig serverprios custom``, shows your serverside affliction numbers, grouped by number like the game's own list, for the normal set or the slowcuring one. A mark beside an affliction says why the server's number isn't yours, such as Svof curing it itself. In auto mode, it shows the numbers Svof works out.
+
+  vp serverdefs
+    with ``vconfig serverprios custom``, shows your serverside defence numbers for the defence mode you're in.
+
   vcleargaps *<balance>*
     clears all gaps for priority numbers of a given balance by compacting them. Use 'slowcuring' as the balance name for the slow curing priorities.
 
@@ -2035,6 +2075,10 @@ General aliases
 
   vimportprio [<name>]
     imports a prio list with the given name (it should be located in the svo/prios system folder). If you don't give it a name, it'll spawn a file picker dialog for you, so you can locate the file for it.
+
+  vexportprio <name> server
+  vimportprio <name> server
+    with ``vconfig serverprios custom``, saves your serverside numbers to the svo/serverprios folder, or loads them back and sends the game what differs. The file holds both curingsets, the swaps that are on, the stacks you ignore, and every defence mode's numbers.
 
   vlistprios
     lists all priorities that are stored in the svo/prios folder, and also lists the actual location of the said folder.
@@ -2047,6 +2091,13 @@ General aliases
 
   vset <aff name> <balance> <priority number>
     sets the cure on the given balance to be on the given number. ie, ``vset wristfractures sip 5`` will set the sip cure for wristfractures at priority number 5 - and if anything was there previously, it will be shuffled down to make space. For the aeon/retardation curing, use ``vset wristfractures_sip slowcuring 5`` instead.
+
+  vset <name> [slowcuring] <number> server
+    with ``vconfig serverprios custom``, sets a serverside number: an affliction's in the normal set, or in the slowcuring set with ``slowcuring``, from 1 to 26, where 26 means ignore, or a defence's in the defence mode you're in, from 1 to 25. For example, ``vset paralysis 3 server``. For blindness, deafness, and retribution, which are both, it sets the affliction, and ``vset <name> defence <number> server`` sets the defence.
+
+  vswap <aff name> <aff name> server
+  vswapslow <aff name> <aff name> server
+    with ``vconfig serverprios custom``, swaps two afflictions' serverside numbers, in the normal set or the slowcuring one.
 
   vsetup sp
     starts the setup of the parry system.
