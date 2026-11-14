@@ -2872,7 +2872,11 @@ returns `(max - ceil(elapsed/max)) .. 'm'` from
 `svo.dict[defence].stopwatch`, or `""`. Nothing in `src/` calls it, nor
 `defences.urlify`, `defences.complete_def` or `defences.get_def_list`.
 `svo.defs_data` itself, the `OrderedMap` of every defence's data, is built
-here at line 57.
+here at line 142, anew each time the loader runs. Saving `Defences.lua` in
+Mudlet's editor runs it again on its own (`if svo.systemloaded then
+svo.loader.defences() end`, at the end of the file), so code in other
+scripts, such as Custom defences, reads `svo.defs_data` where it uses it: a
+copy kept from load time would go stale.
 
 **Defence modes.** svof keeps named sets of defences, and each mode has two
 lists: `defup`, the defences to raise when you run a defup, and `keepup`, the
@@ -5090,8 +5094,10 @@ the top); none of it was observed in play.
      tree-cure handlers are single functions that take the name.
    * `config`: merge `config/conf` over the defaults, run the migrations,
      apply the load-time side effects.
-   * `install`, `aliases`, `defences` (`defs_data`), `prio`, `parry`
-     (`sp_config`), `funnies`, `dor`, `customprompt`, `serverside`.
+   * `install`, `aliases`, `defences` (`defs_data`), `customdefs` and
+     `customaffs` (vcustomdef and vcustomaff, which register the saved
+     definitions), `prio`, `parry` (`sp_config`), `funnies`, `dor`,
+     `customprompt`, `serverside`.
 5. It emits `systemstart`. Its listeners (15 in `Setup.lua` alone) include:
    `reset.bals`; the defence trigger generator and `defload`;
    `prio.import('current')`; the list and strategy loaders in `Setup.lua`;
