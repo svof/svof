@@ -1746,7 +1746,7 @@ do
     for _, channel in ipairs(defences.channels) do
       if not defc[channel] then return end
     end
-    if not defc.spirit then defences.got('simultaneity') end
+    defences.got('simultaneity')
   end
   local function onlost() defences.lost('simultaneity') end
   for _, channel in ipairs(defences.channels) do

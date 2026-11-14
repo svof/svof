@@ -788,7 +788,7 @@ local function work_slaves_work()
   svo.check_smoke()
   svo.check_herb()
 
-  svo.check_misc() -- fails for amnesia, but works for Priest Healing...
+  svo.check_misc()
 
   svo.check_moss()
 
