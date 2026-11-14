@@ -5467,7 +5467,10 @@ if not next(svo.dict) then
   
   
   -- misc
+    -- lust. The game cures it with CURING REJECTION, not a curing priority,
+    -- and its lovers priority is the lover's curse, svof's inlove
     lovers = {
+      noserverprio = true,
       map = {},
       tempmap = {},
       physical = {
