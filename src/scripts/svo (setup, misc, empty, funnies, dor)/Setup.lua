@@ -363,7 +363,7 @@ end, 'save my class')
 svo.knownskills = {
   alchemist                = {'transmutation', 'physiology', 'alchemy'},
   apostate                 = {'evileye', 'necromancy', 'apostasy'},
-  bard                     = {'bladedance', 'composition', 'sagas'},
+  bard                     = {'bladedance', 'composition', 'sagas', 'woe'},
   blademaster              = {'twoarts', 'striking', 'shindo'},
   depthswalker             = {'shadowmancy','aeonics','terminus'},
   druid                    = {'groves', 'metamorphosis', 'reclamation'},
@@ -679,8 +679,9 @@ end
 -- for lostbal_voice's fallback timer. GMCP stops in blackout, so the text
 -- triggers (svo missing voice, svo got voice) remain for that. Vitals come
 -- with nearly every prompt: nothing changes, and nothing is raised, when
--- they agree with svof
-if svo.haveskillset('sagas') then
+-- they agree with svof. Cyrene's Bards have Woe in place of Sagas, and it
+-- uses the same balance
+if svo.haveskillset('sagas') or svo.haveskillset('woe') then
 signals.gmcpcharvitals:connect(function()
   if not gmcp.Char.Vitals.charstats then return end
   for _, val in ipairs(gmcp.Char.Vitals.charstats) do

@@ -75,7 +75,7 @@ end
 do
   local w = world.new({ class = "Bard" })
   local svo = w.svo
-  for _, skill in ipairs({ "bladedance", "composition", "sagas" }) do
+  for _, skill in ipairs({ "bladedance", "composition", "sagas", "woe" }) do
     eq(svo.haveskillset(skill), true, "a Bard has " .. skill)
   end
   for _, skill in ipairs({ "swashbuckling", "voicecraft", "harmonics" }) do
