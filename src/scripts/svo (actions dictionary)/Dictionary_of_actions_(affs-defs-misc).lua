@@ -12862,7 +12862,7 @@ if not next(svo.dict) then
         balanceful_act = true, def = true, undeffable = true,
   
         isadvisable = function()
-          return (((((sys.deffing and defdefup[defs.mode].bindall and not defc.bindall) or (conf.keepup and defkeepup[defs.mode].bindall and not defc.bindall))) or (conf.keepup and defkeepup[defs.mode].bindall and not defc.bindall)) and not codepaste.balanceful_defs_codepaste() and stats.currentmana >= 750 and defc.air and defc.earth and defc.water and not defc.spirit
+          return (((((sys.deffing and defdefup[defs.mode].bindall and not defc.bindall) or (conf.keepup and defkeepup[defs.mode].bindall and not defc.bindall))) or (conf.keepup and defkeepup[defs.mode].bindall and not defc.bindall)) and not codepaste.balanceful_defs_codepaste() and stats.currentmana >= 750 and defc.air and defc.earth and defc.water
           and (svo.haveskillset('weatherweaving') or defc.fire)) or false
         end,
   
@@ -12882,7 +12882,7 @@ if not next(svo.dict) then
   
         oncompleted = function()
           defences.got('boundair')
-          if defc.boundair and defc.boundearth and defc.boundwater and not defc.boundspirit and (svo.haveskillset('weatherweaving') or defc.boundfire) then
+          if defc.boundair and defc.boundearth and defc.boundwater and (svo.haveskillset('weatherweaving') or defc.boundfire) then
             defences.got('bindall')
           end
         end,
@@ -12907,7 +12907,7 @@ if not next(svo.dict) then
   
         oncompleted = function()
           defences.got('boundwater')
-          if defc.boundair and defc.boundearth and defc.boundwater and not defc.boundspirit and (svo.haveskillset('weatherweaving') or defc.boundfire) then
+          if defc.boundair and defc.boundearth and defc.boundwater and (svo.haveskillset('weatherweaving') or defc.boundfire) then
             defences.got('bindall')
           end
         end,
@@ -12933,7 +12933,7 @@ if not next(svo.dict) then
   
           oncompleted = function()
             defences.got('boundfire')
-            if defc.boundair and defc.boundfire and defc.boundearth and defc.boundwater and not defc.boundspirit then
+            if defc.boundair and defc.boundfire and defc.boundearth and defc.boundwater then
               defences.got('bindall')
             end
           end,
@@ -12961,7 +12961,7 @@ if not next(svo.dict) then
   
         oncompleted = function()
           defences.got('boundearth')
-          if defc.boundair and defc.boundearth and defc.boundwater and not defc.boundspirit and (svo.haveskillset('weatherweaving') or defc.boundfire) then
+          if defc.boundair and defc.boundearth and defc.boundwater and (svo.haveskillset('weatherweaving') or defc.boundfire) then
             defences.got('bindall')
           end
         end,
@@ -12981,7 +12981,7 @@ if not next(svo.dict) then
         balanceful_act = true, def = true, undeffable = true,
   
         isadvisable = function()
-          return (((((sys.deffing and defdefup[defs.mode].fortifyall and not defc.fortifyall) or (conf.keepup and defkeepup[defs.mode].fortifyall and not defc.fortifyall))) or (conf.keepup and defkeepup[defs.mode].fortifyall and not defc.fortifyall)) and not codepaste.balanceful_defs_codepaste() and stats.currentmana >= 600 and defc.air and defc.earth and defc.water and not defc.spirit and (svo.haveskillset('weatherweaving') or defc.fire)) or false
+          return (((((sys.deffing and defdefup[defs.mode].fortifyall and not defc.fortifyall) or (conf.keepup and defkeepup[defs.mode].fortifyall and not defc.fortifyall))) or (conf.keepup and defkeepup[defs.mode].fortifyall and not defc.fortifyall)) and not codepaste.balanceful_defs_codepaste() and stats.currentmana >= 600 and defc.air and defc.earth and defc.water and (svo.haveskillset('weatherweaving') or defc.fire)) or false
         end,
   
         oncompleted = function() defences.got('fortifyall') end,
@@ -13000,7 +13000,7 @@ if not next(svo.dict) then
   
         oncompleted = function()
           defences.got('fortifiedair')
-          if defc.fortifiedair and defc.fortifiedearth and defc.fortifiedwater and not defc.fortifiedspirit and (svo.haveskillset('weatherweaving') or defc.fortifiedfire) then
+          if defc.fortifiedair and defc.fortifiedearth and defc.fortifiedwater and (svo.haveskillset('weatherweaving') or defc.fortifiedfire) then
             defences.got('fortifyall')
           end
         end,
@@ -13025,7 +13025,7 @@ if not next(svo.dict) then
   
         oncompleted = function()
           defences.got('fortifiedwater')
-          if defc.fortifiedair and defc.fortifiedearth and defc.fortifiedwater and not defc.fortifiedspirit and (svo.haveskillset('weatherweaving') or defc.fortifiedfire) then
+          if defc.fortifiedair and defc.fortifiedearth and defc.fortifiedwater and (svo.haveskillset('weatherweaving') or defc.fortifiedfire) then
             defences.got('fortifyall')
           end
         end,
@@ -13051,7 +13051,7 @@ if not next(svo.dict) then
   
           oncompleted = function()
             defences.got('fortifiedfire')
-            if defc.fortifiedair and defc.fortifiedfire and defc.fortifiedearth and defc.fortifiedwater and not defc.fortifiedspirit then
+            if defc.fortifiedair and defc.fortifiedfire and defc.fortifiedearth and defc.fortifiedwater then
               defences.got('fortifyall')
             end
           end,
@@ -13079,7 +13079,7 @@ if not next(svo.dict) then
   
         oncompleted = function()
           defences.got('fortifiedearth')
-          if defc.fortifiedair and defc.fortifiedearth and defc.fortifiedwater and not defc.fortifiedspirit and (svo.haveskillset('weatherweaving') or defc.fortifiedfire) then
+          if defc.fortifiedair and defc.fortifiedearth and defc.fortifiedwater and (svo.haveskillset('weatherweaving') or defc.fortifiedfire) then
             defences.got('fortifyall')
           end
         end,

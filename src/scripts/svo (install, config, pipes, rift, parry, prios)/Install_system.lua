@@ -258,8 +258,6 @@ end
 
   send("config screenwidth 0", true)
   -- some newbies don't have the full prompt, just a -, which does not have the required info for the system
-  -- for priests, make the balance show on the prompt - as healing others of blind/deaf takes no balance, while other other similar-looking lines do
-  -- anyone else can see the class balance
   send(sys.ingamecustomprompt, false)
 
   -- defaults/reset

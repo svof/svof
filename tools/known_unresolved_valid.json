@@ -14,18 +14,6 @@
       "name": "defs.cureddeaf"
     },
     {
-      "file": "src/triggers/svo (aliases, triggers)/svo/General defences/Healing + Elementalism channels/triggers.json",
-      "name": "defs.got_boundspirit"
-    },
-    {
-      "file": "src/triggers/svo (aliases, triggers)/svo/General defences/Healing + Elementalism channels/triggers.json",
-      "name": "defs.got_fortifiedspirit"
-    },
-    {
-      "file": "src/triggers/svo (aliases, triggers)/svo/General defences/Healing + Elementalism channels/Spirit.lua",
-      "name": "defs.got_spirit"
-    },
-    {
       "file": "src/triggers/svo (aliases, triggers)/svo/svo Bashing triggers/Qwindor's svo bashing triggers/Annwyn/Annwyn_Aeon.lua",
       "name": "simplecheckwrithes"
     },

@@ -248,64 +248,6 @@
             "script": "svo.defs.got_fortifiedwater()"
           }
         ]
-      },
-      {
-        "name": "Spirit",
-        "isActive": "yes",
-        "isFolder": "no",
-        "multiline": "no",
-        "multilineDelta": "0",
-        "filter": "no",
-        "fireLength": "0",
-        "highlight": "no",
-        "highlightFG": "#ff0000",
-        "highlightBG": "#ffff00",
-        "patterns": [
-          {
-            "pattern": "Spirit",
-            "type": "startOfLine"
-          }
-        ],
-        "children": [
-          {
-            "name": "Bound",
-            "isActive": "yes",
-            "isFolder": "no",
-            "multiline": "no",
-            "multilineDelta": "0",
-            "filter": "no",
-            "fireLength": "0",
-            "highlight": "no",
-            "highlightFG": "#ff0000",
-            "highlightBG": "#ffff00",
-            "patterns": [
-              {
-                "pattern": "Bound",
-                "type": "substring"
-              }
-            ],
-            "script": "svo.defs.got_boundspirit()"
-          },
-          {
-            "name": "Fortified",
-            "isActive": "yes",
-            "isFolder": "no",
-            "multiline": "no",
-            "multilineDelta": "0",
-            "filter": "no",
-            "fireLength": "0",
-            "highlight": "no",
-            "highlightFG": "#ff0000",
-            "highlightBG": "#ffff00",
-            "patterns": [
-              {
-                "pattern": "Fortified",
-                "type": "substring"
-              }
-            ],
-            "script": "svo.defs.got_fortifiedspirit()"
-          }
-        ]
       }
     ]
   },

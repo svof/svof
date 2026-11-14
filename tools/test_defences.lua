@@ -29,7 +29,8 @@ behaviour meant to stay. All of these are in the 2018 module xmls:
       tools/test_lipread.lua)
   12  mindseye's oncompleted marks you deaf, and blind on keepup (and/or)
   13  svo.defs.curedblind and cureddeaf are called and never defined
-  14  the Spirit channel's handlers are called and never defined
+  14  the Spirit channel's handlers were called and never defined (gone with
+      the Spirit channel triggers)
   15  the relogin handler collects the defc table, not the names in it
   16  generated handlers survived a class change and went stale (fixed)
   17  a GMCP gain ran the raising action's oncompleted, written for a
@@ -745,14 +746,11 @@ do -- 12: mindseye's oncompleted, run by svof's own touch
   eq(w.svo.defc.deaf, nil, "touching mindseye does not make you deaf")
 end
 
-do -- 13 and 14: trigger handlers that were never defined, in any class
+do -- 13: trigger handlers that were never defined, in any class
   for _, class in ipairs(CLASSES) do
     local svo = worlds[class].svo
     for _, h in ipairs({ "curedblind", "cureddeaf" }) do
       eq(svo.defs[h], nil, "today (defect 13): " .. class .. ": svo.defs." .. h .. " is not defined")
-    end
-    for _, h in ipairs({ "got_spirit", "got_boundspirit", "got_fortifiedspirit" }) do
-      eq(svo.defs[h], nil, "today (defect 14): " .. class .. ": svo.defs." .. h .. " is not defined")
     end
   end
 end

@@ -494,8 +494,8 @@
     },
     {
       "id": "count|Trigger|svo (aliases, triggers)|svo",
-      "digest": "f1eaa19c2bf34259",
-      "text": "Trigger  svo (aliases, triggers) / 'svo': 2533 items originally, 2527 in merged"
+      "digest": "faa768e6ce6f5a7d",
+      "text": "Trigger  svo (aliases, triggers) / 'svo': 2533 items originally, 2524 in merged"
     },
     {
       "id": "gone|Script|svo (install me in module manager)|Check for system updates/svo_downloaded_file",
@@ -828,6 +828,21 @@
       "text": "Trigger  svo (aliases, triggers) svo/General defences/Harmonics defences/No harmonics [only in the originals]"
     },
     {
+      "id": "gone|Trigger|svo (aliases, triggers)|svo/General defences/Healing + Elementalism channels/Channels/Spirit",
+      "digest": "907915d0933c81dc",
+      "text": "Trigger  svo (aliases, triggers) svo/General defences/Healing + Elementalism channels/Channels/Spirit [only in the originals]"
+    },
+    {
+      "id": "gone|Trigger|svo (aliases, triggers)|svo/General defences/Healing + Elementalism channels/Channels/Spirit/Bound",
+      "digest": "e40eae3ff4600259",
+      "text": "Trigger  svo (aliases, triggers) svo/General defences/Healing + Elementalism channels/Channels/Spirit/Bound [only in the originals]"
+    },
+    {
+      "id": "gone|Trigger|svo (aliases, triggers)|svo/General defences/Healing + Elementalism channels/Channels/Spirit/Fortified",
+      "digest": "b6c3e0500f363f2b",
+      "text": "Trigger  svo (aliases, triggers) svo/General defences/Healing + Elementalism channels/Channels/Spirit/Fortified [only in the originals]"
+    },
+    {
       "id": "gone|Trigger|svo (aliases, triggers)|svo/General/Applied salve/svo cure scalded",
       "digest": "b618797a78de67fc",
       "text": "Trigger  svo (aliases, triggers) svo/General/Applied salve/svo cure scalded [only in the originals]"
@@ -999,7 +1014,7 @@
     },
     {
       "id": "item|Script|svo (actions dictionary)|Dictionary of actions (affs-defs-misc)|script",
-      "digest": "1f718ac49c7aca33",
+      "digest": "3f6e940289817d74",
       "text": "Script   svo (actions dictionary) Dictionary of actions (affs-defs-misc) [script]"
     },
     {
@@ -1009,7 +1024,7 @@
     },
     {
       "id": "item|Script|svo (alias and defence functions)|Defences|script",
-      "digest": "82be6efdf199e3fe",
+      "digest": "671ae9f8142e16a7",
       "text": "Script   svo (alias and defence functions) Defences [script]"
     },
     {
@@ -1034,7 +1049,7 @@
     },
     {
       "id": "item|Script|svo (curing skeleton, controllers, action system)|Curing skeleton|script",
-      "digest": "cf8389cc7c92780c",
+      "digest": "344d9c683f792570",
       "text": "Script   svo (curing skeleton, controllers, action system) Curing skeleton [script]"
     },
     {
@@ -1164,7 +1179,7 @@
     },
     {
       "id": "item|Script|svo (install, config, pipes, rift, parry, prios)|Install system|script",
-      "digest": "d4d91dfd64709029",
+      "digest": "e818cd0ea7099b0f",
       "text": "Script   svo (install, config, pipes, rift, parry, prios) Install system [script]"
     },
     {
