@@ -21,4 +21,6 @@ for i = 1, #names do
 end
 
 db:merge_unique(ndb.db.people, temp_name_list)
+-- everyone it named, not only the people seen this session
+ndb.honorseveryone = true
 raiseEvent("NameDB got new data")

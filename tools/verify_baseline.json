@@ -53,6 +53,11 @@
       "text": "Script   svo (install me in module manager) Load & init/svo.remove_legacy_modules [only in the package]"
     },
     {
+      "id": "added|Script|svo (namedb)|NameDB/ndb.support/ndb.apievents",
+      "digest": "e1307a036b7d1088",
+      "text": "Script   svo (namedb) NameDB/ndb.support/ndb.apievents [only in the package]"
+    },
+    {
       "id": "added|Trigger|svo (aliases, triggers)|svo/Apostasy/Daegger withdrew",
       "digest": "15a7f8478518344e",
       "text": "Trigger  svo (aliases, triggers) svo/Apostasy/Daegger withdrew [only in the package]"
@@ -478,6 +483,11 @@
       "text": "Trigger  svo (aliases, triggers) svo/Vodun & Puppetry/tonguetied gain [only in the package]"
     },
     {
+      "id": "added|Trigger|svo (namedb)|Data Capture/Honors on a person/Honors/Class",
+      "digest": "e16e00435daa5046",
+      "text": "Trigger  svo (namedb) Data Capture/Honors on a person/Honors/Class [only in the package]"
+    },
+    {
       "id": "count|Alias|svo (aliases, triggers)|svo",
       "digest": "54fafd06c004bb94",
       "text": "Alias    svo (aliases, triggers) / 'svo': 121 items originally, 123 in merged"
@@ -493,9 +503,19 @@
       "text": "Script   svo (install me in module manager) / 'Load & init': 7 items originally, 5 in merged"
     },
     {
+      "id": "count|Script|svo (namedb)|NameDB",
+      "digest": "af7595b5b061760d",
+      "text": "Script   svo (namedb) / 'NameDB': 27 items originally, 28 in merged"
+    },
+    {
       "id": "count|Trigger|svo (aliases, triggers)|svo",
       "digest": "f1eaa19c2bf34259",
       "text": "Trigger  svo (aliases, triggers) / 'svo': 2533 items originally, 2527 in merged"
+    },
+    {
+      "id": "count|Trigger|svo (namedb)|Data Capture",
+      "digest": "403ecdcbc653d92d",
+      "text": "Trigger  svo (namedb) / 'Data Capture': 65 items originally, 66 in merged"
     },
     {
       "id": "gone|Script|svo (install me in module manager)|Check for system updates/svo_downloaded_file",
@@ -988,6 +1008,16 @@
       "text": "Alias    svo (aliases, triggers) svo/Show hidelist [script]"
     },
     {
+      "id": "item|Alias|svo (namedb)|NameDB/(ndb update all) Re-check every person in the database|script",
+      "digest": "88b3ab1356bbcd08",
+      "text": "Alias    svo (namedb) NameDB/(ndb update all) Re-check every person in the database [script]"
+    },
+    {
+      "id": "item|Alias|svo (namedb)|NameDB/(ndb update unranked) Re-check all unranked players|script",
+      "digest": "c304471e814272a6",
+      "text": "Alias    svo (namedb) NameDB/(ndb update unranked) Re-check all unranked players [script]"
+    },
+    {
       "id": "item|Alias|svo (namedb)|NameDB/Enemies lists|script",
       "digest": "47331a71696caa53",
       "text": "Alias    svo (namedb) NameDB/Enemies lists [script]"
@@ -1214,8 +1244,38 @@
     },
     {
       "id": "item|Script|svo (namedb)|NameDB/ndb main code|script",
-      "digest": "d5e14e7d7bd7e477",
+      "digest": "16495d995700c007",
       "text": "Script   svo (namedb) NameDB/ndb main code [script]"
+    },
+    {
+      "id": "item|Script|svo (namedb)|NameDB/ndb.aliases|script",
+      "digest": "dfc34e5e64802c9e",
+      "text": "Script   svo (namedb) NameDB/ndb.aliases [script]"
+    },
+    {
+      "id": "item|Script|svo (namedb)|NameDB/ndb.highlighter/ndb.addhighlightname|events",
+      "digest": "f6d61a484a5aaac8",
+      "text": "Script   svo (namedb) NameDB/ndb.highlighter/ndb.addhighlightname [events]"
+    },
+    {
+      "id": "item|Script|svo (namedb)|NameDB/ndb.init|script",
+      "digest": "870c2cad770dcb5a",
+      "text": "Script   svo (namedb) NameDB/ndb.init [script]"
+    },
+    {
+      "id": "item|Script|svo (namedb)|NameDB/ndb.support/ndb.configs|script",
+      "digest": "0eb2d615b6d0e087",
+      "text": "Script   svo (namedb) NameDB/ndb.support/ndb.configs [script]"
+    },
+    {
+      "id": "item|Script|svo (namedb)|NameDB/ndb.support/ndb.downloaded_file|events",
+      "digest": "7ef3abe0b719277c",
+      "text": "Script   svo (namedb) NameDB/ndb.support/ndb.downloaded_file [events]"
+    },
+    {
+      "id": "item|Script|svo (namedb)|NameDB/ndb.support/ndb.downloaded_file|script",
+      "digest": "58c93c64157b3fb9",
+      "text": "Script   svo (namedb) NameDB/ndb.support/ndb.downloaded_file [script]"
     },
     {
       "id": "item|Script|svo (namedb)|NameDB|script",
@@ -3271,6 +3331,21 @@
       "id": "item|Trigger|svo (fishdist)|svo Fishing Distance by Trilliana/fish!|highlightFg",
       "digest": "456e385a95f1e9e4",
       "text": "Trigger  svo (fishdist) svo Fishing Distance by Trilliana/fish! [highlightFg]"
+    },
+    {
+      "id": "item|Trigger|svo (namedb)|Data Capture/Honors on a person/Honors/City soldier|script",
+      "digest": "12d8740a0891fc5c",
+      "text": "Trigger  svo (namedb) Data Capture/Honors on a person/Honors/City soldier [script]"
+    },
+    {
+      "id": "item|Trigger|svo (namedb)|Data Capture/Honors on a person/Honors|script",
+      "digest": "87ad21f47fa9ed94",
+      "text": "Trigger  svo (namedb) Data Capture/Honors on a person/Honors [script]"
+    },
+    {
+      "id": "item|Trigger|svo (namedb)|Data Capture/Honors on a person/Immortal|script",
+      "digest": "2a92e5d86890d53b",
+      "text": "Trigger  svo (namedb) Data Capture/Honors on a person/Immortal [script]"
     },
     {
       "id": "item|Trigger|svo (namedb)|Data Capture/Lists/City-House-Order enemies|colorTriggerFgColor",

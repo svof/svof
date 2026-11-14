@@ -32,18 +32,52 @@ ndb.schema = {
     divorces      = 0, -- 0 default,
     motto         = "",
     warcry        = "",
-    infamous      = -1, -- -1 default, 0 not infamous, 1 nearly, 2-7 infamous 
+    infamous      = -1, -- -1 default, 0 not infamous, 1 nearly, 2-7 infamous
+    army_rank     = -1, -- -1 default, > 0 the number HONORS gives a city soldier's rank
+    classes       = "", -- every class seen, comma-separated; class is the current one
+    api_checked   = 0, -- 0 never, else os.time() of the last Achaea API lookup
 
     _unique     = {"name"},
     _violations = "REPLACE"
   },
 }
 
+-- Keeps people.classes up to date from people.class: the two triggers add a
+-- class when it's written, and the update fills classes in for people whose
+-- class was known before the column existed. Dragon is a form, not a class.
+-- tools/test_ndb_classes.py runs these statements against SQLite.
+ndb.classes_sql = {
+  [[CREATE TRIGGER IF NOT EXISTS people_classes_insert AFTER INSERT ON people
+    WHEN NEW.class IS NOT NULL AND NEW.class <> '' AND lower(NEW.class) <> 'dragon'
+      AND (',' || coalesce(NEW.classes, '') || ',') NOT LIKE ('%,' || lower(NEW.class) || ',%')
+    BEGIN
+      UPDATE people SET classes = CASE WHEN coalesce(classes, '') = '' THEN lower(NEW.class)
+        ELSE classes || ',' || lower(NEW.class) END WHERE _row_id = NEW._row_id;
+    END]],
+  [[CREATE TRIGGER IF NOT EXISTS people_classes_update AFTER UPDATE OF class ON people
+    WHEN NEW.class IS NOT NULL AND NEW.class <> '' AND lower(NEW.class) <> 'dragon'
+      AND (',' || coalesce(NEW.classes, '') || ',') NOT LIKE ('%,' || lower(NEW.class) || ',%')
+    BEGIN
+      UPDATE people SET classes = CASE WHEN coalesce(classes, '') = '' THEN lower(NEW.class)
+        ELSE classes || ',' || lower(NEW.class) END WHERE _row_id = NEW._row_id;
+    END]],
+  [[UPDATE people SET classes = lower(class)
+    WHERE coalesce(classes, '') = '' AND coalesce(class, '') <> '' AND lower(class) <> 'dragon']],
+}
+
 function ndb.init()
   ndb.db = db:create("NameDB", ndb.schema)
   -- necessary on Windows, because its IO tends to... slow down with time.
   -- http://www.sqlite.org/pragma.html#pragma_synchronous
-  db.__conn["namedb"]:execute("pragma synchronous = OFF")
+  -- SQLite refuses to change this inside a transaction, and db:create leaves
+  -- the connection in one, so the pragma only takes with autocommit on for a
+  -- moment. Sent inside the transaction it was refused without a word: every
+  -- NameDB commit flushed to disk, about 400 ms each in Mudlet on Windows.
+  local conn = db.__conn["namedb"]
+  conn:commit()
+  conn:setautocommit(true)
+  conn:execute("pragma synchronous = OFF")
+  conn:setautocommit(false)
 
   -- automigration by db: doesn't work anymore because LuaSQL bugs out on the pragma statement
   -- so if there was any data at all in the db, see if any of it needs to be added
@@ -187,7 +221,40 @@ function ndb.init()
       conn:commit()
       cecho("(namedb): upgraded your database to have a field to track a persons level.\n")
     end
+
+    if someperson.army_rank == nil then
+      local conn = db.__conn.namedb
+      local sql_add = [[ALTER TABLE people ADD COLUMN "army_rank" REAL NULL DEFAULT -1]]
+      conn:execute(sql_add)
+      conn:commit()
+      cecho("(namedb): upgraded your database to have a field for the persons army rank.\n")
+    end
+
+    if someperson.api_checked == nil then
+      local conn = db.__conn.namedb
+      local sql_add = [[ALTER TABLE people ADD COLUMN "api_checked" REAL NULL DEFAULT 0]]
+      conn:execute(sql_add)
+      conn:commit()
+      cecho("(namedb): upgraded your database to have a field for when the Achaea API was last asked about a person.\n")
+    end
+
+    if someperson.classes == nil then
+      local conn = db.__conn.namedb
+      local sql_add = [[ALTER TABLE people ADD COLUMN "classes" TEXT NULL DEFAULT ""]]
+      conn:execute(sql_add)
+      conn:commit()
+      cecho("(namedb): upgraded your database to have a field for every class a person has been seen as.\n")
+    end
   end
+
+  -- People can hold several classes and switch between them, and everything
+  -- that learns a class - the API, HONORS, CWHO, HWHO, the house and order
+  -- lists, the class an attack shows - writes the current one to class.
+  -- These triggers add each one written to classes, so none of those places
+  -- has to know about it, scripts of the player's own included.
+  local conn = db.__conn.namedb
+  for _, sql in ipairs(ndb.classes_sql) do conn:execute(sql) end
+  conn:commit()
 
   -- shuffle Shallamese into Targossas
   local c = #(db:fetch(ndb.db.people, db:eq(ndb.db.people.city, "Shallam")))

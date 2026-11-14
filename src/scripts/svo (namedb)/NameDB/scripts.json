@@ -50,7 +50,21 @@
         "isActive": "yes",
         "isFolder": "no",
         "eventHandlerList": [
-          "sysDownloadDone"
+          "sysDownloadDone",
+          "sysDownloadError"
+        ]
+      },
+      {
+        "name": "ndb.apievents",
+        "isActive": "yes",
+        "isFolder": "no",
+        "eventHandlerList": [
+          "gmcp.Char.Name",
+          "sysDisconnectionEvent",
+          "gmcp.Room.Players",
+          "gmcp.Room.AddPlayer",
+          "gmcp.Comm.Channel.Text",
+          "NameDB saw list name"
         ]
       },
       {
@@ -122,7 +136,8 @@
           "NameDB highlightignore name changed",
           "NameDB set name changed",
           "NameDB saw list name",
-          "NameDB name deleted"
+          "NameDB name deleted",
+          "NameDB got API data"
         ]
       }
     ]
