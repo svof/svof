@@ -1,8 +1,12 @@
 # Plan: custom serverside priorities
 
-Written 2026-10-31, against `in-client-svof` at `6bd3c5e`. No branch yet. The
-game facts and decisions are also in the `achaea-serverside-priorities`
-memory.
+Written 2026-10-31, against `in-client-svof` at `6bd3c5e`. The game facts and
+decisions are also in the `achaea-serverside-priorities` memory.
+
+Progress, 2026-11-09: step 0 is captured, step 1 needed no work, and step 2
+is PR #915 (branch `serverside-custom-priorities`). The code references in
+"What svof does today" are from the day the plan was written, and the files
+have moved on since.
 
 ## The problem
 
@@ -50,12 +54,50 @@ control in three ways:
 6. `curing priority list` starts with `Your affliction curing priorities for
    the priority set normal:`, lists `N:  name, name, ...` for 1 to 26, wraps
    at the screen width (continuation lines have no number), and ends with
-   `Affs with priority 26 are ignored.` It lists every affliction the server
-   knows, including the ones svof has no entry for (icebound, grievouswounds,
-   frostbite) at the game's defaults.
+   `Affs with priority 26 are ignored.` It includes afflictions svof has no
+   entry for, such as icebound, grievouswounds, and frostbite, at the game's
+   defaults. It doesn't list every affliction: see fact 14.
 7. svof cures latched itself on purpose.
 8. The server keeps up every defence on its defence list. It has no defup of
    its own, which svof's comment at `Defences.lua:3004` also says.
+
+### From the live run, 2026-11-09
+
+The run sent each command from a test character with no svof installed. The
+raw log is `serverprios-step0-2026-11-09.txt` in the local
+`svof-live-testing/captures` folder.
+
+9. The confirmation of a plain entry, and of 26, has the stack entry's form:
+   `You have set the 'paralysis' affliction to the 3 priority.`
+10. A batch prints one confirmation for each entry, in order. A refused entry
+    prints its refusal in place, and the game still sets the entries after
+    it.
+11. The game doesn't refuse a stack number on an affliction that doesn't
+    stack. `curing priority paralysis2 5` sets plain paralysis to 5 and
+    confirms `'paralysis'`.
+12. The game accepts `blind` and `deaf`, which svof sends, and confirms them
+    as `'blindness'` and `'deafness'`. A confirmation's name can differ from
+    the name sent.
+13. The slowcuring list's header is `Your affliction curing priorities for
+    the priority set slowcuring:`. A list's header names the set in use.
+14. `curing priority reset` resets only the set in use, and clears that set's
+    stack entries. The defaults put nothing at 26, with latched at 1 and
+    impaled at 2. They don't list blindness or deafness at all, so the list
+    can lack an affliction the server knows. A level with nothing on it
+    prints as a bare `13:`. With no screen width set, no level wraps.
+15. `curing priority defence list` prints `Your defence priorities for curing
+    set normal:`, and then one `name : N` line for each defence on the list,
+    with the name padded to a column. It has no footer. The run saw 12 and
+    20 on it, and didn't probe the highest number.
+16. A defence edit confirms `You have set the 'cloak' defence to the 3
+    priority.`, one line for each entry of a batch. `curing priority defence
+    cloak reset` prints the same line with 0, and takes the defence off the
+    list.
+17. The server acts at once on a defence put on its list, and a switch of
+    curingset raises the defences on that set's list.
+18. The list has 11 names svof has no action for: blindness, dazed, deafness,
+    diminished, fratricide, frostbite, grievouswounds, icebound,
+    internalbleeding, kkractlebrand, and stridulating.
 
 ## The user's choices, 2026-10-31
 
@@ -144,10 +186,11 @@ control in three ways:
 - **The send path.** `svo.sendcuringprio` (`Curing_skeleton.lua:2509`)
   batches entries into one `curing priority a 1 b 2 ...` command per queue.
   The slow queue wraps its command in `curingset switch slowcuring` and,
-  when not in slow curing, `curingset switch normal`. **The normal queue
-  never switches**, so a normal-set change sent while `sys.sync` is true
-  lands in the slowcuring set. Pre-existing, found while reading this, not
-  checked live.
+  when not in slow curing, `curingset switch normal`. The normal queue
+  didn't switch when this plan was written, so a normal-set change sent
+  while `sys.sync` was true landed in the slowcuring set. #903 fixed that:
+  `sendprionow` wraps a normal-queue command in `curingset switch normal`
+  and back.
 - **svof hides confirmations.** The `vconfig gagserverside` trigger deletes
   every line starting `You have set the` when `gagserverside` is on, which
   is the default. Set switches print `You will now cure using the normal
@@ -254,10 +297,10 @@ refused send leaves no trace.
   names the afflictions svof set back to 26, for example "Priorities reset to
   the game's defaults. svof re-read the list and set impale, lovers,
   selfishness, and latched back to 26." The table takes the defaults instead
-  of sending the old numbers back, because the user asked for the reset. If
-  step 0 shows a reset affects only the active set, svof reads only that
-  set. Like the confirmation recorder, this has to run before the gag
-  trigger deletes the line.
+  of sending the old numbers back, because the user asked for the reset. A
+  reset affects only the set in use, so svof reads only that set, and the
+  other set's table stays. Like the confirmation recorder, this has to run
+  before the gag trigger deletes the line.
 
 ### Overrides
 
@@ -291,7 +334,9 @@ entry, with the value it last sent. It records what actually went out, after
 `sendcuringprio` (`Curing_skeleton.lua`) drops a repeat within the same
 tick. Queueing `latched 26`, then 5, then 26 again sends
 `curing priority latched 26 latched 5`, so the pending value for latched is
-5, the last one sent, not the 26 queued after it. A confirmation that
+5, the last one sent, not the 26 queued after it. The guard keys a pending
+entry by the name the game confirms, not the name svof sent: svof sends
+`blind`, and the game confirms `'blindness'`. A confirmation that
 matches the pending value clears it and goes no further. Any other
 confirmation is the user's edit. A pending entry that no confirmation
 clears within a few seconds is dropped, so a lost confirmation doesn't
@@ -309,6 +354,9 @@ stay on top after the restore.
   table, and each gets its number back when the reason ends. Unset levels
   follow the plain entry, so they're covered too.
 - svof never widens a 26 the user set on one stack entry.
+- svof refuses a stack entry for an affliction it doesn't count, before
+  sending anything. The game doesn't refuse one: it sets the plain entry
+  instead.
 
 ### `vignore <aff> <count>`
 
@@ -370,7 +418,8 @@ svof echoes each warning once per change, with a clickable fix:
   the two modes, along with the keepup changes, batched like any other send.
 - **Both curingsets** get the same numbers.
 - **Edits in game.** `curing priority defence <def> <n>` goes into the
-  current mode's numbers. The confirmation line is owed (step 0). If the
+  current mode's numbers. The confirmation is `You have set the 'cloak'
+  defence to the 3 priority.` If the
   defence isn't on the current mode's keepup list, svof records the number
   but takes the defence off at its next sync, because keepup decides what's
   on the list. svof says so, with a link to run `vkeep <def>`.
@@ -429,12 +478,11 @@ svof echoes each warning once per change, with a clickable fix:
 - **Custom to auto.** Give every per-stack ignore its number back, clear the
   per-stack ignores, then run the full resync `vconfig serverside on` does
   today, which also gives the defences svof's positions again.
-  That resync sends `PRIORITY RESET` (`Serverside.lua`), and whether a
-  reset clears stack entries is still a step 0 capture. Until it's known,
-  the switch says nothing about them. If a reset keeps them, say that the
-  stack entries the user set stay on the server, since auto never touches
-  them. If it clears them, say that they're gone, and that switching back
-  to custom sends them again from the table.
+  That resync sends `PRIORITY RESET` (`Serverside.lua`) to the set in use
+  only, and a reset clears that set's stack entries. So the switch says
+  that the stack entries of the set in use are gone, that the other set's
+  stay on the server because auto never touches them, and that switching
+  back to custom sends them all again from the table.
 
 ### Commands for the server lists
 
@@ -488,25 +536,15 @@ instead, and the defence numbers are covered in the Defences section.
 
 ## Steps
 
-0. **Captures still owed.** These need a live game, so ask before each run:
-   - the confirmation for a plain entry, and for 26
-   - whether a batched `curing priority a 1 b 2` prints one confirmation per
-     entry, and what happens to the rest of a batch when one entry is
-     refused
-   - the reply to a stack on an affliction that doesn't stack, such as
-     `curing priority paralysis2 5`
-   - whether `curing priority reset` and `PRIORITY RESET` clear stack
-     entries, and whether they reset only the active set
-   - the slowcuring list's header
-   - what `curing priority defence list` prints, including whether
-     defences use 1 to 25 like afflictions
-   - the confirmation for a defence edit
-1. **Fix the normal-set send path** (its own PR, off `in-client-svof`). Wrap
-   normal-queue sends in `curingset switch normal` and back while
-   `sys.sync` is true. Check live first that the bug happens.
-2. **Parser, recorder, and set tracker, with no behavior change.** Test them
-   in plain Lua with the user's two pasted lists as fixtures. Map every name
-   through `sstosvoa` and list the ones that don't map.
+0. **Captures.** Done in a live run on 2026-11-09: see "From the live run"
+   in the game facts. Still unknown: the highest defence number, and how the
+   server breaks a tie.
+1. **Fix the normal-set send path.** Nothing to do: #903 already fixed it.
+2. **Parser, recorder, and set tracker, with no behavior change.** Done in
+   #915. `sk.serverread` holds what svof read, and
+   `tools/test_server_priority_list.lua` tests it on captured lists and
+   lines. Not checked in a real Mudlet: that the trigger still runs on a
+   line the gag trigger deletes.
 3. **Table, storage, the option, and the mode switches**, including the
    gates on the affliction sync, `PRIORITY RESET`, and the class-change
    reset.
