@@ -498,6 +498,16 @@ jobs:
       - name: test mucous
         run: lua tools/test_mucous.lua
 
+      # Gate 1.99999. tools/dict_behaviour.lua works out what every dictionary
+      # entry does by running it in every state that decides it, so a
+      # rewrite of an entry (basicaff, basicdef) can be compared with the
+      # revision before by tools/compare_dict_behaviour.py, which is run by
+      # hand on such a change. This tests the harness itself: rewrites that
+      # change nothing describe the same, and planted mistakes are caught in
+      # the states they change.
+      - name: test the dictionary behaviour harness
+        run: lua tools/test_dict_behaviour.lua
+
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
