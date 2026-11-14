@@ -93,7 +93,11 @@ raw log is `serverprios-step0-2026-11-09.txt` in the local
     confirms `'paralysis'`.
 12. The game accepts `blind` and `deaf`, which svof sends, and confirms them
     as `'blindness'` and `'deafness'`. A confirmation's name can differ from
-    the name sent.
+    the name sent. It accepts the listed name too: `curing priority
+    blindness 26` confirms `'blindness'`. The run didn't send `deafness`
+    itself.
+    Once it has a number, the list shows blindness, at 24 and 25 in the
+    run's lists, and deafness at 25. Only a reset list lacks them (fact 14).
 13. The slowcuring list's header is `Your affliction curing priorities for
     the priority set slowcuring:`. A list's header names the set in use.
 14. `curing priority reset` resets only the set in use, and clears that set's
