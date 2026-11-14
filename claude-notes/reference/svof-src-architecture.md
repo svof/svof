@@ -292,7 +292,7 @@ out early and silently if any of four things is not true:
 
 1. `svo.systemloaded` is already set. Prevents double initialisation.
 2. Penlight is loaded, tested as `package.loaded['pl.tablex']`.
-3. All 22 required subsystems are present in `svo.loader`, tested with
+3. All the required subsystems are present in `svo.loader`, tested with
    `table.n_complement` against `tablex.keys(svo.loader)`.
 4. Mudlet is at least 3.20, tested with `mudletOlderThan(3,20)`. This one is
    not silent: it prints a message telling you to update.
@@ -300,10 +300,10 @@ out early and silently if any of four things is not true:
 The silent bails are what make the design work. Mudlet runs package scripts in
 whatever order it likes, so `svo_init_system` may be reached several times
 before the last loader has been defined. Each early attempt does nothing. The
-attempt that finds all 22 present is the one that runs.
+attempt that finds them all present is the one that runs.
 
 It then clears `svo.signals` (so a class change gets a clean bus), calls the
-22 required loaders in order, emits `svo.signals.systemstart`, sets
+required loaders in order, emits `svo.signals.systemstart`, sets
 `svo.systemloaded`, and raises `svo system loaded`.
 
 Clearing `svo.signals` happens at `svo_init_system.lua:74`, before any loader
@@ -327,8 +327,14 @@ Required subsystems, in the order they are called:
 ```
 setup    misc     empty    dict     sk       controllers  action   pipes
 rift     diag     valid_simple      valid_main           config   install
-aliases  defences prio     parry    funnies  dor      customprompt serverside
+aliases  defences customdefs       customaffs           prio     parry
+funnies  dor      customprompt      serverside
 ```
+
+`customdefs` and `customaffs` are vcustomdef and vcustomaff, a script each in
+the `Custom definitions` folder (#887). They run straight after `defences`,
+whose records they work on, and before `prio`, so a definition is registered
+before the saved priorities are read.
 
 The order is a dependency chain. `setup` creates the namespaces and the signal
 bus, so it is first. `misc` provides the echo and string helpers everything
@@ -2464,8 +2470,10 @@ Where they depart from the herb shape:
   `healmana`, with no defence shortlist. `check_moss` considers only
   `healhealth` and `healmana`, and only when `conf.secondarymoss` is off.
 * `check_smoke` has no `usingbal('smoke')` guard; it tests
-  `not svo.doingaction(i)` per candidate instead. Asthma and mucous block it,
-  and it adds `checkasthma` when asthma is suspected.
+  `not svo.doingaction(i)` per candidate instead. Asthma blocks it, and it adds
+  `checkasthma` when asthma is suspected. Mucous holds it off through smoke
+  balance: it's a longer smoke recovery, not an affliction
+  (`svo.dict.mucouslungs`, #882).
 * `check_misc` has no balance gate at all, only stun and unconsciousness.
   While asleep, only the `sleep` action passes.
 * `check_focus` needs any affliction, focus balance, `can_usemana()`,

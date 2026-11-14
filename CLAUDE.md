@@ -390,8 +390,8 @@ bugs, all reported. The import was done once with `tools/xml2muddler.py`.
 ## How svof initialises
 
 Each script defines `svo.loader.X = function() ... end`. `svo_init_system`
-runs on `sysLoadEvent` and `sysInstall` and calls 22 required subsystems then
-10 addons in explicit dependency order, so init does not depend on item order.
+runs on `sysLoadEvent` and `sysInstall` and calls the required subsystems then
+the addons, in the explicit dependency order its two lists give, so init does not depend on item order.
 It bails early if Penlight is not loaded or any subsystem is missing. It
 emits `svo.signals.systemstart`, then raises `svo system loaded`.
 
