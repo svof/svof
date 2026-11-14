@@ -15,10 +15,12 @@ Progress, 2026-11-13:
   change until their tasks and the single-source plan are done, and then
   makes one big docs change, so this branch waits for that.
 - Step 11, the live test, is owed, and needs asking first.
-- #917 (lust) and #918 (slickness) change the same send functions in
-  `Serverside.lua` that #916 does, so whichever merges second conflicts
-  there. Merging #915 and #916 last, rebased onto the others, is the
-  smaller job.
+- #917 (lust) and #918 (slickness) also change `Serverside.lua`. A dry-run
+  merge of each into #916 on 2026-11-14 (`git merge-tree`) merged
+  `Serverside.lua` cleanly, and conflicted only in `build.yml` (the test
+  steps) and `tools/verify_baseline.json`, which is regenerated anyway. A
+  clean text merge isn't proof the code still works, so rebuild and run the
+  tests after each merge.
 
 The code references in "What svof does today" are from the day the plan was
 written, and the files have moved on since. "Built differently from the
