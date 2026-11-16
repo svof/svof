@@ -426,6 +426,208 @@
       {
         "pattern": "All your curing affliction priorities have been reset to defaults.",
         "type": "exactMatch"
+      },
+      {
+        "pattern": "Curing Status:",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Curing setting lines",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Curing activated.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Curing disabled.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Command reporting activated.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Command reporting disabled.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Automatic sipping of healing elixirs activated.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Automatic sipping of healing elixirs disabled.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Automatic affliction curing activated.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Automatic affliction curing disabled.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Automatic defence handling activated.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Automatic defence handling disabled.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "You will now use transmutation cures.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "You will now use concoction-based cures.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "You will now use alternative curing methods if your selected curing type is not available.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "You will no longer use alternative curing methods if your selected curing type is not available.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Curing will now prioritise health over mana.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Curing will now prioritise mana over health.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Automatic usage of focusing activated.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Automatic usage of focusing disabled.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "You will now prioritise focus over herbs.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "You will now prioritise herbs over focus.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Automatic usage of the tree tattoo activated.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Automatic usage of the tree tattoo disabled.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "You will now use the insomnia ability.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "You will now not use the insomnia ability.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "You will now attempt to clot your wounds.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "You will no longer attempt to clot your wounds.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "You will now attempt to cure multiple things at once.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "You will now cure one thing at a time.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "You will now use kaido transmute when you can.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "You will no longer use kaido transmute.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "You will prioritise herbs over focusing.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "You will prioritise focus over herbs.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "^Health curing threshold set to \\d+%\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^Mana curing threshold set to \\d+%\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^Moss health curing threshold set to \\d+%\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^Moss mana curing threshold set to \\d+%\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^Will clot above \\d+ bleeding\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^Will clot down to \\d+ bleeding\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^Will clot down to the default value of \\d+ bleeding\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^You will now use mana if above \\d+% of your maximum mana reserves\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^Will cure health based afflictions above \\d+%\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^You will now use corrupted clotting if above \\d+% of your maximum health reserves\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^You will now focus while afflicted by \\w+\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^You will no longer focus while afflicted by \\w+\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^You will not focus while afflicted by \\w+\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^Automatic usage of focusing is currently \\w+\\.$",
+        "type": "regex"
       }
     ]
   }

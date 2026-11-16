@@ -520,6 +520,19 @@ jobs:
       - name: test custom server priorities
         run: lua tools/test_server_priority_custom.lua
 
+      # CURING STATUS, as a player pasted it: every row is read into svof's
+      # own name for the setting, a row svof has no name for is kept as
+      # printed, and a status that is cut short or interrupted changes
+      # nothing. Reading sends nothing. Runs the real loaders
+      # (tools/svof_world.lua).
+      - name: test reading the game's curing status
+        run: lua tools/test_server_status.lua
+
+      # custom mode leaves the game's curing settings to the player: svof
+      # follows them and warns, and sends one only for a vconfig change
+      - name: test the game's curing settings in custom mode
+        run: lua tools/test_server_settings.lua
+
       - uses: actions/setup-java@v4
         with:
           distribution: temurin

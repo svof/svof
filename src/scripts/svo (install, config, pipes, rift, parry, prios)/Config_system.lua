@@ -2093,14 +2093,21 @@ tntf_tbl = {
 
       svo.echof("Serverside curing enabled (augmented with Svof's).")
       svo.setupserverside()
-      svo.sendcuring("afflictions on")
-      svo.sendcuring("sipping on")
-      svo.sendcuring("defences on")
-      svo.sendcuring("focus " .. (conf.focus and 'on' or 'off'))
-      svo.sendcuring("batch on")
+      -- with vconfig serverprios custom the game's settings are the
+      -- player's: svof reads them and warns about what they leave undone
+      local custom = svo.sk.customserverprios()
+      if not custom then
+        svo.sendcuring("afflictions on")
+        svo.sendcuring("sipping on")
+        svo.sendcuring("defences on")
+        svo.sendcuring("focus " .. (conf.focus and 'on' or 'off'))
+        svo.sendcuring("batch on")
+      end
       svo.sendc("config advancedcuring on")
-      svo.sendcuring("reporting on")
-      if not conf.paused then svo.sendcuring('on') end
+      if not custom then
+        svo.sendcuring("reporting on")
+        if not conf.paused then svo.sendcuring('on') end
+      end
     end,
     off = function()
       svo.echof("Serverside curing disabled.")

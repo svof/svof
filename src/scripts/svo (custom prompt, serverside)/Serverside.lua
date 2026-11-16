@@ -652,6 +652,486 @@ function sk.serverdeflist_line(text, isprompt)
   sk.serverdefs_read(list.set, list.asked)
 end
 
+-- CURING STATUS: the header, a line of dashes, a "Label: value" line for each
+-- setting with empty lines between the groups, and a closing line of dashes.
+-- read.status holds the settings below by svof's name for each, and
+-- read.statusother the rows svof has no name for, by the game's label and as
+-- the game printed them. Both are kept only when the closing line arrives
+-- with every line before it read, so a status that is cut short changes
+-- nothing. The focus with and without guilt and fulminated switches aren't in
+-- it
+sk.serverstatus_rows = {
+  ["Enabled"]                   = 'enabled',
+  ["Reporting commands"]        = 'reporting',
+  ["Sipping"]                   = 'sipping',
+  ["Affliction Curing"]         = 'afflictions',
+  ["Defence Upkeep"]            = 'defences',
+  ["Curing Method"]             = 'method',
+  ["Fallback Curing"]           = 'fallback',
+  ["Custom Curing Priority"]    = 'custompriority',
+  ["Custom Defence Priority"]   = 'customdefpriority',
+  ["Health/Mana Priority"]      = 'healthmana',
+  ["Sip health at"]             = 'siphealth',
+  ["Sip mana at"]               = 'sipmana',
+  ["Eat moss below health"]     = 'mosshealth',
+  ["Eat moss below mana"]       = 'mossmana',
+  ["Use focus"]                 = 'focus',
+  ["Focus over herbs"]          = 'focusoverherbs',
+  ["Use tree"]                  = 'tree',
+  ["Use clot"]                  = 'clot',
+  ["Clot at"]                   = 'clotat',
+  ["Clot to"]                   = 'clotto',
+  ["Use insomnia"]              = 'insomnia',
+  ["Will cure fractures above"] = 'healthaffsabove',
+  ["Will use mana above"]       = 'manathreshold',
+  ["Will clot health until"]    = 'clothealth',
+  ["Batch actions"]             = 'batch',
+  ["Use Kaido Transmute"]       = 'kaidotransmute',
+}
+
+-- a status is 28 rows, its blank lines and its dashes; past this, something
+-- else is being read
+local serverstatus_longest = 60
+
+-- Yes and No are true and false, "90%", "70% health" and "60 bleeding" are
+-- their numbers, and anything else stays as the game printed it
+local function serverstatus_value(text)
+  if text == "Yes" then return true end
+  if text == "No" then return false end
+  local number = text:match("^(%d+)%%") or text:match("^(%d+) bleeding$")
+  if number then return tonumber(number) end
+  return text
+end
+
+function sk.serverstatus_stop()
+  local read = sk.serverread
+  read.statusreading = nil
+  if read.statusreader then killTrigger(read.statusreader); read.statusreader = nil end
+end
+
+-- every line after a status's header
+function sk.serverstatus_line(text, isprompt)
+  local read = sk.serverread
+  local status = read.statusreading
+  if not status or isprompt then sk.serverstatus_stop() return end
+
+  -- a status svof asked for isn't shown
+  if status.asked then deleteLine() end
+  if text == "" then return end
+  -- the reader can be handed the header that started it
+  if not status.open and text == "Curing Status:" then return end
+
+  status.lines = status.lines + 1
+  if status.lines > serverstatus_longest then sk.serverstatus_stop() return end
+
+  if text:match("^%-+$") then
+    if not status.open then status.open = true return end
+    sk.serverstatus_stop()
+    if next(status.known) then
+      read.status, read.statusother = status.known, status.other
+      if read.statustimer then killTimer(read.statustimer); read.statustimer = nil end
+      sk.serversettings_taken()
+    end
+    return
+  end
+
+  local label, value = text:match("^(.-):%s+(.-)%s*$")
+  if not status.open or not label or value == "" then sk.serverstatus_stop() return end
+
+  local name = sk.serverstatus_rows[label]
+  if name then
+    status.known[name] = serverstatus_value(value)
+  else
+    status.other[label] = value
+  end
+end
+
+-- ===== the game's curing settings in custom mode =====
+--
+-- In auto mode svof sends the game its own vconfig values and never reads the
+-- game's. In custom mode every row of CURING STATUS is the player's: svof
+-- sends none of them on its own, reads the status and CURING FOCUS at login,
+-- on the switch to custom and when serverside goes on, and sets its own
+-- options to match. A vconfig change still sends its one command, as the
+-- player's own. Three rows don't move svof's side: Defence Upkeep, Sipping
+-- and Affliction Curing. svof's own keepup, sipping and curing go on as they
+-- are, and svof warns when the game's switch leaves something undone.
+
+-- the game's reply to each setting command, as captured 2026-11-15
+local serversetting_replies = {
+  ["Curing activated."] = {'enabled', true},
+  ["Curing disabled."] = {'enabled', false},
+  ["Command reporting activated."] = {'reporting', true},
+  ["Command reporting disabled."] = {'reporting', false},
+  ["Automatic sipping of healing elixirs activated."] = {'sipping', true},
+  ["Automatic sipping of healing elixirs disabled."] = {'sipping', false},
+  ["Automatic affliction curing activated."] = {'afflictions', true},
+  ["Automatic affliction curing disabled."] = {'afflictions', false},
+  ["Automatic defence handling activated."] = {'defences', true},
+  ["Automatic defence handling disabled."] = {'defences', false},
+  ["You will now use transmutation cures."] = {'method', "Transmutation"},
+  ["You will now use concoction-based cures."] = {'method', "Concoctions"},
+  ["You will now use alternative curing methods if your selected curing type is not available."] = {'fallback', true},
+  ["You will no longer use alternative curing methods if your selected curing type is not available."] = {'fallback', false},
+  ["Curing will now prioritise health over mana."] = {'healthmana', "Health"},
+  ["Curing will now prioritise mana over health."] = {'healthmana', "Mana"},
+  ["Automatic usage of focusing activated."] = {'focus', true},
+  ["Automatic usage of focusing disabled."] = {'focus', false},
+  ["You will now prioritise focus over herbs."] = {'focusoverherbs', true},
+  ["You will now prioritise herbs over focus."] = {'focusoverherbs', false},
+  ["Automatic usage of the tree tattoo activated."] = {'tree', true},
+  ["Automatic usage of the tree tattoo disabled."] = {'tree', false},
+  ["You will now use the insomnia ability."] = {'insomnia', true},
+  ["You will now not use the insomnia ability."] = {'insomnia', false},
+  ["You will now attempt to clot your wounds."] = {'clot', true},
+  ["You will no longer attempt to clot your wounds."] = {'clot', false},
+  ["You will now attempt to cure multiple things at once."] = {'batch', true},
+  ["You will now cure one thing at a time."] = {'batch', false},
+  ["You will now use kaido transmute when you can."] = {'kaidotransmute', true},
+  ["You will no longer use kaido transmute."] = {'kaidotransmute', false},
+}
+
+local serversetting_numbers = {
+  {"^Health curing threshold set to (%d+)%%%.$", 'siphealth'},
+  {"^Mana curing threshold set to (%d+)%%%.$", 'sipmana'},
+  {"^Moss health curing threshold set to (%d+)%%%.$", 'mosshealth'},
+  {"^Moss mana curing threshold set to (%d+)%%%.$", 'mossmana'},
+  {"^Will clot above (%d+) bleeding%.$", 'clotat'},
+  {"^Will clot down to (%d+) bleeding%.$", 'clotto'},
+  {"^Will clot down to the default value of (%d+) bleeding%.$", 'clotto'},
+  {"^You will now use mana if above (%d+)%% of your maximum mana reserves%.$", 'manathreshold'},
+  {"^Will cure health based afflictions above (%d+)%%%.$", 'healthaffsabove'},
+  {"^You will now use corrupted clotting if above (%d+)%% of your maximum health reserves%.$", 'clothealth'},
+}
+
+-- the setting a line of the game's is about and its value. The third result
+-- is true for a line of CURING FOCUS, which shows settings and changes none.
+-- CURING FOCUS has a line for a guilt or fulminated switch only while it is
+-- off: sk.serverfocus_line takes a switch with no line for one that is on
+local function serversetting_of(text)
+  local known = serversetting_replies[text]
+  if known then return known[1], known[2] end
+  for _, reply in ipairs(serversetting_numbers) do
+    local number = text:match(reply[1])
+    if number then return reply[2], tonumber(number) end
+  end
+
+  local aff = text:match("^You will now focus while afflicted by (%a+)%.$")
+  if aff then return 'focuswith'..aff, true end
+  aff = text:match("^You will no longer focus while afflicted by (%a+)%.$")
+  if aff then return 'focuswith'..aff, false end
+
+  aff = text:match("^You will not focus while afflicted by (%a+)%.$")
+  if aff then return 'focuswith'..aff, false, true end
+  local state = text:match("^Automatic usage of focusing is currently (%a+)%.$")
+  if state == 'enabled' or state == 'disabled' then return 'focus', state == 'enabled', true end
+  if text == "You will prioritise herbs over focusing." then return 'focusoverherbs', false, true end
+  if text == "You will prioritise focus over herbs." then return 'focusoverherbs', true, true end
+end
+
+local serversetting_switches = {reporting = 'reporting', sipping = 'sipping', afflictions = 'afflictions',
+  defences = 'defences', fallback = 'fallback', clot = 'clot', useclot = 'clot', insomnia = 'insomnia',
+  batch = 'batch', tree = 'tree'}
+local serversetting_amounts = {siphealth = 'siphealth', sipmana = 'sipmana', mosshealth = 'mosshealth',
+  mossmana = 'mossmana', clotat = 'clotat', clotto = 'clotto', healthaffsabove = 'healthaffsabove',
+  manathreshold = 'manathreshold', clothealth = 'clothealth'}
+
+-- the setting a curing command changes, and the value it gives it: nil for
+-- a value svof can't tell from the command
+local function serversetting_ofcommand(command)
+  local word, arg = command:lower():match("^curing (%S+)%s*(.-)%s*$")
+  if not word then return end
+  local switch
+  if arg == 'on' then switch = true elseif arg == 'off' then switch = false end
+
+  if arg == "" then
+    if word == 'on' then return 'enabled', true end
+    if word == 'off' then return 'enabled', false end
+    return
+  end
+  if word == 'transmutation' then
+    if switch == nil then return end
+    return 'method', switch and "Transmutation" or "Concoctions"
+  end
+  if word == 'priority' then
+    if arg == 'health' then return 'healthmana', "Health" end
+    if arg == 'mana' then return 'healthmana', "Mana" end
+    return
+  end
+  if word == 'focus' then
+    if switch ~= nil then return 'focus', switch end
+    if arg == 'first' then return 'focusoverherbs', true end
+    if arg == 'second' then return 'focusoverherbs', false end
+    local aff = arg:match("^without(%a+)$")
+    if aff then return 'focuswith'..aff, false end
+    aff = arg:match("^with(%a+)$")
+    if aff then return 'focuswith'..aff, true end
+    return
+  end
+  if serversetting_switches[word] then
+    if switch == nil then return end
+    return serversetting_switches[word], switch
+  end
+  if serversetting_amounts[word] then return serversetting_amounts[word], tonumber(arg) end
+end
+
+-- the setting commands svof sent that the game hasn't answered: their
+-- replies aren't the player's edits. One never answered stops waiting
+sk.serversettings_pending = sk.serversettings_pending or {}
+
+function sk.serversetting_sent(command)
+  if not sk.customserverprios() then return end
+  local name, value = serversetting_ofcommand(command)
+  if not name then return end
+
+  local pending = sk.serversettings_pending
+  local entry = {name = name, value = value}
+  pending[#pending+1] = entry
+  tempTimer(10, function()
+    for i, waiting in ipairs(pending) do
+      if waiting == entry then table.remove(pending, i) break end
+    end
+  end)
+end
+
+local function serversetting_shown(value)
+  if value == true then return "on" end
+  if value == false then return "off" end
+  return tostring(value)
+end
+
+local serversetting_curemethods = {
+  Transmutation = {[true] = 'prefertrans', [false] = 'transonly'},
+  Concoctions = {[true] = 'preferconc', [false] = 'conconly'},
+}
+
+-- sets svof's options to the game's settings in values, a table by the
+-- status's names, and svof's record of what the game has. Returns what
+-- changed, as text. A value svof itself put there for the moment is left
+-- alone: 0 for sipping it does itself, moss at 0 with vconfig moss off, focus
+-- off under cadmus and clot off while corrupted
+function sk.serversettings_follow(values)
+  local read = sk.serverread
+  local status = read.status or {}
+  sk.priochangecache.special = sk.priochangecache.special or {}
+  local cache = sk.priochangecache.special
+  local changes = {}
+
+  local function take(option, value)
+    if value == nil or conf[option] == value then return end
+    changes[#changes+1] = ("%s %s (was %s)"):format(option, serversetting_shown(value), serversetting_shown(conf[option]))
+    conf[option] = value
+    changes[option] = true
+  end
+
+  for _, sip in ipairs({{'siphealth', 'healhealth'}, {'sipmana', 'healmana'}}) do
+    local value = values[sip[1]]
+    if type(value) == 'number' then
+      cache[sip[2]] = value
+      if not (value == 0 and not svo.serverignore[sip[2]]) then take(sip[1], value) end
+    end
+  end
+
+  for _, moss in ipairs({'mosshealth', 'mossmana'}) do
+    local value = values[moss]
+    if type(value) == 'number' and not (value == 0 and not conf.moss) then take(moss, value) end
+  end
+
+  if type(values.focus) == 'boolean' then
+    cache.focustoggle = values.focus
+    if not (values.focus == false and conf.focus and not sk.canfocus()) then take('focus', values.focus) end
+  end
+
+  if type(values.clot) == 'boolean' then
+    sk.clotting_on_serverside = values.clot
+    if not (values.clot == false and conf.clot and not sk.canclot()) then take('clot', values.clot) end
+  end
+
+  if type(values.insomnia) == 'boolean' then
+    cache.insomniatoggle = values.insomnia
+    take('insomnia', values.insomnia)
+  end
+
+  if type(values.clotat) == 'number' then take('bleedamount', values.clotat) end
+  if type(values.healthaffsabove) == 'number' then take('healthaffsabove', values.healthaffsabove) end
+  if type(values.manathreshold) == 'number' then take('manause', values.manathreshold) end
+
+  -- vconfig curemethod is the game's method and fallback together. A custom
+  -- method is svof's own and has neither
+  if values.method ~= nil or values.fallback ~= nil then
+    local method, fallback = values.method, values.fallback
+    if method == nil then method = status.method end
+    if fallback == nil then fallback = status.fallback end
+    local curemethod = serversetting_curemethods[method] and serversetting_curemethods[method][fallback]
+    if curemethod and conf.curemethod ~= 'prefercustom' then take('curemethod', curemethod) end
+  end
+
+  if type(values.healthmana) == 'string' then cache.healthormana = values.healthmana:lower() end
+
+  for _, aff in ipairs({'guilt', 'fulminated'}) do
+    if type(values['focuswith'..aff]) == 'boolean' then take('focuswith'..aff, values['focuswith'..aff]) end
+  end
+
+  if changes[1] then
+    if changes.siphealth or changes.mosshealth then signals.changed_maxhealth:emit() end
+    if changes.sipmana or changes.manause then signals.changed_maxmana:emit() end
+    if changes.curemethod then signals.curemethodchanged:emit() end
+    signals.saveconfig:emit()
+  end
+  return changes
+end
+
+-- what the game's settings leave undone, by what svof knows of them. Each is
+-- said once, and again only after it has gone away and come back
+function sk.serversettings_warn()
+  local read = sk.serverread
+  local status = read.status
+  if not status or not sk.customserverprios() then read.settingswarned = nil return end
+
+  local warnings = {}
+  if status.enabled == false and not conf.paused then
+    warnings.enabled = "Curing is off in the game, so the server cures nothing. CURING ON turns it on."
+  end
+  if status.reporting == false then
+    warnings.reporting = "Command reporting is off in the game, so Svof can't see what the server does. "
+      .."CURING REPORTING ON turns it on."
+  end
+  if status.batch == false then
+    warnings.batch = "Batch actions is off in the game, so the server cures one thing at a time. "
+      .."CURING BATCH ON turns it on."
+  end
+  if status.defences == false and conf.keepup then
+    warnings.defences = "Defence Upkeep is off in the game, so the defences left to the server aren't kept up. "
+      .."Svof keeps up only its own. CURING DEFENCES ON turns it on, or move them to Svof in vshow server."
+  elseif status.defences == true and not conf.keepup then
+    warnings.defences = "Defence Upkeep is on in the game while Svof's keepup is off, so the server still keeps up "
+      .."the defences left to it. CURING DEFENCES OFF stops it."
+  end
+  if status.sipping == false and (svo.serverignore.healhealth or svo.serverignore.healmana) then
+    warnings.sipping = "Sipping is off in the game, so the health and mana left to the server aren't sipped. "
+      .."CURING SIPPING ON turns it on, or move healhealth and healmana to Svof in vshow server."
+  end
+  if status.afflictions == false then
+    warnings.afflictions = "Affliction Curing is off in the game, so the afflictions left to the server aren't cured. "
+      .."Svof cures only its own. CURING AFFLICTIONS ON turns it on, or move them to Svof in vshow server."
+  end
+  if status.sipping ~= false then
+    for _, sip in ipairs({{'siphealth', 'healhealth', "health"}, {'sipmana', 'healmana', "mana"}}) do
+      if not svo.serverignore[sip[2]] and (status[sip[1]] or 0) > 0 then
+        warnings[sip[1]] = ("Svof sips %s itself and the game is set to sip it too, at %d%%. CURING %s 0 stops the "
+          .."server, or leave %s to it in vshow server."):format(sip[3], status[sip[1]], sip[1]:upper(), sip[2])
+      end
+    end
+  end
+
+  local warned = read.settingswarned or {}
+  for _, key in ipairs({'enabled', 'reporting', 'batch', 'defences', 'sipping', 'afflictions', 'siphealth', 'sipmana'}) do
+    if warnings[key] and warned[key] ~= warnings[key] then svo.echof("%s", warnings[key]) end
+  end
+  read.settingswarned = warnings
+end
+
+local function serversettings_said(changes)
+  if not changes[1] then return end
+  local list = {}
+  for i, change in ipairs(changes) do list[i] = change end
+  svo.echof("Svof's settings now follow the game's: %s.", svo.concatand(list))
+end
+
+-- asks the game for its settings: the status, and CURING FOCUS for the two
+-- focus switches the status doesn't show. Until the status arrives svof
+-- doesn't know what the game has, and its own toggles wait
+function sk.serversettings_ask()
+  local read = sk.serverread
+  read.status, read.statusother = nil, nil
+  read.statusasked, read.focusasked = true, true
+
+  if read.statustimer then killTimer(read.statustimer) end
+  read.statustimer = tempTimer(15, function()
+    read.statustimer = nil
+    read.focusasked = nil
+    if not read.statusasked then return end
+    read.statusasked = nil
+    svo.echof("The game didn't show its curing status, so Svof doesn't have your settings there. "
+      .."CURING STATUS shows it to Svof again.")
+  end)
+
+  sendAll("curing status", "curing focus", false)
+end
+
+-- a whole status was read
+function sk.serversettings_taken()
+  if not sk.customserverprios() then return end
+  serversettings_said(sk.serversettings_follow(sk.serverread.status))
+  sk.serversettings_warn()
+end
+
+function sk.serverfocus_stop()
+  local read = sk.serverread
+  read.focusreading = nil
+  if read.focusreader then killTrigger(read.focusreader); read.focusreader = nil end
+end
+
+-- every line after the first of CURING FOCUS, which ends at the prompt. The
+-- game shows a guilt or fulminated switch only while it is off, so one with
+-- no line is on. The game prints the first two lines whether focusing is on
+-- or off, so a reply without its second line was cut short and says nothing
+-- about the switches
+function sk.serverfocus_line(isprompt)
+  if not isprompt then return end
+  local read = sk.serverread
+  local reading = read.focusreading
+  sk.serverfocus_stop()
+  read.focusasked = nil
+  if not (reading and reading.whole and sk.customserverprios()) then return end
+
+  local on = {}
+  for _, aff in ipairs({'guilt', 'fulminated'}) do
+    if reading['focuswith'..aff] == nil then on['focuswith'..aff] = true end
+  end
+  if not next(on) then return end
+  serversettings_said(sk.serversettings_follow(on))
+end
+
+-- the game's line about one setting: its reply to a command, or a line of
+-- CURING FOCUS
+function sk.serversetting_line(text)
+  local name, value, shown = serversetting_of(text)
+  if not name then return end
+  local read = sk.serverread
+
+  if shown then
+    if read.focusasked then deleteLine() end
+    if name == 'focus' then
+      -- its first line
+      sk.serverfocus_stop()
+      read.focusreading = {}
+      read.focusreader = tempRegexTrigger("^", "svo.sk.serverfocus_line(isPrompt())")
+    elseif read.focusreading then
+      if name == 'focusoverherbs' then read.focusreading.whole = true else read.focusreading[name] = value end
+    end
+  else
+    local pending = sk.serversettings_pending
+    for i, waiting in ipairs(pending) do
+      if waiting.name == name and (waiting.value == nil or waiting.value == value) then
+        -- svof's own command: the game has the value, and svof's options
+        -- are where it sent it from
+        table.remove(pending, i)
+        if read.status then read.status[name] = value end
+        sk.serversettings_warn()
+        return
+      end
+    end
+  end
+
+  if not sk.customserverprios() then return end
+  -- the focus switches aren't in the status, so they are taken without one
+  if read.status then read.status[name] = value end
+  if not read.status and not name:find("^focuswith") then return end
+  serversettings_said(sk.serversettings_follow({[name] = value}))
+  sk.serversettings_warn()
+end
+
 -- the game's lines about its affliction priorities, other than a list's own:
 -- a list's header, a curingset switch, a changed entry, a stack the
 -- affliction can't have, and a reset
@@ -670,6 +1150,17 @@ function sk.serverprio_line(text)
       deleteLine()
     end
     read.reader = tempRegexTrigger("^", "svo.sk.serverlist_line(line, isPrompt())")
+    return
+  end
+
+  if text == "Curing Status:" then
+    sk.serverstatus_stop()
+    read.statusreading = {known = {}, other = {}, lines = 0, asked = read.statusasked}
+    if read.statusasked then
+      read.statusasked = nil
+      deleteLine()
+    end
+    read.statusreader = tempRegexTrigger("^", "svo.sk.serverstatus_line(line, isPrompt())")
     return
   end
 
@@ -2567,6 +3058,7 @@ function sk.serverpriosmode()
     svo.echof("Reading your serverside priorities from the game...")
     serverprios_forgetsent()
     sk.serverprios_ask('switch')
+    sk.serversettings_ask()
     return
   end
 
@@ -2600,7 +3092,11 @@ function sk.serverpriosmode()
   sk.priochangetimer = true
   sk.updateserversideprios()
 
-  svo.echof("Svof works out your serverside priorities from its own lists again.")
+  -- and the game's settings are svof's vconfig again
+  sk.serverread.settingswarned = nil
+  sk.serversettings_push()
+
+  svo.echof("Svof works out your serverside priorities from its own lists again, and sends the game its own settings.")
   if stackignores[1] then
     svo.echof("Only custom mode ignores single stacks, so the server cures every stack again.")
     signals.saveconfig:emit()
@@ -2640,6 +3136,7 @@ function sk.serverprios_login()
   -- the afflictions autoslick went by are gone with the old session
   sk.serverslick = {}
   if not sk.customserverprios() then return end
+  sk.serversettings_ask()
   if next(svo.serverprios.normal or {}) and next(svo.serverprios.slowcuring or {}) then
     sk.serverprios_ask('login')
   else
@@ -2677,6 +3174,68 @@ signals.sync:connect(function ()
   end
 end, 'update curingset on aeon/retardation')
 
+-- sends the game every curing setting svof has an option for: what vconfig
+-- serverside on does in auto mode, and the switch back to auto
+function sk.serversettings_push()
+  -- initial sync of some config options.
+  local option
+  for _, optionname in ipairs({'healthaffsabove', 'mosshealth', 'mossmana'}) do
+    if conf[optionname] == true then option = 'on'
+    elseif conf[optionname] == false then option = 'off'
+    else
+      option = conf[optionname]
+    end
+
+    svo.sendcuring(optionname.. " "..option)
+  end
+
+  if conf.keepup then
+    svo.sendcuring("defences on")
+  else
+    svo.sendcuring("defences off")
+  end
+
+  sk.togglefocusserver()
+  sk.toggleclotserver()
+  sk.toggleinsomniaserver()
+  sk.sendfocuswith()
+
+  if sk.canclot() and conf.clot then svo.sendcuring("clot on") else svo.sendcuring("clot off") end
+  svo.sendcuring("clotat "..conf.bleedamount)
+
+  if not svo.serverignore.healhealth then
+    svo.sendcuring("siphealth 0")
+    sk.priochangecache.special.healhealth = 0
+  elseif svo.serverignore.healhealth then
+    svo.sendcuring("siphealth "..conf.siphealth)
+    sk.priochangecache.special.healhealth = conf.siphealth
+  end
+
+  if not svo.serverignore.healmana then
+    svo.sendcuring("sipmana 0")
+    sk.priochangecache.special.healmana = 0
+  elseif svo.serverignore.healmana then
+    svo.sendcuring("sipmana "..conf.sipmana)
+    sk.priochangecache.special.healmana = conf.sipmana
+  end
+
+  if conf.curemethod == 'transonly' then
+    svo.sendcuring("transmutation on")
+     svo.sendcuring("fallback off")
+  elseif conf.curemethod == 'conconly' then
+    svo.sendcuring("transmutation off")
+     svo.sendcuring("fallback off")
+  elseif conf.curemethod == 'prefertrans' then
+    svo.sendcuring("transmutation on")
+    svo.sendcuring("fallback on")
+  elseif conf.curemethod == 'preferconc' then
+     svo.sendcuring("transmutation off")
+     svo.sendcuring("fallback on")
+  end
+
+  svo.sendcuring("manathreshold "..conf.manause)
+end
+
 -- vconfig serverside
 signals["svo config changed"]:connect(function(config)
   if config ~= 'serverside' then return end
@@ -2709,63 +3268,12 @@ signals["svo config changed"]:connect(function(config)
       end
     end
 
-    -- initial sync of some config options.
-    local option
-    for _, optionname in ipairs({'healthaffsabove', 'mosshealth', 'mossmana'}) do
-      if conf[optionname] == true then option = 'on'
-      elseif conf[optionname] == false then option = 'off'
-      else
-        option = conf[optionname]
-      end
-
-      svo.sendcuring(optionname.. " "..option)
-    end
-
-    if conf.keepup then
-      svo.sendcuring("defences on")
+    -- in custom mode the settings are the player's: read them, send none
+    if sk.customserverprios() then
+      sk.serversettings_ask()
     else
-      svo.sendcuring("defences off")
+      sk.serversettings_push()
     end
-
-    sk.togglefocusserver()
-    sk.toggleclotserver()
-    sk.toggleinsomniaserver()
-    sk.sendfocuswith()
-
-    if sk.canclot() and conf.clot then svo.sendcuring("clot on") else svo.sendcuring("clot off") end
-    svo.sendcuring("clotat "..conf.bleedamount)
-
-    if not svo.serverignore.healhealth then
-      svo.sendcuring("siphealth 0")
-      sk.priochangecache.special.healhealth = 0
-    elseif svo.serverignore.healhealth then
-      svo.sendcuring("siphealth "..conf.siphealth)
-      sk.priochangecache.special.healhealth = conf.siphealth
-    end
-
-    if not svo.serverignore.healmana then
-      svo.sendcuring("sipmana 0")
-      sk.priochangecache.special.healmana = 0
-    elseif svo.serverignore.healmana then
-      svo.sendcuring("sipmana "..conf.sipmana)
-      sk.priochangecache.special.healmana = conf.sipmana
-    end
-
-    if conf.curemethod == 'transonly' then
-      svo.sendcuring("transmutation on")
-       svo.sendcuring("fallback off")
-    elseif conf.curemethod == 'conconly' then
-      svo.sendcuring("transmutation off")
-       svo.sendcuring("fallback off")
-    elseif conf.curemethod == 'prefertrans' then
-      svo.sendcuring("transmutation on")
-      svo.sendcuring("fallback on")
-    elseif conf.curemethod == 'preferconc' then
-       svo.sendcuring("transmutation off")
-       svo.sendcuring("fallback on")
-    end
-
-    svo.sendcuring("manathreshold "..conf.manause)
   end
 end, 'update serverside prios on config change')
 
@@ -2910,8 +3418,10 @@ signals["svo config changed"]:connect(function(config)
 
   -- send right away, so chained commands are done in proper order
   if conf.paused then
+    sk.serversetting_sent("curing off")
     svo.force_send("curing off")
   else
+    sk.serversetting_sent("curing on")
     svo.force_send("curing on")
   end
 end, 'update serverside curing pause')
@@ -2919,6 +3429,10 @@ end, 'update serverside curing pause')
 -- keepup
 signals["svo config changed"]:connect(function(config)
   if not (conf.serverside and config == 'keepup' and not svo.logging_in) then return end
+
+  -- in custom mode the game's Defence Upkeep is the player's switch, and
+  -- vconfig keepup is only svof's own
+  if sk.customserverprios() then sk.serversettings_warn() return end
 
   if conf.keepup then
     svo.sendcuring("defences on")
@@ -3015,6 +3529,8 @@ end
 
 function sk.togglefocusserver()
   if not (conf.serverside and sk.logged_in) then return end
+  -- in custom mode, not before svof knows what the game has
+  if sk.customserverprios() and not sk.serverread.status then return end
 
   if sk.canfocus() and conf.focus and not sk.priochangecache.special.focustoggle then
     svo.sendcuring("focus on")
@@ -3039,6 +3555,8 @@ end
 
 function sk.toggleclotserver()
   if not conf.serverside then return end
+  -- in custom mode, not before svof knows what the game has
+  if sk.customserverprios() and not sk.serverread.status then return end
 
   if sk.canclot() and conf.clot and not sk.clotting_on_serverside then
     svo.sendcuring("clot on")
@@ -3055,6 +3573,8 @@ signals.after_prompt_processing:connect(sk.toggleclotserver, "sk.toggleclotserve
 
 function sk.toggleinsomniaserver()
   if not (conf.serverside and sk.logged_in) then return end
+  -- in custom mode, not before svof knows what the game has
+  if sk.customserverprios() and not sk.serverread.status then return end
 
   if conf.insomnia and not sk.priochangecache.special.insomniatoggle then
     svo.sendcuring("insomnia on")
@@ -3078,7 +3598,8 @@ function svo.setupserverside()
   -- The full sync runs only when serverside is switched on, so a player who
   -- already had it on when focuswithfulminated and focuswithguilt arrived
   -- would never send the game either switch. Send both at every login.
-  sk.sendfocuswith()
+  -- not in custom mode, where the game's switches are the player's
+  if not sk.customserverprios() then sk.sendfocuswith() end
 
   if svo.serversidesetup then killTimer(svo.serversidesetup) end
   svo.serversidesetup = tempTimer(5+svo.getping(), function()

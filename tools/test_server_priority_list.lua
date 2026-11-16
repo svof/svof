@@ -150,7 +150,7 @@ do
   for pattern, kind in (from and json:sub(from, to) or ""):gmatch('"pattern": "(.-)",%s*"type": "(%w+)"') do
     trigger_patterns[#trigger_patterns + 1] = { pattern = (pattern:gsub("\\\\", "\\")), kind = kind }
   end
-  eq(#trigger_patterns, 6, "the trigger's patterns")
+  eq(#trigger_patterns, 7, "the trigger's patterns")
   eq(trigger_script, "svo.sk.serverprio_line(line)", "the trigger's script")
 end
 

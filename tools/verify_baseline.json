@@ -289,13 +289,18 @@
     },
     {
       "id": "added|Trigger|svo (aliases, triggers)|svo/General/Server-side commands/Curing priority lines",
-      "digest": "17ebe9dd92c207ed",
+      "digest": "2b2d21116380443b",
       "text": "Trigger  svo (aliases, triggers) svo/General/Server-side commands/Curing priority lines [only in the package]"
     },
     {
       "id": "added|Trigger|svo (aliases, triggers)|svo/General/Server-side commands/Curing priority spam limit",
       "digest": "0d35019022fec114",
       "text": "Trigger  svo (aliases, triggers) svo/General/Server-side commands/Curing priority spam limit [only in the package]"
+    },
+    {
+      "id": "added|Trigger|svo (aliases, triggers)|svo/General/Server-side commands/Curing setting lines",
+      "digest": "c97df7b102ef2a8f",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Server-side commands/Curing setting lines [only in the package]"
     },
     {
       "id": "added|Trigger|svo (aliases, triggers)|svo/General/Server-side commands/Server pipe fill",
@@ -499,8 +504,8 @@
     },
     {
       "id": "count|Trigger|svo (aliases, triggers)|svo",
-      "digest": "39705214264f0919",
-      "text": "Trigger  svo (aliases, triggers) / 'svo': 2533 items originally, 2528 in merged"
+      "digest": "f8eb5e60efc36acc",
+      "text": "Trigger  svo (aliases, triggers) / 'svo': 2533 items originally, 2529 in merged"
     },
     {
       "id": "gone|Script|svo (install me in module manager)|Check for system updates/svo_downloaded_file",
@@ -1089,7 +1094,7 @@
     },
     {
       "id": "item|Script|svo (actions dictionary)|Dictionary of actions (affs-defs-misc)|script",
-      "digest": "1f718ac49c7aca33",
+      "digest": "2ac336900ecb5d4d",
       "text": "Script   svo (actions dictionary) Dictionary of actions (affs-defs-misc) [script]"
     },
     {
@@ -1124,7 +1129,7 @@
     },
     {
       "id": "item|Script|svo (curing skeleton, controllers, action system)|Curing skeleton|script",
-      "digest": "cf8389cc7c92780c",
+      "digest": "c7eb727421172a51",
       "text": "Script   svo (curing skeleton, controllers, action system) Curing skeleton [script]"
     },
     {
@@ -1134,7 +1139,7 @@
     },
     {
       "id": "item|Script|svo (custom prompt, serverside)|Serverside|script",
-      "digest": "e265a54c01c6c2b7",
+      "digest": "e22bb66adf99cd14",
       "text": "Script   svo (custom prompt, serverside) Serverside [script]"
     },
     {
@@ -1254,7 +1259,7 @@
     },
     {
       "id": "item|Script|svo (install, config, pipes, rift, parry, prios)|Config system|script",
-      "digest": "16351a4e69d0bb1d",
+      "digest": "856540d82659eebc",
       "text": "Script   svo (install, config, pipes, rift, parry, prios) Config system [script]"
     },
     {
