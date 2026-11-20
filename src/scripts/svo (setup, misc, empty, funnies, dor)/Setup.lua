@@ -2456,6 +2456,13 @@ for _, config in ipairs{
   end, 'save '.. config.location ..'data')
 end
 
+-- saves the player's serverside priorities alone, for the places that change
+-- them in play: signals.saveconfig runs every save handler in svof, a NameDB
+-- VACUUM among them
+function svo.serverprios_save()
+  svo.tablesave(getMudletHomeDir() .. "/svo/config/serverprios", svo.serverprios)
+end
+
 
 if svo.haveskillset('venom') then
   -- load the shrugging func list

@@ -1024,12 +1024,12 @@
     },
     {
       "id": "item|Alias|svo (aliases, triggers)|svo/Import prios|regex",
-      "digest": "0f110b55aee33f30",
+      "digest": "4fc399485c2994f6",
       "text": "Alias    svo (aliases, triggers) svo/Import prios [regex]"
     },
     {
       "id": "item|Alias|svo (aliases, triggers)|svo/Import prios|script",
-      "digest": "accc599763b21e28",
+      "digest": "b342cb57023f17ac",
       "text": "Alias    svo (aliases, triggers) svo/Import prios [script]"
     },
     {
@@ -1134,7 +1134,7 @@
     },
     {
       "id": "item|Script|svo (custom prompt, serverside)|Serverside|script",
-      "digest": "e265a54c01c6c2b7",
+      "digest": "a71d013196df04e9",
       "text": "Script   svo (custom prompt, serverside) Serverside [script]"
     },
     {
@@ -1364,7 +1364,7 @@
     },
     {
       "id": "item|Script|svo (setup, misc, empty, funnies, dor)|Setup|script",
-      "digest": "9d4c4a2272be75b3",
+      "digest": "4d947c8231165e41",
       "text": "Script   svo (setup, misc, empty, funnies, dor) Setup [script]"
     },
     {
