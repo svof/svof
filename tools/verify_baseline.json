@@ -1014,7 +1014,7 @@
     },
     {
       "id": "item|Alias|svo (namedb)|NameDB/(ndb update unranked) Re-check all unranked players|script",
-      "digest": "c304471e814272a6",
+      "digest": "950d144653bdaa3b",
       "text": "Alias    svo (namedb) NameDB/(ndb update unranked) Re-check all unranked players [script]"
     },
     {
@@ -1244,7 +1244,7 @@
     },
     {
       "id": "item|Script|svo (namedb)|NameDB/ndb main code|script",
-      "digest": "16495d995700c007",
+      "digest": "4034dda23f165b2b",
       "text": "Script   svo (namedb) NameDB/ndb main code [script]"
     },
     {
@@ -1259,7 +1259,7 @@
     },
     {
       "id": "item|Script|svo (namedb)|NameDB/ndb.init|script",
-      "digest": "870c2cad770dcb5a",
+      "digest": "8af27c6b38223bb1",
       "text": "Script   svo (namedb) NameDB/ndb.init [script]"
     },
     {
@@ -1274,7 +1274,7 @@
     },
     {
       "id": "item|Script|svo (namedb)|NameDB/ndb.support/ndb.downloaded_file|script",
-      "digest": "58c93c64157b3fb9",
+      "digest": "c610cceb4cf48c9d",
       "text": "Script   svo (namedb) NameDB/ndb.support/ndb.downloaded_file [script]"
     },
     {

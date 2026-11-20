@@ -378,6 +378,42 @@ do
   eq(#w.requests, 2, "neither is asked about again the same day")
 end
 
+-- 4b. Only the API's own reply counts as "no such character". A host that
+-- can't be reached is an outage, and recording it as an answer would mark
+-- every queued name checked.
+do
+  local w = world()
+  w.ndb.lookup("Alpha")
+  w.fail("Alpha", "Host api.achaea.com not found")
+  eq(w.api.notfound.Alpha, nil, "a DNS failure (\"Host ... not found\") isn't an answer about the name")
+  eq(w.api.errors, 1, "it counts as a failure")
+  ok(w.api.resume ~= nil, "and holds lookups back")
+
+  w = world()
+  w.ndb.lookup("Alpha")
+  w.fail("Alpha", "Connection refused")
+  eq(w.api.notfound.Alpha, nil, "a refused connection isn't an answer either")
+  eq(w.api.errors, 1, "and counts")
+
+  w = world()
+  w.ndb.lookup("Alpha")
+  w.fail("Alpha", "Error transferring http://api.achaea.com/characters/Alpha.json - server replied: Not Found")
+  ok(w.api.notfound.Alpha ~= nil, "a 404 from the API (\"server replied: Not Found\") is an answer")
+  eq(w.api.errors, 0, "and not an error")
+
+  w = world()
+  w.ndb.lookup("Alpha")
+  w.ndb.downloaded_file("sysDownloadError", "Error transferring http://api.achaea.com/characters/Alpha.json - server replied: Forbidden",
+    w.file("Alpha"), "http://api.achaea.com/characters/Alpha.json")
+  ok(w.api.notfound.Alpha ~= nil, "a 403 is an answer even with the url as a further argument")
+
+  w = world()
+  w.ndb.lookup("Alpha")
+  w.fail("Alpha", "Error transferring http://api.achaea.com/characters/Alpha.json - server replied: Internal Server Error")
+  eq(w.api.notfound.Alpha, nil, "a 500 isn't an answer")
+  eq(w.api.errors, 1, "it counts as a failure")
+end
+
 -- 5. Outages back off, count once per pause, and stop after five.
 do
   local w = world()
@@ -395,15 +431,23 @@ do
   local waits = {30}
   for round = 2, 4 do
     w.resume()
-    local victim = w.pending():match("^(%w+)")
-    w.fail(victim, "Connection refused")
+    -- a different name each round: a name that failed too often is dropped
+    local names = {}
+    for n in w.pending():gmatch("%w+") do names[#names + 1] = n end
+    w.fail(names[round - 1], "Connection refused")
     waits[#waits + 1] = w.timers[w.api.resume] and w.timers[w.api.resume].seconds
   end
   eq(table.concat(waits, ","), "30,60,120,240", "each pause doubles")
   w.resume()
-  w.fail(w.pending():match("^(%w+)"), "Connection refused")
+  local names = {}
+  for n in w.pending():gmatch("%w+") do names[#names + 1] = n end
+  w.fail(names[4], "Connection refused")
   eq(w.api.stopped, true, "the fifth failure in a row stops lookups")
   ok(#w.echoes == 1 and w.echoes[1]:find("5 times in a row", 1, true), "and says so once")
+  -- the requests still in flight when lookups stopped fail too
+  for name in w.pending():gmatch("%w+") do w.fail(name, "Connection refused") end
+  eq(#w.echoes, 1, "and the requests still in flight failing don't say it again")
+  eq(w.api.errors, 5, "or count")
   local before = #w.requests
   w.ndb.lookup("Golf")
   eq(#w.requests, before, "so new lookups are ignored")
@@ -533,6 +577,7 @@ do
   for _, n in ipairs({"Alpha", "Bravo", "Charlie"}) do
     w.people[n] = {name = n, city = "rogue", immortal = 0, xp_rank = -1, api_checked = 0}
   end
+  w.ndb.known = {Alpha = true, Bravo = true, Charlie = true} -- all in the database at load
   w.api.seen.Bravo, w.api.seen.Charlie = true, true
   w.ndb.updatebyhonors()
   eq(w.svo.oneconcat(w.ndb.honorslist), "Bravo, Charlie", "with the API on, HONORS is kept to the people seen")
@@ -554,6 +599,94 @@ do
   eq(w.honored[1], "Charlie", "someone whose city the API hides is honored first")
   w.ndb.honors_next()
   eq(w.honored[2], "Bravo", "then the rest")
+end
+
+-- 12b. A name refused because lookups are stopped still reaches HONORS.
+do
+  local w = world()
+  w.svo.conf.usehonors, w.svo.conf.autocheck = true, false
+  w.ndb.known = {}
+  w.api.stopped = true
+  w.people.Newcomer = {name = "Newcomer", city = "rogue", immortal = 0, xp_rank = -1, api_checked = 0}
+  w.ndb.lookup("Newcomer")
+  eq(#w.requests, 0, "with lookups stopped nothing is asked")
+  ok(w.api.seen.Newcomer, "but the name is recorded as seen")
+  w.ndb.updatebyhonors()
+  eq(w.svo.oneconcat(w.ndb.honorslist), "Newcomer", "so HONORS covers it")
+end
+
+-- 12c. Names that reach the database another way (ndb.addname, lists, import)
+-- raise "NameDB got new data" without going through ndb.lookup. They are
+-- looked up then, or left to HONORS when lookups are off or stopped; the names
+-- already in the database at load are not.
+do
+  local w = world()
+  w.svo.conf.usehonors, w.svo.conf.autocheck = true, false
+  for _, n in ipairs({"Oldone", "Newone"}) do
+    w.people[n] = {name = n, city = "rogue", immortal = 0, xp_rank = -1, api_checked = 0}
+  end
+  w.ndb.known = {Oldone = true}
+  w.ndb.updatebyhonors()
+  eq(w.pending(), "Newone", "a name that arrived without a lookup is looked up, an old one isn't")
+  eq(w.svo.oneconcat(w.ndb.honorslist), "Newone", "and goes to HONORS")
+  ok(w.ndb.known.Newone, "and isn't new the next time")
+  w.ndb.updatebyhonors()
+  eq(#w.requests, 1, "so it isn't asked about twice")
+
+  w.people.Another = {name = "Another", city = "rogue", immortal = 0, xp_rank = -1, api_checked = 0}
+  w.api.stopped = true
+  w.ndb.updatebyhonors()
+  eq(#w.requests, 1, "with lookups stopped nothing more is asked")
+  eq(w.svo.oneconcat(w.ndb.honorslist), "Another, Newone", "but the new name is left to HONORS")
+end
+
+-- 12d. ndb update unranked only asks for everyone when HONORS can follow.
+do
+  local aliassrc = read_file("src/aliases/svo (namedb)/NameDB/(ndb_update_unranked)_Re-check_all_unranked_players.lua")
+  local function run(usehonors)
+    local ndb = {db = {people = {name = "name", xp_rank = "xp_rank"}}}
+    local env = {ndb = ndb, svo = {conf = {usehonors = usehonors}, echof = function() end, showprompt = function() end},
+      db = {fetch = function() return {} end, eq = function() end, merge_unique = function() end},
+      raiseEvent = function() end, ipairs = ipairs, pairs = pairs, table = table}
+    local chunk
+    if setfenv then
+      chunk = assert(loadstring(aliassrc, "ndb update unranked"))
+      setfenv(chunk, env)
+    else
+      chunk = assert(load(aliassrc, "ndb update unranked", "t", env))
+    end
+    chunk()
+    return ndb.honorseveryone
+  end
+  eq(run(true), true, "with usehonors on, ndb update unranked asks HONORS for everyone")
+  eq(run(false), nil, "with usehonors off it leaves the flag clear, so turning it on later queues nobody")
+end
+
+-- 12e. One name that always fails is dropped after its retries, without
+-- stopping lookups for everyone.
+do
+  local w = world()
+  w.ndb.lookup("Alpha")
+  local fail500 = "Error transferring http://api.achaea.com/characters/Alpha.json - server replied: Internal Server Error"
+  for round = 1, 3 do
+    w.fail("Alpha", fail500)
+    w.resume()
+    eq(w.pending(), "Alpha", "round " .. round .. ": the name is asked again")
+  end
+  eq(w.api.errors, 3, "each failure so far counted")
+  w.fail("Alpha", fail500)
+  eq(w.pending(), "", "after its retries the name is dropped")
+  eq(w.api.resume, nil, "with no pause")
+  eq(w.api.errors, 3, "and the drop doesn't count toward stopping lookups")
+  eq(w.api.stopped, nil, "which go on")
+  eq(#w.requests, 4, "it was asked about four times: once and three retries")
+  w.ndb.lookup("Alpha")
+  eq(#w.requests, 4, "and isn't asked about again this session")
+  ok(w.api.seen.Alpha, "though it still counts as seen for HONORS")
+  w.ndb.lookup("Bravo")
+  eq(w.pending(), "Bravo", "other names are still looked up")
+  w.ndb.lookup("Alpha", true)
+  eq(w.requested("Alpha.json"), 5, "unless forced")
 end
 
 -- 13. ndb.init turns synchronous off outside a transaction. SQLite refuses the

@@ -83,6 +83,12 @@ function ndb.init()
   -- so if there was any data at all in the db, see if any of it needs to be added
 
   local test = db:fetch(ndb.db.people)
+
+  -- who was in the database at load, so ndb.updatebyhonors can tell the
+  -- names that arrive later (lists, citizens, import) from the old ones
+  ndb.known = {}
+  for _, person in ipairs(test) do ndb.known[person.name] = true end
+
   if next(test) then
     local _,someperson = next(test)
     

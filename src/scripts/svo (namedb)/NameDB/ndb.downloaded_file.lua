@@ -20,6 +20,7 @@ api.timeout = 20             -- seconds before a request that never finished is 
 api.fresh = 24 * 60 * 60     -- a name looked up in the last day isn't asked about again
 api.hourlycap = 300          -- a guard against a bug re-queuing names, far above normal play
 api.maxerrors = 5            -- failures in a row before lookups stop until the next login
+api.maxretries = 3           -- times one name is asked again after a failure before it's dropped
 api.polldelay = 10 * 60      -- how often the list of who is online is fetched
 
 api.queue = api.queue or {}             -- names waiting, in order
@@ -28,6 +29,8 @@ api.inflight = api.inflight or {}       -- local file = {key =, timer =}
 api.seen = api.seen or {}               -- names asked about this session, for the honors queue
 api.hiddencity = api.hiddencity or {}   -- names whose city the API hides
 api.notfound = api.notfound or {}       -- name = time the API said there's no such character
+api.tries = api.tries or {}             -- name = failed requests since the last answer
+api.gaveup = api.gaveup or {}           -- names whose requests kept failing, dropped for the session
 api.errors = api.errors or 0
 api.hour = api.hour or {start = 0, count = 0}
 
@@ -165,9 +168,26 @@ end
 -- first failure holds every request back; the ones already in flight during
 -- that pause are put back without counting, so one outage counts once.
 function api.failed(key, why)
+  -- lookups already stopped: the requests still in flight can only fail too,
+  -- and the stop was said once
+  if api.stopped then return end
+
   if api.resume then
     requeue(key)
     return
+  end
+
+  -- one name that always fails, an HTTP 500 say, is asked about a few times
+  -- and then dropped for the session. It doesn't count toward stopping.
+  if key ~= ONLINE then
+    api.tries[key] = (api.tries[key] or 0) + 1
+    if api.tries[key] > api.maxretries then
+      api.tries[key] = nil
+      api.queued[key] = nil
+      api.gaveup[key] = true
+      api.pump()
+      return
+    end
   end
 
   api.errors = api.errors + 1
@@ -216,13 +236,17 @@ end
 -- Asks the API about someone, unless they were asked about in the last day.
 -- force asks again anyway, ahead of everyone waiting.
 function ndb.lookup(name, force)
-  if not (svo.conf and svo.conf.ndbapi) or api.stopped or not ndb.getname then return end
+  if not (svo.conf and svo.conf.ndbapi) or not ndb.getname then return end
   if type(name) ~= "string" then return end
 
   name = name:lower():title()
   if not ndb.isvalidname(name) or name == svo.me.name then return end
 
+  -- seen even when no lookup is made, so the HONORS route still covers them
   api.seen[name] = true
+  if api.stopped then return end
+  if force then api.gaveup[name] = nil end
+  if api.gaveup[name] then return end
   if api.queued[name] then return end
   if not force and fresh(name) then return end
 
@@ -242,6 +266,7 @@ end
 
 function api.notfoundname(name)
   api.queued[name] = nil
+  api.tries[name] = nil
   api.notfound[name] = os.time()
   if ndb.exists(name) then
     ndb.fixed_set(ndb.db.people.api_checked, os.time(), db:eq(ndb.db.people.name, name))
@@ -250,6 +275,7 @@ end
 
 function api.gotcharacter(name, t)
   api.queued[name] = nil
+  api.tries[name] = nil
   if t.error or type(t.name) ~= "string" then
     api.notfoundname(name)
     return
@@ -285,6 +311,24 @@ function api.poll()
   api.request(ONLINE, file, "http://api.achaea.com/characters.json")
 end
 
+-- Whether a download error is the API's own answer for a name it doesn't
+-- know. Qt words an HTTP error "Error transferring <url> - server replied:
+-- <reason>", and the API's reply for an unknown name is a 403 (Forbidden), or
+-- a 404 (Not Found). A host-level error - "Host api.achaea.com not found",
+-- "Connection refused", a timeout - has no "server replied:" and is an outage.
+local function nosuchcharacter(message)
+  local reason = message:match("server replied:%s*(.*)$")
+  if not reason then return false end
+  reason = reason:lower()
+  for _, known in ipairs({"forbidden", "not found"}) do
+    -- the url may follow the reason, so match a whole word at the start
+    if reason:sub(1, #known) == known and (#reason == #known or reason:sub(#known + 1, #known + 1):find("%s")) then
+      return true
+    end
+  end
+  return false
+end
+
 local function downloaderror(...)
   local args, n = {...}, select("#", ...)
   local file
@@ -306,9 +350,9 @@ local function downloaderror(...)
   message = table.concat(message, " ")
 
   -- the API answers a name it doesn't know with a 403, "Character not found"
-  if entry.key ~= ONLINE and (message:find("Forbidden", 1, true) or message:find("403", 1, true)
-    or message:lower():find("not found", 1, true)) then
+  if entry.key ~= ONLINE and nosuchcharacter(message) then
     api.errors = 0
+    api.tries[entry.key] = nil
     api.notfoundname(entry.key)
     api.pump()
     return

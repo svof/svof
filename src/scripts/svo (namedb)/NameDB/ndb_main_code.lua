@@ -600,6 +600,13 @@ function ndb.updatebyhonors()
     for _,j in ipairs(data) do
       -- sanity check for weird names
       if j.name:find("^%u%l+$") then
+        -- A name that reached the database without a lookup (ndb.addname,
+        -- citizens, enemy lists, import) since the last time through here is
+        -- asked about now, which also marks it seen; with lookups stopped it
+        -- is only marked seen. The names that were already in the database
+        -- are left alone.
+        if seen and ndb.known and not ndb.known[j.name] and not seen[j.name] and ndb.lookup then ndb.lookup(j.name) end
+        if ndb.known then ndb.known[j.name] = true end
         if not seen or seen[j.name] then t[j.name] = true end
       else db:delete(ndb.db.people, db:eq(ndb.db.people.name, j.name)) end
     end return t end)()
