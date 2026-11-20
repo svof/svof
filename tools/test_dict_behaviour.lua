@@ -313,9 +313,12 @@ do
   -- B.against prints; keep it quiet and look at what it returns
   local real = print
   print = function() end
-  local ok = B.against("./", { CLASS }, { "weakness", "deadening", "fillskullcap" })
+  local ok, unknown = B.against("./", { CLASS }, { "weakness", "deadening", "fillskullcap" })
+  local ok2, unknown2 = B.against("./", { CLASS }, { "weakness", "nosuchentry" })
   print = real
-  check("this tree against itself finds nothing", ok)
+  check("this tree against itself finds nothing", ok and #unknown == 0)
+  check("a known name is not reported unknown", #unknown == 0 and #unknown2 == 1)
+  check("a name in neither tree is reported unknown", ok2 and unknown2[1] == "nosuchentry")
 end
 
 check("an entry svof doesn't have compares as nil", B.compare(base, base, "nosuchentry") == nil)

@@ -485,33 +485,6 @@ function B.new(opts)
     input("doing." .. name, function() in_flight(pick) end)
   end
 
-  -- An input another world found, made known here so a comparison can try
-  -- it: -> whether this world has it. The tracked tables are in by_name.
-  local by_name = {}
-  function I.ensure(id)
-    if dims[id] then return true end
-    local kind, rest = id:match("^(%a+)%.(.+)$")
-    if not kind then return false end
-    if kind == "act" then
-      local act = action_by_name(rest)
-      if act then input(id, function() in_flight(act) end) end
-    elseif kind == "busy" then
-      input(id, function() in_flight(stand_in(rest)) end)
-    elseif kind == "doing" then
-      local was = entry_name
-      entry_name = nil
-      doing_input(rest)
-      entry_name = was
-    elseif kind == "gmcp" or kind == "gmcpdef" then
-      input(id, function() reports[id] = true end)
-    else
-      local tname, key = id:gsub("=.*$", ""):match("^(.+)%.([^.]+)$")
-      local info = by_name[tname]
-      if info then info.on_read(key, info.shadow[key]) end
-    end
-    return dims[id] ~= nil
-  end
-
   -- ----- the state every call starts from -----
 
   -- cures are possible: every pipe lit and full, every item in stock, vitals
@@ -678,7 +651,6 @@ function B.new(opts)
   end
   local acts = proxy(svo.actions, "actions", "map")
   acts.on_read = function(k) if type(k) == "string" and k:find("_") then act_input(k) end end
-  for _, info in G_pairs(proxies) do by_name[info.name] = info end
   -- written, not read: what a call changes in them is part of its result
   for _, t in ipairs({ { svo.affl, "affl" }, { svo.gaffl, "gaffl" }, { svo.gdefc, "gdefc" } }) do
     proxy(t[1], t[2], "watch")
@@ -1458,7 +1430,11 @@ local function main(argv)
       end
     end
   elseif mode == "against" then
-    os.exit(B.against(target, classes, names) and 0 or 1)
+    local ok, unknown = B.against(target, classes, names)
+    -- 3: nothing differs, but a name asked for is in neither tree of any
+    -- class given. The wrapper runs one class per process, so it weighs
+    -- that across them.
+    os.exit(not ok and 1 or #unknown > 0 and 3 or 0)
   end
 end
 
@@ -1521,10 +1497,14 @@ function B.compare(A, Bw, name)
 end
 
 -- the checkout at root against this one, entry by entry: -> true when no
--- function differs
+-- function differs, and the list of names asked for that no class has in
+-- either tree (an error for the caller: a misspelt name would otherwise
+-- compare nothing and pass). Each is printed as "unknown entry: NAME" for
+-- the wrapper to read.
 function B.against(root, classes, names)
   if not root:find("[/\\]$") then root = root .. "/" end
   local same, differ, gone, new = 0, 0, 0, 0
+  local known = {}
   for _, class in ipairs(classes) do
     local old = B.new({ class = class, root = root })
     local cur = B.new({ class = class })
@@ -1535,6 +1515,8 @@ function B.against(root, classes, names)
     local in_old, in_cur = {}, {}
     for _, n in ipairs(old.entries()) do in_old[n] = true end
     for _, n in ipairs(cur.entries()) do in_cur[n] = true end
+    for n in pairs(in_old) do known[n] = true end
+    for n in pairs(in_cur) do known[n] = true end
     for _, name in ipairs(list) do
       if not in_old[name] and in_cur[name] then
         new = new + 1
@@ -1563,8 +1545,16 @@ function B.against(root, classes, names)
       end
     end
   end
+  local unknown, asked = {}, {}
+  for _, n in ipairs(names) do
+    if not known[n] and not asked[n] then
+      asked[n] = true
+      unknown[#unknown + 1] = n
+      print("unknown entry: " .. n)
+    end
+  end
   print(string.format("%d the same, %d differ, %d new entries, %d gone", same, differ, new, gone))
-  return differ == 0 and gone == 0 and new == 0
+  return differ == 0 and gone == 0 and new == 0, unknown
 end
 
 -- run as a command, not loaded by a test such as test_dict_behaviour.lua

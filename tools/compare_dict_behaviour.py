@@ -15,8 +15,8 @@ in each:
 It is for a change that rewrites entries without meaning to change what
 they do, such as one made by basicaff or basicdef instead of by hand: run
 it against the revision before, and it should find nothing. It exits 1
-when anything differs, an entry is new or gone, or a class can't be
-described. With no --class it compares every class svof knows, one Lua
+when anything differs, an entry is new or gone, a class can't be
+described, or a NAME is in neither tree of any class compared. With no --class it compares every class svof knows, one Lua
 process per class; with no NAME, every entry.
 
 A revision whose files the current tools/svof_world.lua can't find can't
@@ -36,6 +36,7 @@ import tempfile
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
 ENGINE = os.path.join("tools", "dict_behaviour.lua")
+UNKNOWN = "unknown entry: "  # what the engine prints for a name no tree of its class has
 
 
 def run(cmd, cwd=ROOT):
@@ -84,13 +85,28 @@ def main():
             return cls, run([a.lua, ENGINE, "--against", root, "--class", cls] + a.names)
 
         bad = 0
+        # a name is unknown when no class given has it: each process reports
+        # the ones its own class lacks, so keep those every class lacked
+        unknown = set(a.names)
         with concurrent.futures.ThreadPoolExecutor(max_workers=a.jobs) as pool:
             for cls, (rc, out, err) in pool.map(one, names):
-                if rc != 0 or err.strip():
+                # 3 is "nothing differs but a name is unknown to this class"
+                if rc not in (0, 3) or err.strip():
                     bad += 1
-                sys.stdout.write(out)
+                lacked = set()
+                kept = []
+                for line in out.splitlines(True):
+                    if line.startswith(UNKNOWN):
+                        lacked.add(line[len(UNKNOWN):].strip())
+                    else:
+                        kept.append(line)
+                unknown &= lacked
+                sys.stdout.write("".join(kept))
                 if err.strip():
                     sys.stdout.write(err)
+    if unknown:
+        sys.stdout.write("unknown entries, in no class given: %s\n" % ", ".join(sorted(unknown)))
+        bad += 1
     sys.exit(1 if bad else 0)
 
 
