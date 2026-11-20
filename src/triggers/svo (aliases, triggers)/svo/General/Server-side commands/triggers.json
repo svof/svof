@@ -390,5 +390,39 @@
         "type": "exactMatch"
       }
     ]
+  },
+  {
+    "name": "Curing priority lines",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Your affliction curing priorities for the priority set ",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "You will now cure using the ",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "You have set the '",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^The \\w+ affliction can only have up to \\d+ stacks\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "All your curing affliction priorities have been reset to defaults.",
+        "type": "exactMatch"
+      }
+    ]
   }
 ]
