@@ -91,6 +91,7 @@ FIELDS = {
     "onremoved":          "runs after the affliction leaves svo.affs",
     "onadded":            "runs after it is added",
     "onservereignore":    "returns true if serverside should ignore this",
+    "noserverprio":       "lovers (lust): the serverside sync sends it no priority",
     "reckhp":             "unknownany and unknownmental",
     "reckmana":           "unknownany and unknownmental",
     "blocked":            "rebounding and speed",

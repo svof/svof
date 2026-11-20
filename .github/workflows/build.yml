@@ -498,6 +498,13 @@ jobs:
       - name: test mucous
         run: lua tools/test_mucous.lua
 
+      # Gate 1.99999. The serverside sync sends the game's lovers priority
+      # only the lover's curse's number in each curingset, never lust's,
+      # which the game cures with CURING REJECTION. Runs the real loaders
+      # (tools/svof_world.lua) and replays what svof sends.
+      - name: test lust serverside priority
+        run: lua tools/test_lust_serverprio.lua
+
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
