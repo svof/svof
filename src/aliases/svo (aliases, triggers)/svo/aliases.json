@@ -327,7 +327,7 @@
     "name": "Import prios",
     "isActive": "yes",
     "isFolder": "no",
-    "regex": "^vimportprio(?: (\\w+))?( server)?$"
+    "regex": "^vimportprio(?: (?!server$)(\\w+))?( server)?$"
   },
   {
     "name": "(vlistprios) List all prios",

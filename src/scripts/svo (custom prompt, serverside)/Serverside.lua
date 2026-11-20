@@ -1547,7 +1547,7 @@ function sk.serverprios_toggle(name)
   end
   if on then toggles[#toggles+1] = name end
 
-  signals.saveconfig:emit()
+  svo.serverprios_save()
   sk.serverprios_applymoves()
 
   if on then
@@ -2036,6 +2036,7 @@ function sk.serverprios_confirmed(set, entry, number)
     numbers[entry] = number
     -- the player gave a stack entry svof made a number of their own
     servermade(set)[entry] = nil
+    svo.serverprios_save()
     -- the override's number for it can come from the player's new one
     moved = serverprios_moved(set, toserver)
     if moved[entry] then
@@ -2130,6 +2131,9 @@ end
 
 -- the sync is sending a defence its number, or 0 for a reset
 function sk.serverdefs_sending(gamename, number, slow)
+  -- only custom mode reads the confirmations, so in auto mode nothing would
+  -- ever unpend it
+  if not sk.customserverprios() then return end
   local name = sk.serverlistnames[gamename] or gamename
   serverprios_pend(slow and 'slowcuring' or 'normal', name, number, sk.serverdefs_pending)
 end
@@ -2865,7 +2869,15 @@ end
 function sk.serverprios_import(name)
   local why = serverprios_cantedit('normal')
   if why then svo.echof("Can't import serverside priorities: %s.", why) return end
-  local path = getMudletHomeDir() .. "/svo/serverprios/" .. tostring(name)
+  local path
+  if not name or name == "" then
+    -- with no name, ask for the file, as vimportprio does for svof's own lists
+    path = invokeFileDialog(true, "Select the serverside priorities you'd like to import")
+    if not path or path == "" then svo.echof("Cancelled; don't have anything to import.") return end
+    name = path
+  else
+    path = getMudletHomeDir() .. "/svo/serverprios/" .. tostring(name)
+  end
   local file = io.open(path, "r")
   if not file then svo.echof("Can't import serverside priorities: there's no %s.", path) return end
   local text = file:read("*a")

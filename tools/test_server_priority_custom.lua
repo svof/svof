@@ -1028,6 +1028,7 @@ local ALIAS = {
   vswapslow = readfile(ALIASES .. "Swap_slow_mode_affliction_priorities.lua"),
   vcleargaps = readfile(ALIASES .. "Clear_all_gaps_in_a_prio_mode.lua"),
   vp = readfile(ALIASES .. "Show_priority_lists.lua"),
+  vimportprio = readfile(ALIASES .. "Import_prios.lua"),
 }
 do
   local json = readfile(ALIASES .. "aliases.json")
@@ -1036,7 +1037,7 @@ do
     '"^vswapslow (\\\\w+) (\\\\w+)( server)?$"',
     '"^vcleargaps (\\\\w+)( server)?$"',
     '"^(?:vshowprios|vp) (\\\\w+)(?: (slowcuring))?$"',
-    '"^vimportprio(?: (\\\\w+))?( server)?$"',
+    '"^vimportprio(?: (?!server$)(\\\\w+))?( server)?$"',
   }) do
     check("the alias pattern " .. pattern .. " takes server", json:find(pattern, 1, true) ~= nil)
   end
@@ -1196,6 +1197,74 @@ do
   local bad = sk.serverprios_importtext("normal = { paralysis = 30 }\nslowcuring = {}")
   eq(bad, nil, "an export with a number past 26 is refused")
   eq(sk.serverprios_importtext("normal = {}"), nil, "and one without both sets")
+end
+
+-- ===== review fixes: narrow saves, pending defences, vimportprio server =====
+
+-- counts the full saves and the narrow one
+local function save_counters(g)
+  local c = { full = 0, narrow = 0 }
+  g.svo.signals.saveconfig:connect(function() c.full = c.full + 1 end, "count full saves")
+  g.svo.serverprios_save = function() c.narrow = c.narrow + 1 end
+  return c
+end
+
+do
+  local g = new_custom()
+  check("svo.serverprios_save exists", type(g.svo.serverprios_save) == "function")
+  local c = save_counters(g)
+  g.sk.serverprios_toggle("pva")
+  g.sk.serverprios_toggle("pva")
+  eq(c.full, 0, "pva saves without signals.saveconfig")
+  eq(c.narrow, 2, "and saves the serverside priorities alone, once each time")
+  g.sent()
+
+  -- the player's edit in game
+  g.line("You have set the 'paralysis' affliction to the 5 priority.")
+  eq(g.svo.serverprios.normal.paralysis, 5, "an edit in game goes into the table")
+  eq(c.narrow, 3, "and is saved with the narrow save")
+  eq(c.full, 0, "not with signals.saveconfig")
+end
+
+do
+  local g = new_game()
+  g.svo.defkeepup.basic.cloak, g.svo.defkeepup.combat.cloak = true, true
+  g.svo.serverignore.cloak = true
+  g.sent()
+  g.sk.serverdefs_sendall()
+  local sent = g.sent()
+  check("auto: the sync sends defence numbers", sent:find("curing priority defence cloak", 1, true) ~= nil, sent)
+  local pending = 0
+  for _, set in pairs(g.sk.serverdefs_pending) do
+    for _ in pairs(set) do pending = pending + 1 end
+  end
+  eq(pending, 0, "auto: nothing waits for a confirmation the game's list reader never gives")
+end
+
+do
+  local g = new_custom()
+  g.sent()
+  g.sk.serverdefs_sendall()
+  g.sk.serverdefs_sending("sleep", 7, false)
+  local pending = 0
+  for _, set in pairs(g.sk.serverdefs_pending) do
+    for _ in pairs(set) do pending = pending + 1 end
+  end
+  check("custom: a defence send still waits for its confirmation", pending > 0)
+end
+
+do
+  local g = new_custom()
+  local dialogs = 0
+  g.w.env.invokeFileDialog = function() dialogs = dialogs + 1 return "" end
+  alias(g, "vimportprio", "", " server")
+  eq(dialogs, 1, "vimportprio server asks for the file, as the plain import does with no name")
+  check("and cancels on none", g.echoed("Cancelled; don't have anything to import."))
+  alias(g, "vimportprio", "mine", " server")
+  eq(dialogs, 1, "vimportprio <name> server asks for nothing")
+  check("and looks for that name", g.echoed("svo/serverprios/mine"))
+  check("the alias regex keeps `server` as a name only when it isn't alone",
+    readfile(ALIASES .. "aliases.json"):find("(?!server$)", 1, true) ~= nil)
 end
 
 -- ===== defences =====
