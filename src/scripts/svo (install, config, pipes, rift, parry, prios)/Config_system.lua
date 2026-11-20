@@ -733,6 +733,15 @@ svo.config_dict = svo.pl.OrderedMap {
     ondisabled = function () svo.echof("<250,0,0>Won't%s hide info lines from the serverside curing system.", svo.getDefaultColor()) end,
     installstart = function () conf.gagserverside = true end,
   }},
+  {serverprios = {
+    type = 'string',
+    check = function (what)
+      if what == 'auto' or what == 'custom' then return true end
+      return nil, {'auto', 'custom'}
+    end,
+    -- does the switch, and says what it did
+    onset = function () svo.sk.serverpriosmode() end,
+  }},
   {gagservercuring = {
     type = 'boolean',
     onshow = function (defaultcolour)

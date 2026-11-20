@@ -3159,6 +3159,8 @@ function svo.copy_defmode(which, newname, echoback)
   defdefup[newname] = svo.deepcopy(defdefup[which])
   defkeepup[newname] = svo.deepcopy(defkeepup[which])
   rift.precachedata[newname] = svo.deepcopy(rift.precachedata[which])
+  -- and the player's serverside defence numbers, in custom mode
+  sk.serverdefs_modechanged('copy', which, newname)
   if echoback then svo.echof("Copied %s to %s.", which, newname) end
 end
 
@@ -3179,6 +3181,7 @@ function svo.rename_defmode(which, newmode, echoback)
   defdefup[newmode], defdefup[which] = defdefup[which], defdefup[newmode]
   defkeepup[newmode], defkeepup[which] = defkeepup[which], defkeepup[newmode]
   rift.precachedata[which], rift.precachedata[newmode] = rift.precachedata[newmode], rift.precachedata[which]
+  sk.serverdefs_modechanged('rename', which, newmode)
   if echoback then svo.echof("Renamed %s to %s.", which, newmode) end
 end
 
@@ -3190,6 +3193,7 @@ function svo.delete_defmode(which, echoback)
   svo.assert(which ~= defs.mode, "You're currently in " .. which .. " defmode already - switch to another one first, and then delete this one.", sendf)
 
   defdefup[which], defkeepup[which], rift.precachedata[which] = nil, nil, nil
+  sk.serverdefs_modechanged('delete', which)
 
   if math.random(1, 10) == 1 then
     svo.echof("Deleted '%s' defences mode.", which)
@@ -4104,7 +4108,12 @@ function svo.show_keepup()
 
     setFgColor(unpack(svo.getDefaultColorNums))
     setUnderline(true)
-    echoLink("view serverside keepup", [[send'CURING PRIORITY DEFENCE LIST']], "Click to view serverside's keepup list - which'll be the same as Svof's", true)
+    if sk.customserverprios() then
+      -- the numbers are the player's own in custom mode
+      echoLink("view serverside keepup", [[svo.sk.serverdefs_show()]], "Click to view your serverside defence numbers for this mode", true)
+    else
+      echoLink("view serverside keepup", [[send'CURING PRIORITY DEFENCE LIST']], "Click to view serverside's keepup list - which'll be the same as Svof's", true)
+    end
     setUnderline(false)
     echo(")\n")
   end

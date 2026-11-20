@@ -185,6 +185,9 @@ setmetatable(svo.affs, affmt)
 
 svo.affl = svo.affl or {}
 svo.serverignore = svo.serverignore or {}
+-- the player's own serverside affliction priorities, for vconfig serverprios
+-- custom: one table per curingset, keyed as the game's list names an entry
+svo.serverprios = svo.serverprios or {}
 svo.ignore = svo.ignore or {}
 svo.dict = svo.dict or {}
 
@@ -2420,6 +2423,13 @@ for _, config in ipairs{
     end
   end},
  {location = 'prefercustom', localtable = svo.me.curelist, errormsg = "re-set all of the custom curelist"},
+ {location = 'serverprios', localtable = svo.serverprios,
+  errormsg = "set vconfig serverprios to custom again, which reads your priorities from the game",
+  afterload = function ()
+    for _, set in ipairs({'normal', 'slowcuring'}) do
+      if type(svo.serverprios[set]) ~= 'table' then svo.serverprios[set] = {} end
+    end
+  end},
 } do
   -- load the config.location list
   signals.systemstart:connect(function ()
@@ -2444,6 +2454,13 @@ for _, config in ipairs{
   signals.saveconfig:connect(function ()
     svo.tablesave(getMudletHomeDir() .. "/svo/config/"..config.location, config.localtable)
   end, 'save '.. config.location ..'data')
+end
+
+-- saves the player's serverside priorities alone, for the places that change
+-- them in play: signals.saveconfig runs every save handler in svof, a NameDB
+-- VACUUM among them
+function svo.serverprios_save()
+  svo.tablesave(getMudletHomeDir() .. "/svo/config/serverprios", svo.serverprios)
 end
 
 

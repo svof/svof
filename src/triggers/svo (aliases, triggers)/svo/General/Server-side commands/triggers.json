@@ -408,6 +408,10 @@
         "type": "startOfLine"
       },
       {
+        "pattern": "Your defence priorities for curing set ",
+        "type": "startOfLine"
+      },
+      {
         "pattern": "You will now cure using the ",
         "type": "startOfLine"
       },

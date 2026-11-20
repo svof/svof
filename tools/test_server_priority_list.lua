@@ -150,7 +150,7 @@ do
   for pattern, kind in (from and json:sub(from, to) or ""):gmatch('"pattern": "(.-)",%s*"type": "(%w+)"') do
     trigger_patterns[#trigger_patterns + 1] = { pattern = (pattern:gsub("\\\\", "\\")), kind = kind }
   end
-  eq(#trigger_patterns, 5, "the trigger's patterns")
+  eq(#trigger_patterns, 6, "the trigger's patterns")
   eq(trigger_script, "svo.sk.serverprio_line(line)", "the trigger's script")
 end
 
@@ -376,9 +376,12 @@ end
 
 -- ===== every line the handler knows is one the trigger fires on =====
 
-for _, text in ipairs({ lines_of(LIST_PLAIN)[1], CONFIRM_STACK, REFUSED_STACK, RESET, SWITCH_NORMAL, SWITCH_SLOW }) do
+for _, text in ipairs({ lines_of(LIST_PLAIN)[1], CONFIRM_STACK, REFUSED_STACK, RESET, SWITCH_NORMAL, SWITCH_SLOW,
+  -- the defence list's header and a defence's confirmation, captured 2026-11-09
+  "Your defence priorities for curing set normal:", "You have set the 'cloak' defence to the 3 priority." }) do
   check("the trigger fires on: " .. text, trigger_fires(text))
 end
+check("the trigger leaves a defence line to the reader", not trigger_fires("cloak             : 3"))
 check("the trigger leaves a level line to the reader", not trigger_fires("2:  paralysis, daeggerimpale, heartseed, prone"))
 
 -- ===== entries =====
@@ -399,9 +402,10 @@ do
 
   -- As of 2026-11-09. A name leaves this list when svof gains an action for
   -- it, or a gamename or sstosvoa entry that names it; a name joining it
-  -- means a rename lost one. blindness and deafness are here because the
-  -- actions' gamename is blind and deaf.
-  local UNMAPPED = "blindness, dazed, deafness, diminished, fratricide, frostbite, grievouswounds, icebound, "
+  -- means a rename lost one. blindness and deafness aren't here although the
+  -- actions' gamename is blind and deaf: sk.serverlistnames has the names
+  -- the game lists them under.
+  local UNMAPPED = "dazed, diminished, fratricide, frostbite, grievouswounds, icebound, "
     .. "internalbleeding, kkractlebrand, stridulating"
   g.lines(LIST_STACK)
   eq(table.concat(g.sk.serverunmapped("normal"), ", "), UNMAPPED, "the list's names svof has no action for")
@@ -411,6 +415,8 @@ do
   eq(toserver.unweavingmind, "unweavingmind", "an action's name on the list")
   eq(toserver.ablaze, "burning", "an action the game names another way")
   eq(toaction.burning, "ablaze", "and back")
+  eq(toserver.blindaff, "blindness", "an action svof sends under a name the game lists otherwise")
+  eq(toaction.blindness, "blindaff", "and back")
   eq(toaction.icebound, nil, "a name svof has no action for")
 end
 

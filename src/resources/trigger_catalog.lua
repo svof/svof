@@ -539,7 +539,7 @@ return {
     { "Hit alias limit", { "exact", "You have reached your limit of 100 aliases." } },
     { "Curing priority spam limit", { "exact", "You have exceeded the spam threshold for curing priority. Please see Announce #5450 for details." } },
     { "Defence list reset", { "exact", "All your defence priorities have been reset to defaults." } },
-    { "Curing priority lines", { "start", "Your affliction curing priorities for the priority set " }, { "start", "You will now cure using the " }, { "start", "You have set the '" }, { "regex", "^The \\w+ affliction can only have up to \\d+ stacks\\.$" }, { "exact", "All your curing affliction priorities have been reset to defaults." } },
+    { "Curing priority lines", { "start", "Your affliction curing priorities for the priority set " }, { "start", "Your defence priorities for curing set " }, { "start", "You will now cure using the " }, { "start", "You have set the '" }, { "regex", "^The \\w+ affliction can only have up to \\d+ stacks\\.$" }, { "exact", "All your curing affliction priorities have been reset to defaults." } },
   },
   { "svo (aliases, triggers) / svo / General / Ship prompt",
     { "Got ship prompt", { "regex", "^\\w+ has transferred command of the ship \".+?\" to you\\.$" }, { "exact", "Ship configured for normal prompt." }, { "exact", "Ship configured for cryptic prompt." }, { "exact", "Ship configured for battle prompt." }, { "start", "Congratulations! You have been made captain of the ship known as" }, { "regex", "^\\w+ permits your assumption of command of the ship \".+?\"\\.$" } },

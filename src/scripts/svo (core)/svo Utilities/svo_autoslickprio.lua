@@ -1,5 +1,7 @@
 function svo_autoslickprio(_, balance)
   if not svo.conf.autoslick then return end
+  -- the server's numbers in custom mode, on every aff gained or lost
+  if svo.sk.serverprios_autoslick then svo.sk.serverprios_autoslick() end
   if balance ~= 'herb' then return end
   if not (svo.affl.slickness and svo.affl.asthma) and not svo.swapped_asthma then return end
 
