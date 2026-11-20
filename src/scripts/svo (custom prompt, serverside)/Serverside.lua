@@ -709,11 +709,30 @@ function sk.serverstatus_stop()
   if read.statusreader then killTrigger(read.statusreader); read.statusreader = nil end
 end
 
+-- a status that stopped before its closing line changes no setting. One svof
+-- asked for is asked for once more, and when that is cut short too, or the
+-- player typed it themselves and nothing was asked, nothing more is sent
+function sk.serverstatus_cut(status)
+  sk.serverstatus_stop()
+  if not status.asked then return end
+  local read = sk.serverread
+  if read.statusretried then
+    if read.statustimer then killTimer(read.statustimer); read.statustimer = nil end
+    sk.serverstatus_warn()
+    return
+  end
+  read.statusretried = true
+  read.statusasked = true
+  sk.serverstatus_arm()
+  sendAll("curing status", false)
+end
+
 -- every line after a status's header
 function sk.serverstatus_line(text, isprompt)
   local read = sk.serverread
   local status = read.statusreading
-  if not status or isprompt then sk.serverstatus_stop() return end
+  if not status then sk.serverstatus_stop() return end
+  if isprompt then sk.serverstatus_cut(status) return end
 
   -- a status svof asked for isn't shown
   if status.asked then deleteLine() end
@@ -722,7 +741,7 @@ function sk.serverstatus_line(text, isprompt)
   if not status.open and text == "Curing Status:" then return end
 
   status.lines = status.lines + 1
-  if status.lines > serverstatus_longest then sk.serverstatus_stop() return end
+  if status.lines > serverstatus_longest then sk.serverstatus_cut(status) return end
 
   if text:match("^%-+$") then
     if not status.open then status.open = true return end
@@ -736,7 +755,7 @@ function sk.serverstatus_line(text, isprompt)
   end
 
   local label, value = text:match("^(.-):%s+(.-)%s*$")
-  if not status.open or not label or value == "" then sk.serverstatus_stop() return end
+  if not status.open or not label or value == "" then sk.serverstatus_cut(status) return end
 
   local name = sk.serverstatus_rows[label]
   if name then
@@ -1038,6 +1057,24 @@ local function serversettings_said(changes)
   svo.echof("Svof's settings now follow the game's: %s.", svo.concatand(list))
 end
 
+function sk.serverstatus_warn()
+  svo.echof("The game didn't show its curing status, so Svof doesn't have your settings there. "
+    .."CURING STATUS shows it to Svof again.")
+end
+
+-- waits 15 seconds for a status svof asked for
+function sk.serverstatus_arm()
+  local read = sk.serverread
+  if read.statustimer then killTimer(read.statustimer) end
+  read.statustimer = tempTimer(15, function()
+    read.statustimer = nil
+    read.focusasked = nil
+    if not read.statusasked then return end
+    read.statusasked = nil
+    sk.serverstatus_warn()
+  end)
+end
+
 -- asks the game for its settings: the status, and CURING FOCUS for the two
 -- focus switches the status doesn't show. Until the status arrives svof
 -- doesn't know what the game has, and its own toggles wait
@@ -1045,16 +1082,9 @@ function sk.serversettings_ask()
   local read = sk.serverread
   read.status, read.statusother = nil, nil
   read.statusasked, read.focusasked = true, true
+  read.statusretried = nil
 
-  if read.statustimer then killTimer(read.statustimer) end
-  read.statustimer = tempTimer(15, function()
-    read.statustimer = nil
-    read.focusasked = nil
-    if not read.statusasked then return end
-    read.statusasked = nil
-    svo.echof("The game didn't show its curing status, so Svof doesn't have your settings there. "
-      .."CURING STATUS shows it to Svof again.")
-  end)
+  sk.serverstatus_arm()
 
   sendAll("curing status", "curing focus", false)
 end
