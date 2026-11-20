@@ -493,6 +493,61 @@ do
   eq(g.sent(), "", "and its toggles go on waiting")
 end
 
+-- ===== a status cut short =====
+
+do
+  -- the header, its dashes and a few rows, without the closing dashes
+  local CUT = {}
+  for l in (STATUS .. "\n"):gmatch("(.-)\n") do
+    if #CUT < 6 then CUT[#CUT + 1] = l end
+  end
+  local cut = table.concat(CUT, "\n")
+  local function cadmus(g)
+    g.conf.focus, g.conf.focuswithcadmus = true, false
+    g.svo.affs.cadmus = { p = g.svo.dict.cadmus.aff }
+  end
+
+  -- cut short once, whole on the re-ask
+  local g = new_game("custom")
+  cadmus(g)
+  g.lines(cut); g.prompt()
+  eq(g.sent(true), "curing status, curing focus, curing status", "a status cut short is asked for once more, the status only")
+  eq(g.read.status, nil, "a cut status sets nothing")
+  g.lines(STATUS); g.prompt()
+  check("the re-asked status is read", g.read.status ~= nil)
+  g.sk.togglefocusserver()
+  eq(g.sent(), "curing focus off", "and svof's toggles work")
+  eq(g.echoed("The game didn't show its curing status"), 0, "with no warning, not even after 15 seconds")
+
+  -- cut short twice
+  g = new_game("custom")
+  g.lines(cut); g.prompt()
+  g.lines(cut); g.prompt()
+  eq(g.sent(true), "curing status, curing focus, curing status", "cut short twice: exactly one re-ask is sent")
+  eq(g.echoed("The game didn't show its curing status"), 1, "and the warning is printed")
+  g.settle()
+  eq(g.echoed("The game didn't show its curing status"), 1, "once")
+  eq(g.sent(), "", "and nothing else is asked")
+  eq(g.read.status, nil, "the status stays unknown")
+
+  -- cut short once, the re-ask never answered
+  g = new_game("custom")
+  g.lines(cut); g.prompt()
+  g.sent(true)
+  eq(g.echoed("The game didn't show its curing status"), 0, "no warning while the re-ask is awaited")
+  g.settle()
+  eq(g.echoed("The game didn't show its curing status"), 1, "the re-ask never answered warns once after 15 seconds")
+
+  -- one the player typed
+  g = new_game("custom")
+  g.lines(STATUS); g.prompt()
+  g.sent()
+  g.lines(cut); g.prompt()
+  eq(g.sent(), "", "a cut status the player typed sends no re-ask")
+  check("and leaves the status it had", g.read.status ~= nil)
+  eq(g.echoed("The game didn't show its curing status"), 0, "and warns of nothing")
+end
+
 -- ===== login, and serverside going on, in custom mode =====
 
 do
