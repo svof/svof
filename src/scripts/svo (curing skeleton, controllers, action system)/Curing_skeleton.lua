@@ -2469,6 +2469,8 @@ end
 function svo.sendcuring(what)
   what = "curing "..what
 
+  -- in custom mode, so the game's reply isn't taken for the player's edit
+  if sk.serversetting_sent then sk.serversetting_sent(what) end
   sk.sendqueuecmd(what)
 end
 

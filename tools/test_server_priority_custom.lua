@@ -216,8 +216,8 @@ do
   g.mode("custom")
   local sent = g.sent(true)
   eq(sent, "\ncuringset switch slowcuring\ncuring priority list\ncuringset switch normal\ncuring priority list\n"
-    .. "curing priority defence list\n",
-    "the switch asks for both lists, the set in use last, and then for the defence list")
+    .. "curing priority defence list\ncuring status\ncuring focus\n",
+    "the switch asks for both lists, the set in use last, for the defence list, and then for the settings")
 
   -- svof handles impale itself by default, so the 26 the list has for it is
   -- svof's, and paralysis at 2 is the player's

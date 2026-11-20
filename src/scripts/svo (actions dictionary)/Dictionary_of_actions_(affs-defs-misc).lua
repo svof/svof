@@ -509,6 +509,9 @@ codepaste.pyre_holds = function()
 end
 
 codepaste.serversideahealthmanaprio = function()
+  -- with vconfig serverprios custom, Health/Mana Priority is the player's
+  if sk.customserverprios() then return end
+
   local healhealth_prio = svo.prio.getnumber('healhealth', 'sip')
   local healmana_prio   = svo.prio.getnumber('healmana'  , 'sip')
 

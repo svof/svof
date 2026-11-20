@@ -153,9 +153,11 @@ end
 
 -- setupserverside at login
 do
-  local function login(serverside)
+  local function login(serverside, custom)
     local w = world()
     w.conf.serverside = serverside
+    -- with vconfig serverprios custom the game's switches are the player's
+    w.svo.sk.customserverprios = function() return (serverside and custom) and true or false end
     w.svo.sendc = function(c) w.sent[#w.sent + 1] = c end
     w.svo.getping = function() return 0.1 end
     w.svo.sk.sendfocuswith = function(only) w.focuswith = w.focuswith + 1 w.only = only end
@@ -171,6 +173,9 @@ do
   check("login with serverside: curing sets still created", w.sent[1], "curingset new normal")
   w = login(false)
   check("login without serverside: nothing sent", w.focuswith, 0)
+  w = login(true, true)
+  check("login with custom server priorities: the switches are the player's, none sent", w.focuswith, 0)
+  check("login with custom server priorities: curing sets still created", w.sent[1], "curingset new normal")
 end
 
 -- The wait before svof takes focus balance as back without the game's
