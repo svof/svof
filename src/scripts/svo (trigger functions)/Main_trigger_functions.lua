@@ -4504,7 +4504,7 @@ if svo.haveskillset('venom') then
   end
 end
 
-if svo.haveskillset('sagas') then
+if svo.havevoicebalance() then
   function svo.valid.usedvoicebalance()
     svo.checkaction(svo.dict.stolebalance.happened, true)
     lifevision.add(actions.stolebalance_happened.p, nil, 'voice')

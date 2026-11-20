@@ -41,6 +41,13 @@ local function read(path)
   return s
 end
 
+local function has(list, item)
+  for _, v in ipairs(list) do
+    if v == item then return true end
+  end
+  return false
+end
+
 local TRIGGERS = "src/triggers/svo (aliases, triggers)/svo/"
 local DANCES = { "harrying", "hawkstep", "wavedance" }
 local TEMPOS = { "adagio", "moderato", "allegro", "vivace" }
@@ -75,9 +82,44 @@ end
 do
   local w = world.new({ class = "Bard" })
   local svo = w.svo
-  for _, skill in ipairs({ "bladedance", "composition", "sagas", "woe" }) do
-    eq(svo.haveskillset(skill), true, "a Bard has " .. skill)
+  -- a Bard has Sagas or Woe, never both: Woe in Cyrene, Sagas anywhere else
+  for _, skill in ipairs({ "bladedance", "composition", "sagas" }) do
+    eq(svo.haveskillset(skill), true, "a Bard outside Cyrene has " .. skill)
   end
+  eq(svo.haveskillset("woe"), false, "a Bard outside Cyrene has no woe")
+  eq(svo.havevoicebalance(), true, "and has the voice balance")
+  eq(svo.me.skills.sagas, true, "me.skills agrees: sagas")
+  eq(svo.me.skills.woe, nil, "me.skills agrees: no woe")
+  eq(has(svo.knownskills.bard, "woe"), false, "knownskills has no woe for them")
+
+  -- the city is read after this file loads, so systemstart and a city change
+  -- both work the skills out again
+  svo.conf.org = "Cyrene"
+  svo.signals.orgchanged:emit()
+  for _, skill in ipairs({ "bladedance", "composition", "woe" }) do
+    eq(svo.haveskillset(skill), true, "a Cyrene Bard has " .. skill)
+  end
+  eq(svo.haveskillset("sagas"), false, "a Cyrene Bard has no sagas")
+  eq(svo.havevoicebalance(), true, "and has the voice balance")
+  eq(svo.me.skills.woe, true, "me.skills agrees: woe")
+  eq(svo.me.skills.sagas, nil, "me.skills agrees: no sagas")
+  eq(has(svo.knownskills.bard, "sagas"), false, "knownskills has no sagas for them")
+  svo.conf.org = "Ashtan"
+  svo.signals.orgchanged:emit()
+  eq(svo.haveskillset("sagas"), true, "moving away from Cyrene gives sagas back")
+  eq(svo.haveskillset("woe"), false, "and takes woe off")
+  svo.conf.org = "Cyrene"
+  svo.signals.systemstart:emit()
+  eq(svo.haveskillset("woe"), true, "systemstart reads the city a loaded config set")
+  eq(svo.haveskillset("sagas"), false, "and not sagas")
+  svo.conf.org = nil
+  svo.refreshskills()
+  eq(svo.haveskillset("sagas"), true, "no city set: sagas")
+
+  -- an enemy Bard can have either
+  eq(has(svo.classes.bard.skills, "sagas"), true, "the enemy Bard list has sagas")
+  eq(has(svo.classes.bard.skills, "woe"), true, "and woe")
+  eq(world.new({ class = "Monk" }).svo.havevoicebalance(), false, "a Monk has no voice balance")
   for _, skill in ipairs({ "swashbuckling", "voicecraft", "harmonics" }) do
     eq(svo.haveskillset(skill), false, "a Bard no longer has " .. skill)
   end
@@ -696,6 +738,79 @@ do
   eq(w.svo.bals.voice, before, "voice: a Monk's balance is untouched by Voice: No")
   eq(w.svo.sk.voice_gmcp, nil, "voice: and a Monk records nothing")
   eq(count(w, "svo lost balance"), 0, "voice: and raises nothing")
+end
+
+-- Sagas and Woe use one balance: the gates and GMCP work for both, and the two
+-- recovery paths that aren't at the recovery line record the time without
+-- printing it
+for _, case in ipairs({ { org = "Ashtan", skill = "sagas" }, { org = "Cyrene", skill = "woe" } }) do
+  local label = case.skill .. " Bard"
+  local function fresh()
+    local w = world.new({ class = "Bard" })
+    w.svo.conf.org = case.org
+    w.svo.signals.orgchanged:emit()
+    w.events = {}
+    w.svo.stats.lastvoice = nil
+    w.env.stopStopWatch = function() return 7 end
+    w.svo.conf.showbaltimes = true
+    w.echotimes = 0
+    w.svo.echotime = function() w.echotimes = w.echotimes + 1 end
+    return w
+  end
+  local function got(w)
+    local n = 0
+    for _, e in ipairs(w.events) do
+      if e.name == "svo got balance" and e.args[1] == "voice" then n = n + 1 end
+    end
+    return n
+  end
+
+  local w = fresh()
+  local svo = w.svo
+  eq(svo.haveskillset(case.skill), true, label .. ": has " .. case.skill)
+  -- the gates
+  eq(type(svo.valid.usedvoicebalance), "function", label .. ": the used voice handler exists")
+  eq(type(svo.valid.gotvoicebalance), "function", label .. ": the got voice handler exists")
+  eq(type(svo.cpp.compute_voicebal), "function", label .. ": the prompt computes voice")
+  eq(svo.cp.definitions["@voicebal"], "svo.cpp.compute_voicebal()", label .. ": the prompt tag shows it")
+  svo.bals.voice = nil
+  svo.reset.bals()
+  eq(svo.bals.voice, true, label .. ": a balance reset sets voice")
+  w.events = {}
+
+  -- GMCP
+  w.gmcp_vitals({ "Voice: No" })
+  eq(svo.bals.voice, false, label .. ": GMCP's No takes the balance down")
+  w.gmcp_vitals({ "Voice: Yes" })
+  eq(svo.bals.voice, true, label .. ": GMCP's Yes brings it back")
+  eq(got(w), 1, label .. ": and raises one got balance")
+  eq(svo.stats.lastvoice, 7, label .. ": and records the time")
+  eq(w.echotimes, 0, label .. ": GMCP's path prints no time")
+
+  -- the fallback timer
+  w = fresh()
+  svo = w.svo
+  svo.lostbal_voice()
+  w.advance(11)
+  eq(svo.bals.voice, true, label .. ": the timer restores voice")
+  eq(got(w), 1, label .. ": and raises one got balance")
+  eq(svo.stats.lastvoice, 7, label .. ": the timer path records the time")
+  eq(w.echotimes, 0, label .. ": the timer path prints no time")
+
+  -- the text path still prints the time, where it's at the line
+  w = fresh()
+  svo = w.svo
+  svo.lostbal_voice()
+  svo.endbalancewatch("voice")
+  eq(w.echotimes, 1, label .. ": endbalancewatch with no flag still prints")
+  svo.endbalancewatch("voice", nil, true)
+  eq(w.echotimes, 1, label .. ": and with the flag doesn't")
+end
+
+do -- no voice balance, no voice gates
+  local w = world.new({ class = "Monk" })
+  eq(w.svo.valid.usedvoicebalance, nil, "a Monk has no used voice handler")
+  eq(w.svo.cpp.compute_voicebal, nil, "or prompt voice")
 end
 
 print(string.format("%d checks, %d failures", checks, #failures))
