@@ -911,9 +911,166 @@ signals["svo config changed"]:connect(sk.toggleinsomniaserver, "sk.toggleinsomni
 
 --
 
+-- lust and CURING REJECTION (Announce #5524). The game rejects every lust it
+-- sees except from names on its whitelist, which is svof's whitelist mode
+-- (vconfig autoreject white) with the lust list as the whitelist. It has no
+-- blacklist, so in blacklist mode svof keeps rejecting itself. The game keeps
+-- its switch, whitelist and assumed list across logins, so svof reads the
+-- whitelist once a login and sends only what differs from then on.
+function svo.serverrejects()
+  return (conf.serverside and svo.serverignore.lovers and conf.autoreject == 'white'
+    and not svo.ignore.lovers) and true or false
+end
+
+-- on: the switch as svof last set it, nil until then. whitelist: the game's
+-- whitelist by lowercase name, nil until read. adds: names sent to it, in
+-- order, whose replies haven't come yet. refused: names the game didn't
+-- know this login
+sk.rejection = {adds = {}, refused = {}}
+
+local rejection_replies
+
+local function rejection_listen()
+  local state = sk.rejection
+  if state.triggers then
+    killTimer(state.listentimer)
+  else
+    state.triggers = {}
+    for _, reply in ipairs(rejection_replies) do
+      local make = reply.kind == 'exact' and tempExactMatchTrigger
+        or reply.kind == 'begin' and tempBeginOfLineTrigger or tempTrigger
+      state.triggers[#state.triggers+1] = make(reply.pattern, function()
+        if conf.gagserverside then deleteLine() end
+        reply.run()
+      end)
+    end
+  end
+  -- the replies arrive within a few seconds; stop listening after that, so
+  -- the player's own CURING REJECTION commands later aren't caught
+  state.listentimer = tempTimer(10 + svo.getping(), function()
+    for _, id in ipairs(state.triggers) do killTrigger(id) end
+    state.triggers, state.listentimer, state.asked = nil, nil, nil
+    state.adds = {}
+  end)
+end
+
+local function rejection_send(what)
+  rejection_listen()
+  svo.sendcuring("rejection " .. what)
+end
+
+local function read_whitelist(names)
+  local state = sk.rejection
+  state.whitelist = {}
+  for name in (names or ""):gmatch("[%a']+") do
+    if name ~= "and" then state.whitelist[name:lower()] = name end
+  end
+  state.asked = nil
+  sk.syncrejection()
+end
+
+rejection_replies = {
+  {kind = 'begin', pattern = "You will not automatically reject the lust of: ", run = function()
+    read_whitelist(line:match("lust of: (.*)%.$"))
+  end},
+  {kind = 'exact', pattern = "You have no people that you will not automatically reject the lust of.", run = function()
+    read_whitelist()
+  end},
+  {kind = 'substring', pattern = " to your rejection whitelist.", run = function()
+    table.remove(sk.rejection.adds, 1)
+  end},
+  {kind = 'exact', pattern = "Add who to your rejection whitelist?", run = function()
+    local state = sk.rejection
+    local name = table.remove(state.adds, 1)
+    if not name then return end
+    if state.whitelist then state.whitelist[name:lower()] = nil end
+    -- don't send it again until the next login
+    state.refused[name:lower()] = true
+    svo.echof("The game doesn't know %s, on your lust list, so it can't whitelist them against rejection.", name)
+  end},
+  {kind = 'substring', pattern = " from your rejection whitelist.", run = function() end},
+  {kind = 'substring', pattern = " is not currently on your rejection whitelist.", run = function() end},
+  {kind = 'exact', pattern = "You will now automatically reject the lust of your enemies.", run = function() end},
+  {kind = 'exact', pattern = "You are already automatically rejecting the lust of your enemies.", run = function() end},
+  {kind = 'exact', pattern = "You will no longer automatically reject the lust of your enemies.", run = function() end},
+  {kind = 'exact', pattern = "You're already not rejecting the lust of your enemies.", run = function() end},
+}
+
+-- sends what it takes for the game's rejection to match svof's settings
+function sk.syncrejection()
+  if not conf.serverside then return end
+  local state = sk.rejection
+
+  if svo.logging_in then
+    if not state.retry then
+      state.retry = tempTimer(2, function() state.retry = nil sk.syncrejection() end)
+    end
+    return
+  end
+
+  if svo.serverrejects() then
+    if not state.whitelist then
+      if not state.asked then
+        state.asked = true
+        rejection_send("whitelist show")
+      end
+      return
+    end
+
+    -- the whitelist first, as the game asks, then the switch
+    local add, remove, wanted = {}, {}, {}
+    for name in pairs(me.lustlist) do
+      wanted[name:lower()] = true
+      if not state.whitelist[name:lower()] and not state.refused[name:lower()] then add[#add+1] = name end
+    end
+    for lower, name in pairs(state.whitelist) do
+      if not wanted[lower] then remove[#remove+1] = name end
+    end
+    table.sort(add) table.sort(remove)
+    for _, name in ipairs(add) do
+      state.whitelist[name:lower()] = name
+      state.adds[#state.adds+1] = name
+      rejection_send("whitelist add " .. name)
+    end
+    for _, name in ipairs(remove) do
+      state.whitelist[name:lower()] = nil
+      rejection_send("whitelist remove " .. name)
+    end
+
+    if state.on ~= true then
+      state.on = true
+      rejection_send("on")
+    end
+  elseif state.on ~= false then
+    state.on = false
+    rejection_send("off")
+  end
+end
+
+signals["svo config changed"]:connect(function(config)
+  if config == 'serverside' then
+    -- the game's switch may have changed while serverside was off
+    sk.rejection.on = nil
+    sk.syncrejection()
+  elseif config == 'autoreject' or config == 'lustlist' then
+    sk.syncrejection()
+  end
+end, 'update serverside lust rejection')
+signals["svo serverignore changed"]:connect(function(action)
+  if action == 'lovers' then sk.syncrejection() end
+end, 'update serverside lust rejection')
+signals["svo ignore changed"]:connect(function(action)
+  if action == 'lovers' then sk.syncrejection() end
+end, 'update serverside lust rejection')
+
 
 function svo.setupserverside()
   if not conf.serverside then return end
+
+  -- a new login: read the game's whitelist again, and set its switch
+  sk.rejection.on, sk.rejection.whitelist, sk.rejection.asked = nil, nil, nil
+  sk.rejection.refused = {}
+  tempTimer(3 + svo.getping(), sk.syncrejection)
 
   svo.sendc("curingset new normal")
   svo.sendc("curingset new slowcuring")
@@ -956,7 +1113,7 @@ end
 sk.svof_handles_by_default = {
   impale        = true, -- serverside does not stack writhing atm
   daeggerimpale = true, -- writhed as impale is
-  lovers        = true, -- lust not handled by serverside
+  lovers        = true, -- lust: serverside only rejects in whitelist mode (svo.serverrejects)
   selfishness   = true, -- doesn't take selfish off
 }
 

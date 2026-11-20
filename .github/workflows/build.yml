@@ -505,6 +505,15 @@ jobs:
       - name: test lust serverside priority
         run: lua tools/test_lust_serverprio.lua
 
+      # Gate 1.999991. Serverside's CURING REJECTION for lust: on only in
+      # whitelist mode with serverside handling lust, the game's whitelist
+      # kept equal to the lust list, svof rejecting itself in blacklist mode,
+      # serverside's REJECT taking the lust off, and a lust seen in blackout
+      # passed on with ASSUME. Runs the real loaders (tools/svof_world.lua)
+      # and feeds the game's replies.
+      - name: test lust rejection
+        run: lua tools/test_lust_rejection.lua
+
       - uses: actions/setup-java@v4
         with:
           distribution: temurin

@@ -159,6 +159,8 @@ do
     w.svo.sendc = function(c) w.sent[#w.sent + 1] = c end
     w.svo.getping = function() return 0.1 end
     w.svo.sk.sendfocuswith = function(only) w.focuswith = w.focuswith + 1 w.only = only end
+    -- lust rejection's state from an earlier login (tools/test_lust_rejection.lua)
+    w.svo.sk.rejection = { on = true, whitelist = {}, refused = { alex = true } }
     w.env.tempTimer = function() return 1 end
     w.env.killTimer = function() end
     run(setup_src, "setupserverside", w.env)
@@ -166,6 +168,8 @@ do
     return w
   end
   local w = login(true)
+  check("login with serverside: lust rejection is read again",
+    w.svo.sk.rejection.whitelist == nil and w.svo.sk.rejection.on == nil and next(w.svo.sk.rejection.refused) == nil, true)
   check("login with serverside: both focus-with switches sent once", w.focuswith, 1)
   check("login with serverside: sent for both, not one", w.only, nil)
   check("login with serverside: curing sets still created", w.sent[1], "curingset new normal")

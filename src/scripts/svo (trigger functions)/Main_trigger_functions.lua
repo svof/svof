@@ -91,15 +91,23 @@ function svo.valid.symp_asleep()
   lifevision.add(actions.sleep_aff.p, 'symptom', nil, first_claim and 1 or nil)
 end
 
+-- serverside's REJECT is svof's cure too: its [Curing]: line comes first and
+-- can't be illusioned, so the reply counts without svof's own REJECT in flight
 function svo.valid.cured_lovers()
-  svo.checkaction(svo.dict.lovers.physical)
+  svo.checkaction(svo.dict.lovers.physical, sk.sawcuringcommand or nil)
   if actions.lovers_physical then
     lifevision.add(actions.lovers_physical.p, nil, multimatches[2][2])
   end
 end
 
 function svo.valid.cured_lovers_nobody()
-  svo.checkaction(svo.dict.lovers.physical)
+  if sk.sawcuringcommand and not actions.lovers_physical then
+    -- serverside rejected someone it only assumed had lusted you
+    svo.checkaction(svo.dict.lovers.physical, true)
+    svo.dict.lovers.rejecting = matches[2]
+  else
+    svo.checkaction(svo.dict.lovers.physical)
+  end
   if actions.lovers_physical then
     lifevision.add(actions.lovers_physical.p, 'nobody')
   end

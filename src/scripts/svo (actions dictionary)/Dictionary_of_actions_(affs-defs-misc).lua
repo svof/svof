@@ -5480,6 +5480,12 @@ if not next(svo.dict) then
         isadvisable = function()
           return (affs.lovers and not svo.doingaction('lovers')) or false
         end,
+
+        -- the game only rejects in whitelist mode, so svof still does in
+        -- blacklist mode when serverside has lust (svo.serverrejects)
+        servercannot = function()
+          return not svo.serverrejects()
+        end,
   
         oncompleted = function (whom)
           svo.dict.lovers.map[whom] = nil
