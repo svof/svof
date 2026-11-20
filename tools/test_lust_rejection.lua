@@ -192,6 +192,70 @@ do
     same(rejections(w, from), { "on" }), show(rejections(w, from)))
 end
 
+-- ===== serverside switched on: each command once =====
+
+-- the way a player turns it on (vconfig serverside on, tn serverside): the
+-- tntf's on() runs svo.setupserverside first, then "svo config changed" is
+-- raised, so the setup's delayed sync and the config handler's both run
+local function switch_serverside_on(lustlist, lust_to_serverside)
+  local w = world.new({ class = "Magi" })
+  local recorded = w.env.raiseEvent
+  w.env.raiseEvent = function(name, ...)
+    recorded(name, ...)
+    w.svo.events(name, ...)
+  end
+  for _, name in ipairs(lustlist or {}) do w.svo.me.lustlist[name] = true end
+  if lust_to_serverside then w.svo.serverignore.lovers = true end
+  w.svo.tntf_set("serverside", "on", false)
+  for _ = 1, 8 do w.advance(1) end
+  return w
+end
+
+do
+  local w = switch_serverside_on({ "Alex" })
+  check("serverside on, svof handling lust: exactly one rejection off",
+    same(rejections(w), { "off" }), show(rejections(w)))
+end
+
+do
+  local w = switch_serverside_on({ "Alex", "Dana" }, true)
+  check("serverside on with lust on serverside: one whitelist show",
+    same(rejections(w), { "whitelist show" }), show(rejections(w)))
+  local from = #w.sent + 1
+  w.line(NOBODY)
+  for _ = 1, 8 do w.advance(1) end
+  check("and after the reply, the adds and one on",
+    same(rejections(w, from), { "whitelist add Alex", "whitelist add Dana", "on" }), show(rejections(w, from)))
+end
+
+-- ===== a login with serverside already on =====
+
+do
+  local w = world.new({ class = "Magi" })
+  w.svo.conf.serverside = true
+  w.svo.me.lustlist.Alex = true
+  w.svo.setupserverside()
+  for _ = 1, 8 do w.advance(1) end
+  check("a login with serverside already on sets the switch off, once",
+    same(rejections(w), { "off" }), show(rejections(w)))
+end
+
+do
+  local w = world.new({ class = "Magi" })
+  w.svo.conf.serverside = true
+  w.svo.me.lustlist.Alex = true
+  w.svo.serverignore.lovers = true
+  w.svo.setupserverside()
+  for _ = 1, 8 do w.advance(1) end
+  check("a login with serverside already on reads the whitelist",
+    same(rejections(w), { "whitelist show" }), show(rejections(w)))
+  local from = #w.sent + 1
+  w.line(NOBODY)
+  for _ = 1, 8 do w.advance(1) end
+  check("and then sets the switch",
+    same(rejections(w, from), { "whitelist add Alex", "on" }), show(rejections(w, from)))
+end
+
 -- ===== reading a whitelist with names =====
 
 -- the game's form, with a serial comma, and the same without one
