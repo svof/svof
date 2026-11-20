@@ -360,10 +360,18 @@ signals.saveconfig:connect(function()
 end, 'save my class')
 
 
+-- A Bard has Sagas or Woe, never both: Bards who live in Cyrene have Woe,
+-- every other Bard has Sagas (the repo owner, 2026-11-20). knownskills is the
+-- player's own skillsets, so it follows conf.org - see svo.refreshskills
+local function bardskills()
+  local org = conf.org and tostring(conf.org):lower()
+  return {'bladedance', 'composition', org == 'cyrene' and 'woe' or 'sagas'}
+end
+
 svo.knownskills = {
   alchemist                = {'transmutation', 'physiology', 'alchemy'},
   apostate                 = {'evileye', 'necromancy', 'apostasy'},
-  bard                     = {'bladedance', 'composition', 'sagas'},
+  bard                     = bardskills(),
   blademaster              = {'twoarts', 'striking', 'shindo'},
   depthswalker             = {'shadowmancy','aeonics','terminus'},
   druid                    = {'groves', 'metamorphosis', 'reclamation'},
@@ -393,24 +401,38 @@ svo.knownskills = {
   ["water elemental lady"] = {'pervasion'},
 }
 
-me.skills = {}
-for _, skill in ipairs(svo.knownskills[me.class:lower()]) do
-  me.skills[skill] = true
-end
-
-
 -- optimised haveskillset, since it gets called often: compute a key-value table
 -- with all of the skills we have.
+me.skills = {}
 do
   local available_skills = {}
-  for _, skill in ipairs(svo.knownskills[svo.me.class:lower()]) do
-    available_skills[skill] = true
+
+  -- Works the skills out again. conf.org isn't loaded yet when this file
+  -- loads (the config loader reads it later), so this runs again on
+  -- systemstart, and when vconfig org changes it - a Bard changing city is
+  -- one skillset for the other without a restart
+  function svo.refreshskills()
+    svo.knownskills.bard = bardskills()
+    for skill in pairs(me.skills) do me.skills[skill] = nil end
+    available_skills = {}
+    for _, skill in ipairs(svo.knownskills[svo.me.class:lower()]) do
+      me.skills[skill] = true
+      available_skills[skill] = true
+    end
   end
+  svo.refreshskills()
 
   function svo.haveskillset(skillset)
     return available_skills[skillset] and true or false
   end
 end
+
+-- Sagas and Woe both use the voice balance
+function svo.havevoicebalance()
+  return svo.haveskillset('sagas') or svo.haveskillset('woe')
+end
+
+signals.systemstart:connect(function() svo.refreshskills() end, 'refresh skills from conf.org')
 
 -- Class resources: Some classes have resources that it is good to keep track. Put them here!
 if svo.haveskillset('groves') then
@@ -669,6 +691,39 @@ signals.gmcpcharvitals:connect(function()
     end
   end
 end, 'update wrathbal balance')
+end
+
+-- A Bard's Char.Vitals charstats carry the voice balance, such as
+-- { "Bleed: 0", "Rage: 0", "Voice: Yes" }. "Voice: No" for voice down is
+-- assumed, not captured, so only exactly "Yes" and "No" count and any other
+-- value leaves the balance alone. That is the game's word on it, so it takes
+-- the balance down or brings it back; sk.voice_gmcp keeps what it last said,
+-- for lostbal_voice's fallback timer. GMCP stops in blackout, so the text
+-- triggers (svo missing voice, svo got voice) remain for that. Vitals come
+-- with nearly every prompt: nothing changes, and nothing is raised, when
+-- they agree with svof. Cyrene's Bards have Woe in place of Sagas, and it
+-- uses the same balance
+if svo.havevoicebalance() then
+signals.gmcpcharvitals:connect(function()
+  if not gmcp.Char.Vitals.charstats then return end
+  for _, val in ipairs(gmcp.Char.Vitals.charstats) do
+    local voice = val:match("^Voice: (%w+)$")
+    if voice then
+      if voice == "No" then
+        sk.voice_gmcp = false
+        if svo.bals.voice then svo.lostbal_voice() end
+      elseif voice == "Yes" then
+        sk.voice_gmcp = true
+        if svo.bals.voice == false then
+          -- what svo.dict.gotbalance.happened does for one balance, without
+          -- waiting for lifevision's prompt, and as the fallback timer does
+          svo.gotbal_voice()
+        end
+      end
+      break
+    end
+  end
+end, 'update voice balance')
 end
 
 -- End of class resources
@@ -1479,6 +1534,7 @@ signals.curemethodchanged = signals.curemethodchanged or luanotify.signal.new()
 signals.limbhit = signals.limbhit or luanotify.signal.new()
 signals.loadconfig = signals.loadconfig or luanotify.signal.new()
 signals.orgchanged = signals.orgchanged or luanotify.signal.new()
+signals.orgchanged:connect(function() svo.refreshskills() end, 'refresh skills from conf.org')
 signals.sysdatasendrequest = signals.sysdatasendrequest or luanotify.signal.new()
 if svo.haveskillset('metamorphosis') then
 signals.morphskillchanged = signals.morphskillchanged or luanotify.signal.new()
@@ -1824,7 +1880,7 @@ else
 disableTrigger("Hydra balance")
 end
 
-if svo.haveskillset('sagas') then
+if svo.havevoicebalance() then
 enableTrigger("Voice balance")
 else
 disableTrigger("Voice balance")

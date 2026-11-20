@@ -151,11 +151,13 @@ function svo.startbalancewatch(balance)
   startStopWatch(svo.watch["bal_"..balance])
 end
 
-function svo.endbalancewatch(balance, sameline)
+-- noecho: record the time without printing it, for a caller that is not at
+-- the line the balance came back on (a timer, a GMCP event)
+function svo.endbalancewatch(balance, sameline, noecho)
   if svo.watch["bal_"..balance] then
     local s = stopStopWatch(svo.watch["bal_"..balance])
     svo.stats["last"..balance] = s
-    if svo.conf.showbaltimes then svo.echotime(s, sameline) end
+    if svo.conf.showbaltimes and not noecho then svo.echotime(s, sameline) end
   end
 end
 

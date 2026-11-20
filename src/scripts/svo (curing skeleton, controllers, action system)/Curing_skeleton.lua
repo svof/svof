@@ -1792,13 +1792,26 @@ svo.lostbal_voice = function()
 
   tempTimer(10+svo.getping(), function ()
     if not bals.voice and sk.voicetick == oldvoicetick then
-      bals.voice = true
-      svo.make_gnomes_work()
-      raiseEvent("svo got balance", 'voice')
+      -- GMCP says voice is still down: its next Vitals would only take the
+      -- balance down again, so leave it for GMCP's "Yes". It says nothing in
+      -- blackout, so there the guess stands
+      if sk.voice_gmcp == false and not affs.blackout then return end
+      svo.gotbal_voice()
     end
   end)
 
   raiseEvent("svo lost balance", 'voice')
+end
+
+-- Voice balance back, for the callers that aren't at the line it came back on
+-- (the fallback timer above, GMCP's "Voice: Yes"): the stopwatch is stopped
+-- and stats.lastvoice kept, but the time isn't printed - from a timer or a
+-- GMCP event the line above the cursor is an arbitrary one
+svo.gotbal_voice = function()
+  bals.voice = true
+  raiseEvent("svo got balance", 'voice')
+  svo.endbalancewatch('voice', nil, true)
+  svo.make_gnomes_work()
 end
 
 svo.lostbal_sip = function()
