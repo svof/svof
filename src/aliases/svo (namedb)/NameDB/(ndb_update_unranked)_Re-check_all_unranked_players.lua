@@ -21,4 +21,7 @@ for i = 1, #names do
 end
 
 db:merge_unique(ndb.db.people, temp_name_list)
+-- everyone it named, not only the people seen this session
+-- only when a HONORS run can follow: with usehonors off nothing would clear it
+if svo.conf.usehonors then ndb.honorseveryone = true end
 raiseEvent("NameDB got new data")

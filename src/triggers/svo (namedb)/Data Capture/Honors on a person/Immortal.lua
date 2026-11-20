@@ -1,4 +1,8 @@
-if ndb.honorsid then killTimer(ndb.honorsid) ndb.honorsid = nil end
+-- Only an HONORS NameDB started says whose this line is. ndb.honorsname is
+-- never cleared, so without this an HONORS sent any other way marked the last
+-- person NameDB honored as a god.
+if not ndb.honorsid then return end
+killTimer(ndb.honorsid) ndb.honorsid = nil
 
 disableTrigger("Honors")
 

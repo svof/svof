@@ -13,6 +13,8 @@ end
 
 ndb.updateall = nil
 ndb.fixed_set(ndb.db.people.xp_rank, -1)
+-- everyone, not only the people seen this session
+ndb.honorseveryone = true
 
 svo.echof("Re-checking all %d known people in NameDB.", #alldata)
 raiseEvent("NameDB got new data")

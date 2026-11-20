@@ -498,6 +498,25 @@ jobs:
       - name: test mucous
         run: lua tools/test_mucous.lua
 
+      # Gate 1.99994. NameDB's Achaea API lookups: the reply parser (gods and
+      # the Guides are immortal, a hidden city keeps the known one, xp_rank
+      # is never written because it marks who HONORS hasn't seen), the queue
+      # (four in flight, a name asked once a day), "Character not found"
+      # as an answer rather than an outage, the back-off that counts one
+      # outage once and stops after five, the hourly ceiling, the online
+      # poll, and HONORS kept to the people seen this session. Runs the two
+      # API files whole, and the two honours functions extracted from
+      # ndb_main_code.lua, in a stub Mudlet.
+      - name: test namedb api lookups
+        run: lua tools/test_ndb_api.lua
+
+      # Gate 1.99993. NameDB's classes column: the SQLite triggers and backfill
+      # in ndb.classes_sql (ndb.init.lua), run in a real SQLite. Every class
+      # written to people.class, by any path, is added once to
+      # people.classes, lower-case and in the order seen; dragon is not.
+      - name: test namedb classes
+        run: python3 tools/test_ndb_classes.py
+
       - uses: actions/setup-java@v4
         with:
           distribution: temurin

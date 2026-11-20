@@ -48,6 +48,20 @@ function ndb.configs()
   if svo.conf.autocheck == nil then svo.conf.autocheck = true end
   if svo.conf.ndbpause == nil then svo.conf.ndbpause = false end
   if svo.conf.usehonors == nil then svo.conf.usehonors = false end
+  if svo.conf.ndbapi == nil then svo.conf.ndbapi = true end
+
+  svo.config.setoption("ndbapi", {
+    type = "boolean",
+    vconfig2string = true,
+    onenabled = function ()
+      svo.echof("<0,250,0>Will%s look people up on the Achaea API, which tells NameDB their city, house, class and level without an honors.", svo.getDefaultColor())
+      if ndb.api and ndb.api.poll then ndb.api.poll() end
+    end,
+    ondisabled = function ()
+      if ndb.api then ndb.api.queue, ndb.api.queued = {}, {} end
+      svo.echof("<250,0,0>Won't%s look people up on the Achaea API.", svo.getDefaultColor())
+    end
+  })
 
   svo.config.setoption("usehonors", {
     type = "boolean",
@@ -74,7 +88,10 @@ function ndb.configs()
       echo(", ")
       fg("a_cyan") echoLink(svo.conf.usehonors and "will" or "won't", "svo.config.set('usehonors', "..(svo.conf.usehonors and "false" or "true")..", true)", "Click to "..(not svo.conf.usehonors and "enable" or "disable").." using honors to check names", true)
       fg(defaultcolour)
-      echo(" use honors.\n")
+      echo(" use honors and ")
+      fg("a_cyan") echoLink(svo.conf.ndbapi and "will" or "won't", "svo.config.set('ndbapi', "..(svo.conf.ndbapi and "false" or "true")..", true)", "Click to "..(not svo.conf.ndbapi and "enable" or "disable").." looking names up on the Achaea API", true)
+      fg(defaultcolour)
+      echo(" look names up on the Achaea API.\n")
     end
   })
 
