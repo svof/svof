@@ -281,8 +281,7 @@ do -- the Vodun temple flick gives a mangled head, and says so when ignored
 end
 
 do -- @affs, and the default priorities
-  local tag = read("src/scripts/svo (core)/svo Utilities/Custom prompt tags/@affs.lua")
-  eq(tag:match('\n%s*concussion%s*=%s*"([^"]*)"'), "conc", "@affs shows it as conc")
+  eq(world.new().svo.dict.concussion.prompttag, "conc", "@affs shows it as conc")
   local prios = read("src/resources/default_prios")
   eq(prios:find('"concussion"', 1, true) ~= nil, true, "the default salve list has concussion")
   eq(prios:find('"concussion_salve"', 1, true) ~= nil, true, "and slow curing")

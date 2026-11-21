@@ -51,13 +51,11 @@ end
 
 local dict = read_file(DICT)
 
--- the first customwait inside an entry's waitingfor block. revealed sits at
--- two spaces where every other entry has four, so either indent is taken.
+-- the customwait of an entry's waitingfor, from the loaded dictionary
+local loaded = dofile("tools/svof_world.lua").new().svo.dict
 local function wait_of(name)
-  local s = dict:find("\n    " .. name .. " = {\n", 1, true) or dict:find("\n  " .. name .. " = {\n", 1, true)
-  if not s then return nil end
-  local block = dict:match("^%s*" .. name .. " = {\n      waitingfor = {\n        customwait = (%d+)", s + 1)
-  return block and tonumber(block)
+  local entry = loaded[name]
+  return entry and entry.waitingfor and entry.waitingfor.customwait
 end
 
 for name, seconds in pairs(GAME_TIME) do

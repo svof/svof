@@ -663,6 +663,7 @@ if not next(svo.dict) then
       },
     },
     skullfractures = {
+      prompttag = "sf",
       count = 0,
       sip = {
         isadvisable = function()
@@ -720,6 +721,7 @@ if not next(svo.dict) then
       }
     },
     crackedribs = {
+      prompttag = "cr",
       count = 0,
       sip = {
         isadvisable = function()
@@ -777,6 +779,7 @@ if not next(svo.dict) then
       }
     },
     wristfractures = {
+      prompttag = "wf",
       count = 0,
       sip = {
         isadvisable = function()
@@ -834,6 +837,7 @@ if not next(svo.dict) then
       }
     },
     torntendons = {
+      prompttag = "tt",
       count = 0,
       sip = {
         isadvisable = function()
@@ -891,6 +895,7 @@ if not next(svo.dict) then
       }
     },
     pressure = {
+      prompttag = "pre",
       count = 0,
       gamename = 'pressure',
       name = 'pressure',
@@ -951,6 +956,7 @@ if not next(svo.dict) then
       }
     },
     cholerichumour = {
+      prompttag = "choH",
       count = 0,
       gamename = 'temperedcholeric',
       name = 'cholerichumour',
@@ -1015,6 +1021,7 @@ if not next(svo.dict) then
       }
     },
     melancholichumour = {
+      prompttag = "melaH",
       count = 0,
       gamename = 'temperedmelancholic',
       name = 'melancholichumour',
@@ -1082,6 +1089,7 @@ if not next(svo.dict) then
     -- chance of filling your lungs with mucous, which svof tracks as a longer
     -- smoke recovery, not an affliction: see svo.dict.mucouslungs
     phlegmatichumour = {
+      prompttag = "phleH",
       gamename = 'temperedphlegmatic',
       name = 'phlegmatichumour',
       count = 0,
@@ -1145,6 +1153,7 @@ if not next(svo.dict) then
       }
     },
     sanguinehumour = {
+      prompttag = "sanH",
       count = 0,
       gamename = 'temperedsanguine',
       name = 'sanguinehumour',
@@ -1224,6 +1233,7 @@ if not next(svo.dict) then
     },
     
   horror = {
+    prompttag = "hor",
       count = 0,
       gamename = 'horror',
       name = 'horror',
@@ -1306,6 +1316,7 @@ if not next(svo.dict) then
       }
     },
     pacifism = {
+      prompttag = "pac",
       gamename = 'pacified',
       herb = {
         isadvisable = function()
@@ -1355,6 +1366,7 @@ if not next(svo.dict) then
       }
     },
     peace = {
+      prompttag = "pea",
       herb = {
         isadvisable = function()
           return (affs.peace and
@@ -1404,6 +1416,7 @@ if not next(svo.dict) then
       }
     },
     inlove = {
+      prompttag = "love",
       gamename = 'lovers',
       herb = {
         isadvisable = function()
@@ -1454,6 +1467,7 @@ if not next(svo.dict) then
       }
     },
     dissonance = {
+      prompttag = "disso",
       herb = {
         isadvisable = function()
           return (affs.dissonance and not svo.usingbal('focus')) or false
@@ -1479,6 +1493,7 @@ if not next(svo.dict) then
       }
     },
     dizziness = {
+      prompttag = "diz",
       herb = {
         isadvisable = function()
           return (affs.dizziness and
@@ -1528,6 +1543,7 @@ if not next(svo.dict) then
       }
     },
     shyness = {
+      prompttag = "shy",
       herb = {
         isadvisable = function()
           return (affs.shyness and
@@ -1577,6 +1593,7 @@ if not next(svo.dict) then
       }
     },
     epilepsy = {
+      prompttag = "epi",
       herb = {
         isadvisable = function()
           return (affs.epilepsy and
@@ -1626,6 +1643,7 @@ if not next(svo.dict) then
       }
     },
     impatience = {
+      prompttag = "impat",
       herb = {
         isadvisable = function()
           -- curing impatience before hypochondria will make it get re-applied
@@ -1657,6 +1675,7 @@ if not next(svo.dict) then
       }
     },
     stupidity = {
+      prompttag = "st",
       herb = {
         isadvisable = function()
           return (affs.stupidity and
@@ -1708,6 +1727,7 @@ if not next(svo.dict) then
       }
     },
     crushedthroat = {
+      prompttag = "cru",
       salve = {
         isadvisable = function()
           return affs.crushedthroat or false
@@ -1747,6 +1767,7 @@ if not next(svo.dict) then
       }
     },
     guilt = {
+      prompttag = "gui",
       herb = {
         isadvisable = function()
           return (affs.guilt and
@@ -1778,6 +1799,7 @@ if not next(svo.dict) then
       }
     },
     tenderskin = {
+      prompttag = "tendr",
       herb = {
         isadvisable = function()
           return (affs.tenderskin and
@@ -1809,6 +1831,7 @@ if not next(svo.dict) then
       }
     },
     spiritburn = {
+      prompttag = "sptb",
       herb = {
         isadvisable = function()
           return (affs.spiritburn and
@@ -1840,6 +1863,7 @@ if not next(svo.dict) then
       }
     },
     masochism = {
+      prompttag = "maso",
       herb = {
         isadvisable = function()
           return (affs.masochism and
@@ -1889,6 +1913,7 @@ if not next(svo.dict) then
       }
     },
     recklessness = {
+      prompttag = "reck",
       herb = {
         isadvisable = function()
           return (affs.recklessness and
@@ -1960,6 +1985,7 @@ if not next(svo.dict) then
       end,
     },
     justice = {
+      prompttag = "just",
       herb = {
         isadvisable = function()
           return (affs.justice and (not (svo.haveskillset('discipline') or svo.haveskillset('malignity') or svo.haveskillset('valour') or svo.haveskillset('dominion')) or not svo.dict.rage.misc.isadvisable())) or false
@@ -1985,6 +2011,7 @@ if not next(svo.dict) then
       }
     },
     pyre = {
+      prompttag = "pyre",
       count = 0,
       herb = {
         isadvisable = function()
@@ -2043,6 +2070,7 @@ if not next(svo.dict) then
       }
     },
     generosity = {
+      prompttag = "gen",
       herb = {
         isadvisable = function()
           return (affs.generosity and
@@ -2069,6 +2097,7 @@ if not next(svo.dict) then
       }
     },
     weakness = {
+      prompttag = "wea",
       gamename = 'weariness',
       herb = {
         isadvisable = function()
@@ -2099,6 +2128,7 @@ if not next(svo.dict) then
       }
     },
     vertigo = {
+      prompttag = "vert",
       herb = {
         isadvisable = function()
           return (affs.vertigo and
@@ -2148,6 +2178,7 @@ if not next(svo.dict) then
       }
     },
     loneliness = {
+      prompttag = "lon",
       herb = {
         isadvisable = function()
           return (affs.loneliness and not svo.doingaction('loneliness')) or false
@@ -2195,6 +2226,7 @@ if not next(svo.dict) then
       }
     },
     dementia = {
+      prompttag = "dem",
       herb = {
         isadvisable = function()
           return (affs.dementia and not svo.doingaction('dementia')) or false
@@ -2239,6 +2271,7 @@ if not next(svo.dict) then
       }
     },
     paranoia = {
+      prompttag = "prn",
       herb = {
         isadvisable = function()
           return (affs.paranoia and not svo.doingaction('paranoia')) or false
@@ -2283,6 +2316,7 @@ if not next(svo.dict) then
       }
     },
     hypersomnia = {
+      prompttag = "hypers",
       herb = {
         isadvisable = function()
           return (affs.hypersomnia) or false
@@ -2308,6 +2342,7 @@ if not next(svo.dict) then
       }
     },
     hallucinations = {
+      prompttag = "hall",
       herb = {
         isadvisable = function()
           return (affs.hallucinations and not svo.doingaction('hallucinations')) or false
@@ -2352,6 +2387,7 @@ if not next(svo.dict) then
       }
     },
     confusion = {
+      prompttag = "con",
       herb = {
         isadvisable = function()
           return (affs.confusion and
@@ -2402,6 +2438,7 @@ if not next(svo.dict) then
       }
     },
     agoraphobia = {
+      prompttag = "agor",
       herb = {
         isadvisable = function()
           return (affs.agoraphobia and
@@ -2449,6 +2486,7 @@ if not next(svo.dict) then
       }
     },
     claustrophobia = {
+      prompttag = "clau",
       herb = {
         isadvisable = function()
           return (affs.claustrophobia and
@@ -2498,6 +2536,7 @@ if not next(svo.dict) then
       }
     },
     paralysis = {
+      prompttag = "par",
       herb = {
         isadvisable = function()
           return (affs.paralysis) or false
@@ -2526,6 +2565,7 @@ if not next(svo.dict) then
       onremoved = function() svo.affsp.paralysis = nil svo.donext() end
     },
     asthma = {
+      prompttag = "ast",
       herb = {
         isadvisable = function()
           return (affs.asthma) or false
@@ -2558,6 +2598,7 @@ if not next(svo.dict) then
       }
     },
     clumsiness = {
+      prompttag = "cl",
       herb = {
         isadvisable = function()
           return (affs.clumsiness) or false
@@ -2583,6 +2624,7 @@ if not next(svo.dict) then
       }
     },
     sensitivity = {
+      prompttag = "sen",
       herb = {
         isadvisable = function()
           return (affs.sensitivity) or false
@@ -2622,6 +2664,7 @@ if not next(svo.dict) then
       }
     },
     healthleech = {
+      prompttag = "hthl",
       herb = {
         isadvisable = function()
           return (affs.healthleech) or false
@@ -2647,6 +2690,7 @@ if not next(svo.dict) then
       }
     },
     relapsing = {
+      prompttag = "scy",
       -- if it's an aff that can be checked, remove it's action and add an appropriate checkaff. Then if the checkaff succeeds, add the relapsing too.
       saw_with_checkable = false,
       gamename = 'scytherus',
@@ -2766,6 +2810,7 @@ if not next(svo.dict) then
       }
     },
     darkshade = {
+      prompttag = "dark",
       herb = {
         isadvisable = function()
           return (affs.darkshade) or false
@@ -2797,6 +2842,7 @@ if not next(svo.dict) then
       }
     },
     lethargy = {
+      prompttag = "let",
       herb = {
         isadvisable = function()
           -- curing lethargy before hypochondria or torntendons will make it get re-applied
@@ -2823,6 +2869,7 @@ if not next(svo.dict) then
       }
     },
     illness = {
+      prompttag = "ill",
       gamename = 'nausea',
       herb = {
         isadvisable = function()
@@ -2852,6 +2899,7 @@ if not next(svo.dict) then
       }
     },
     addiction = {
+      prompttag = "add",
       herb = {
         isadvisable = function()
           -- curing addiction before hypochondria or skullfractures will make it get re-applied
@@ -2881,6 +2929,7 @@ if not next(svo.dict) then
       end
     },
     haemophilia = {
+      prompttag = "haem",
       herb = {
         isadvisable = function()
           return (affs.haemophilia) or false
@@ -2906,6 +2955,7 @@ if not next(svo.dict) then
       }
     },
     hypochondria = {
+      prompttag = "hypoch",
       herb = {
         isadvisable = function()
           return (affs.hypochondria) or false
@@ -2935,6 +2985,7 @@ if not next(svo.dict) then
   
   -- smoke cures
     aeon = {
+      prompttag = "ae",
       smoke = {
         isadvisable = function()
           return (affs.aeon and codepaste.smoke_elm_pipe()) or false
@@ -2979,6 +3030,7 @@ if not next(svo.dict) then
       end
     },
     hellsight = {
+      prompttag = "hell",
       smoke = {
         isadvisable = function()
           return (affs.hellsight and not affs.inquisition and codepaste.smoke_valerian_pipe()) or false
@@ -3016,6 +3068,7 @@ if not next(svo.dict) then
       }
     },
     deadening = {
+      prompttag = "dea",
       smoke = {
         isadvisable = function()
           return (affs.deadening and codepaste.smoke_elm_pipe()) or false
@@ -3051,6 +3104,7 @@ if not next(svo.dict) then
     -- for it, which never cured it. The hecate curse "Prevents curing of the
     -- whispering madness affliction for its duration", so it still waits on it
     madness = {
+      prompttag = "mad",
       gamename = 'whisperingmadness',
       herb = {
         isadvisable = function()
@@ -3082,6 +3136,7 @@ if not next(svo.dict) then
       }
     },
     tension = {
+      prompttag = "ten",
       smoke = {
         isadvisable = function()
           return (affs.tension and codepaste.smoke_elm_pipe()) or false
@@ -3115,6 +3170,7 @@ if not next(svo.dict) then
     },
     -- valerian cures
     slickness = {
+      prompttag = "sli",
       smoke = {
         isadvisable = function()
           return (affs.slickness and codepaste.smoke_valerian_pipe() and not svo.doingaction'slickness') or false
@@ -3163,6 +3219,7 @@ if not next(svo.dict) then
       }
     },
     disloyalty = {
+      prompttag = "disl",
       smoke = {
         isadvisable = function()
           return (affs.disloyalty and codepaste.smoke_valerian_pipe()) or false
@@ -3195,6 +3252,7 @@ if not next(svo.dict) then
       }
     },
     manaleech = {
+      prompttag = "manal",
       smoke = {
         isadvisable = function()
           return (affs.manaleech and codepaste.smoke_valerian_pipe()) or false
@@ -3230,6 +3288,7 @@ if not next(svo.dict) then
   
     -- restoration cures
     heartseed = {
+      prompttag = "heart",
       salve = {
         isadvisable = function()
           return (affs.heartseed and not affs.mildtrauma) or false
@@ -3277,6 +3336,7 @@ if not next(svo.dict) then
       }
     },
     calcifiedskull = {
+      prompttag = "calh",
       salve = {
         isadvisable = function()
           return (affs.calcifiedskull and not affs.damagedhead) or false
@@ -3324,6 +3384,7 @@ if not next(svo.dict) then
       }
     },
     calcifiedtorso = {
+      prompttag = "calt",
       salve = {
         isadvisable = function()
           return (affs.calcifiedtorso and not affs.mildtrauma) or false
@@ -3371,6 +3432,7 @@ if not next(svo.dict) then
       }
     },
     hypothermia = {
+      prompttag = "hypoth",
       salve = {
         isadvisable = function()
           return (affs.hypothermia and not affs.mildtrauma) or false
@@ -3418,6 +3480,7 @@ if not next(svo.dict) then
       }
     },
     tonguetied = {
+      prompttag = "ttied",
       salve = {
         isadvisable = function()
           return (affs.tonguetied) or false
@@ -3466,6 +3529,7 @@ if not next(svo.dict) then
     },
   
     mutilatedrightleg = {
+      prompttag = "rl3",
       gamename = 'mangledrightleg',
       salve = {
         isadvisable = function()
@@ -3542,6 +3606,7 @@ if not next(svo.dict) then
       }
     },
     parestolegs = {
+      prompttag = "paresL",
       salve = {
         uncurable = true,
   
@@ -3601,6 +3666,7 @@ if not next(svo.dict) then
       }
     },
     mangledrightleg = {
+      prompttag = "rl2",
       gamename = 'damagedrightleg',
       salve = {
         isadvisable = function()
@@ -3678,6 +3744,7 @@ if not next(svo.dict) then
       }
     },
     crippledrightleg = {
+      prompttag = "rl1",
       gamename = 'brokenrightleg',
       salve = {
         isadvisable = function()
@@ -3727,6 +3794,7 @@ if not next(svo.dict) then
       }
     },
     mutilatedleftleg = {
+      prompttag = "ll3",
       gamename = 'mangledleftleg',
       salve = {
         isadvisable = function()
@@ -3803,6 +3871,7 @@ if not next(svo.dict) then
       }
     },
     mangledleftleg = {
+      prompttag = "ll2",
       gamename = 'damagedleftleg',
       salve = {
         isadvisable = function()
@@ -3880,6 +3949,7 @@ if not next(svo.dict) then
       }
     },
     crippledleftleg = {
+      prompttag = "ll1",
       gamename = 'brokenleftleg',
       salve = {
         isadvisable = function()
@@ -3929,6 +3999,7 @@ if not next(svo.dict) then
       }
     },
     parestoarms = {
+      prompttag = "paresA",
       salve = {
         uncurable = true,
   
@@ -3988,6 +4059,7 @@ if not next(svo.dict) then
       }
     },
     mutilatedleftarm = {
+      prompttag = "la3",
       gamename = 'mangledleftarm',
       salve = {
         isadvisable = function()
@@ -4059,6 +4131,7 @@ if not next(svo.dict) then
       }
     },
     mangledleftarm = {
+      prompttag = "la2",
       gamename = 'damagedleftarm',
       salve = {
         isadvisable = function()
@@ -4133,6 +4206,7 @@ if not next(svo.dict) then
       }
     },
     crippledleftarm = {
+      prompttag = "la1",
       gamename = 'brokenleftarm',
       salve = {
         isadvisable = function()
@@ -4182,6 +4256,7 @@ if not next(svo.dict) then
       onremoved = function() signals.canoutr:emit() end
     },
     mutilatedrightarm = {
+      prompttag = "ra3",
       gamename = 'mangledrightarm',
       salve = {
         isadvisable = function()
@@ -4253,6 +4328,7 @@ if not next(svo.dict) then
       }
     },
     mangledrightarm = {
+      prompttag = "ra2",
       gamename = 'damagedrightarm',
       salve = {
         isadvisable = function()
@@ -4327,6 +4403,7 @@ if not next(svo.dict) then
       }
     },
     crippledrightarm = {
+      prompttag = "ra1",
       gamename = 'brokenrightarm',
       salve = {
         isadvisable = function()
@@ -4376,6 +4453,7 @@ if not next(svo.dict) then
       onremoved = function() signals.canoutr:emit() end
     },
     laceratedthroat = {
+      prompttag = "lac2",
       salve = {
         isadvisable = function()
           return (affs.laceratedthroat) or false
@@ -4432,6 +4510,7 @@ if not next(svo.dict) then
       }
     },
     slashedthroat = {
+      prompttag = "lac1",
       salve = {
         isadvisable = function()
           return (affs.slashedthroat) or false
@@ -4474,6 +4553,7 @@ if not next(svo.dict) then
       }
     },
     serioustrauma = {
+      prompttag = "t2",
       salve = {
         isadvisable = function()
           return (affs.serioustrauma) or false
@@ -4538,6 +4618,7 @@ if not next(svo.dict) then
       }
     },
     mildtrauma = {
+      prompttag = "t1",
       salve = {
         isadvisable = function()
           return (affs.mildtrauma) or false
@@ -4585,6 +4666,7 @@ if not next(svo.dict) then
       }
     },
     mangledhead = {
+      prompttag = "h2",
       salve = {
         isadvisable = function()
           return (affs.mangledhead) or false
@@ -4655,6 +4737,7 @@ if not next(svo.dict) then
       }
     },
     damagedhead = {
+      prompttag = "h1",
       salve = {
         isadvisable = function()
           return (affs.damagedhead) or false
@@ -4711,6 +4794,7 @@ if not next(svo.dict) then
     -- damagedhead's (AFFLICTION SHOW, captured 2026-10-20). svof used to
     -- count it as mangledhead.
     concussion = {
+      prompttag = "conc",
       salve = {
         isadvisable = function()
           return (affs.concussion) or false
@@ -4766,6 +4850,7 @@ if not next(svo.dict) then
   
   -- salve cures
     anorexia = {
+      prompttag = "ano",
       salve = {
         isadvisable = function()
           return (affs.anorexia and not svo.doingaction'anorexia') or false
@@ -4828,6 +4913,7 @@ if not next(svo.dict) then
     
     -- Burning, as one counted affliction: see codepaste.add_burn
     ablaze = {
+      prompttag = "abl",
       gamename = 'burning',
       count = 0,
       onservereignore = function()
@@ -4923,6 +5009,7 @@ if not next(svo.dict) then
       end,
     },
     selarnia = {
+      prompttag = "sel",
       salve = {
         isadvisable = function()
           return (affs.selarnia) or false
@@ -4959,6 +5046,7 @@ if not next(svo.dict) then
       }
     },
     itching = {
+      prompttag = "itch",
       salve = {
         isadvisable = function()
           return (affs.itching) or false
@@ -4994,6 +5082,7 @@ if not next(svo.dict) then
       }
     },
     stuttering = {
+      prompttag = "stut",
       salve = {
         isadvisable = function()
           return (affs.stuttering and not affs.tonguetied and not svo.doingaction('stuttering')) or false
@@ -5056,6 +5145,7 @@ if not next(svo.dict) then
     -- head, and with the GMCP empty-cure gate keeping it, svof applied salve
     -- on every salve balance until it wore off.
     scalded = {
+      prompttag = "scald",
       waitingfor = {
         customwait = 20,
 
@@ -5104,6 +5194,7 @@ if not next(svo.dict) then
     -- wait on it. The game prints no line when it's given, so GMCP or DIAGNOSE
     -- adds it.
     condemned = {
+      prompttag = "cond",
       waitingfor = {
         customwait = 40,
 
@@ -5140,6 +5231,7 @@ if not next(svo.dict) then
       end,
     },
     numbedleftarm = {
+      prompttag = "nbla",
       waitingfor = {
         customwait = 15, -- lasts 15s
   
@@ -5173,6 +5265,7 @@ if not next(svo.dict) then
       }
     },
     numbedrightarm = {
+      prompttag = "nbra",
       waitingfor = {
         customwait = 8, -- lasts 8s
   
@@ -5206,6 +5299,7 @@ if not next(svo.dict) then
       }
     },
   revealed = {
+    prompttag = "rev",
       waitingfor = {
         customwait = 60, -- AFFLICTION SHOW's default time
   
@@ -5239,6 +5333,7 @@ if not next(svo.dict) then
       }
     },
     blindaff = {
+      prompttag = "blind",
       gamename = 'blind',
       onservereignore = function()
         return (svo.defdefup[svo.defs.mode].blind or svo.defkeepup[svo.defs.mode].blind)
@@ -5300,6 +5395,7 @@ if not next(svo.dict) then
       }
     },
     deafaff = {
+      prompttag = "deaf",
       gamename = 'deaf',
       onservereignore = function()
         return (svo.defdefup[svo.defs.mode].deaf or svo.defkeepup[svo.defs.mode].deaf)
@@ -5349,6 +5445,7 @@ if not next(svo.dict) then
     },
   
     shivering = {
+      prompttag = "shiv",
       salve = {
         isadvisable = function()
           return (affs.shivering and not affs.frozen and not affs.hypothermia) or false
@@ -5388,6 +5485,7 @@ if not next(svo.dict) then
       }
     },
     frozen = {
+      prompttag = "frz",
       salve = {
         isadvisable = function()
           return (affs.frozen and not affs.hypothermia) or false
@@ -5430,6 +5528,7 @@ if not next(svo.dict) then
   
   -- purgatives
     voyria = {
+      prompttag = "voy",
       purgative = {
         isadvisable = function()
           return not affs.latency and ((affs.voyria) or false)
@@ -5468,6 +5567,7 @@ if not next(svo.dict) then
   
   -- misc
     lovers = {
+      prompttag = "lust",
       map = {},
       tempmap = {},
       physical = {
@@ -5535,6 +5635,7 @@ if not next(svo.dict) then
       }
     },
     fear = {
+      prompttag = "fear",
       misc = {
         isadvisable = function()
           return (affs.fear and not affs.horror and not svo.doingaction('fear')) or false
@@ -5579,6 +5680,7 @@ if not next(svo.dict) then
       }
     },
     sleep = {
+      prompttag = "asl",
       misc = {
         isadvisable = function()
           return (affs.sleep and
@@ -5637,6 +5739,7 @@ if not next(svo.dict) then
       }
     },
     bleeding = {
+      prompttag = "bld",
       count = 0,
       -- affs.bleeding.spammingbleed is used to throttle bleed spamming so it doesn't get out of control
       misc = {
@@ -6090,6 +6193,7 @@ if not next(svo.dict) then
       }
     },
     prone = {
+      prompttag = "pr",
       misc = {
         isadvisable = function()
           return (affs.prone and (not affs.paralysis or svo.doingaction'paralysis')
@@ -6136,6 +6240,7 @@ if not next(svo.dict) then
       end
     },
     disrupt = {
+      prompttag = "disr",
       gamename = 'disrupted',
       misc = {
         isadvisable = function()
@@ -6381,6 +6486,7 @@ if not next(svo.dict) then
       }
     },
     blackout = {
+      prompttag = "",
       waitingfor = {
         customwait = 60,
   
@@ -6464,6 +6570,7 @@ if not next(svo.dict) then
       end
     },
     unknownany = {
+      prompttag = "?",
       count = 0,
       reckhp = false, reckmana = false,
       waitingfor = {
@@ -6539,6 +6646,7 @@ if not next(svo.dict) then
       }
     },
     unknownmental = {
+      prompttag = "?",
       count = 0,
       reckhp = false, reckmana = false,
       focus = {
@@ -6621,6 +6729,7 @@ if not next(svo.dict) then
       }
     },
     unknowncrippledlimb = {
+      prompttag = "uwcrip",
       count = 0,
       salve = {
         uncurable = true,
@@ -6679,6 +6788,7 @@ if not next(svo.dict) then
       end,
     },
     unknowncrippledarm = {
+      prompttag = "uwna",
       count = 0,
       salve = {
         uncurable = true,
@@ -6732,6 +6842,7 @@ if not next(svo.dict) then
       end,
     },
     unknowncrippledleg = {
+      prompttag = "uwnl",
       count = 0,
       salve = {
         uncurable = true,
@@ -6785,6 +6896,7 @@ if not next(svo.dict) then
       end,
     },
     unknowncure = {
+      prompttag = "uc",
       count = 0,
       waitingfor = {
         customwait = 999,
@@ -6813,6 +6925,7 @@ if not next(svo.dict) then
   
   -- writhes
     bound = {
+      prompttag = "bound",
       misc = {
         dontbatch = true,
   
@@ -6856,6 +6969,7 @@ if not next(svo.dict) then
       }
     },
     webbed = {
+      prompttag = "web",
       misc = {
         dontbatch = true,
   
@@ -6906,6 +7020,7 @@ if not next(svo.dict) then
       }
     },
     roped = {
+      prompttag = "rop",
       gamename = 'entangled',
       misc = {
         dontbatch = true,
@@ -6950,6 +7065,7 @@ if not next(svo.dict) then
       }
     },
     hoisted = {
+      prompttag = "hoist",
       misc = {
         dontbatch = true,
         uncurable = true,
@@ -6992,6 +7108,7 @@ if not next(svo.dict) then
       }
     },
     transfixed = {
+      prompttag = "transf",
       gamename = 'transfixation',
       misc = {
         dontbatch = true,
@@ -7040,6 +7157,7 @@ if not next(svo.dict) then
       }
     },
     impale = {
+      prompttag = "impale",
       gamename = 'impaled',
       misc = {
         dontbatch = true,
@@ -7092,6 +7210,7 @@ if not next(svo.dict) then
     -- tracked one as impale, so it's writhed as impale is, one of the two at
     -- a time. Its own entry lets serverside writhe it, from vshow serverside
     daeggerimpale = {
+      prompttag = "dimpale",
       gamename = 'daeggerimpale',
       misc = {
         dontbatch = true,
@@ -7656,6 +7775,7 @@ if not next(svo.dict) then
       }
     },
     amnesia = {
+      prompttag = "amn",
       misc = {
         uncurable = true,
   
@@ -7697,6 +7817,7 @@ if not next(svo.dict) then
   
     -- uncurable
     stun = {
+      prompttag = "stun",
       waitingfor = {
         customwait = 1,
   
@@ -7744,6 +7865,7 @@ if not next(svo.dict) then
       onremoved = function() svo.donext() end
     },
     unconsciousness = {
+      prompttag = "unconc",
       waitingfor = {
         customwait = 7,
   
@@ -7778,6 +7900,7 @@ if not next(svo.dict) then
       onremoved = function() svo.donext() end
     },
     swellskin = { -- eating any herb cures it
+      prompttag = "swsk",
       waitingfor = {
         customwait = 999,
   
@@ -7810,6 +7933,7 @@ if not next(svo.dict) then
     -- it no Writhe (AFFLICTION SHOW, captured 2026-10-20; the user,
     -- 2026-10-28)
     enmesh = {
+      prompttag = "enm",
       waitingfor = {
         customwait = 6, -- AFFLICTION SHOW's default time
   
@@ -7846,6 +7970,7 @@ if not next(svo.dict) then
     -- (AFFLICTION SHOW, captured 2026-10-20). Not entanglement, which is
     -- writhed out of
     constricted = {
+      prompttag = "constr",
       waitingfor = {
         customwait = 30, -- AFFLICTION SHOW's default time
 
@@ -7885,6 +8010,7 @@ if not next(svo.dict) then
     -- A rope trap about the ankles, until time frees you: 20 seconds by
     -- default (AFFLICTION SHOW, captured 2026-10-20)
     snared = {
+      prompttag = "snare",
       waitingfor = {
         customwait = 20, -- AFFLICTION SHOW's default time
 
@@ -7924,6 +8050,7 @@ if not next(svo.dict) then
     -- rends, until they recede: 20 seconds by default (AFFLICTION SHOW,
     -- captured 2026-10-20)
     vinewreathed = {
+      prompttag = "vine",
       waitingfor = {
         customwait = 20, -- AFFLICTION SHOW's default time
 
@@ -7964,6 +8091,7 @@ if not next(svo.dict) then
     -- try to wake you, which sleep's misc action would. GMCP's deepsleep
     -- used to be read as sleep
     deepsleep = {
+      prompttag = "dslp",
       aff = {
         oncompleted = function()
           svo.addaffdict(svo.dict.deepsleep)
@@ -7976,6 +8104,7 @@ if not next(svo.dict) then
       }
     },
     pinshot = {
+      prompttag = "psh",
       waitingfor = {
         customwait = 21, -- AFFLICTION SHOW's default time
   
@@ -8009,6 +8138,7 @@ if not next(svo.dict) then
       }
     },
     dehydrated = {
+      prompttag = "deh",
       waitingfor = {
         customwait = 45, -- lasts 45s
   
@@ -8042,6 +8172,7 @@ if not next(svo.dict) then
       }
     },
     timeflux = {
+      prompttag = "tfx",
       waitingfor = {
         customwait = 60, -- AFFLICTION SHOW's default time
   
@@ -8075,6 +8206,7 @@ if not next(svo.dict) then
       }
     },
     inquisition = {
+      prompttag = "inq",
       waitingfor = {
         customwait = 30, -- ??
   
@@ -8103,6 +8235,7 @@ if not next(svo.dict) then
       }
     },
     lullaby = {
+      prompttag = "lull",
       waitingfor = {
         customwait = 45, -- takes 45s
   
@@ -8131,6 +8264,7 @@ if not next(svo.dict) then
       }
     },
     corrupted = {
+      prompttag = "corr",
       waitingfor = {
         customwait = 999, -- time increases
   
@@ -8156,6 +8290,7 @@ if not next(svo.dict) then
       }
     },
     phlogistication = {
+      prompttag = "phlog",
       waitingfor = {
         customwait = 999, -- time increases
   
@@ -8184,6 +8319,7 @@ if not next(svo.dict) then
       }
     },
     vitrification = {
+      prompttag = "vitri",
       waitingfor = {
         customwait = 999,
   
@@ -8213,6 +8349,7 @@ if not next(svo.dict) then
     },
   
     icing = {
+      prompttag = "ice",
       waitingfor = {
         customwait = 15, -- AFFLICTION SHOW's default time
   
@@ -8251,6 +8388,7 @@ if not next(svo.dict) then
     -- four whose svof name matches the game's. Nothing here belongs to
     -- ablaze, the game's burning.
     flamefisted = {
+      prompttag = "flame",
       waitingfor = {
         customwait = 15, -- AFFLICTION SHOW's default time
   
@@ -8307,6 +8445,7 @@ if not next(svo.dict) then
     -- never cured it and dropped it from affs after 20s whether or not it was
     -- still on you.
     latched = {
+      prompttag = "latch",
       sip = {
         isadvisable = function()
           return (affs.latched and not svo.doingaction('latched')) or false
@@ -8356,6 +8495,7 @@ if not next(svo.dict) then
       }
     },
     voided = {
+      prompttag = "void",
       waitingfor = {
         customwait = 20, -- lasts 20s tops, 15s in some stances. out-times multiple pommelstrikes
   
@@ -8385,6 +8525,7 @@ if not next(svo.dict) then
       }
     },
     hamstring = {
+      prompttag = "hms",
   	  gamename = "hamstrung",
       waitingfor = {
         customwait = 10,
@@ -8431,6 +8572,7 @@ if not next(svo.dict) then
       }
     },
     galed = {
+      prompttag = "gale",
       waitingfor = {
         customwait = 15, -- AFFLICTION SHOW's default time
   
@@ -8459,6 +8601,7 @@ if not next(svo.dict) then
       }
     },
     rixil = {
+      prompttag = "rix",
       -- will double the cooldown period of the next focus ability.
       waitingfor = {
         customwait = 999,
@@ -8491,6 +8634,7 @@ if not next(svo.dict) then
       }
     },
     hecate = {
+      prompttag = "hec",
       waitingfor = {
         customwait = 22, -- seems to last at least 18s per log
   
@@ -8525,6 +8669,7 @@ if not next(svo.dict) then
       }
     },
     palpatar = {
+      prompttag = "palp",
       waitingfor = {
         customwait = 999,
   
@@ -8557,6 +8702,7 @@ if not next(svo.dict) then
     },
     -- extends tree balance by 10s now
     ninkharsag = {
+      prompttag = "nkh",
       waitingfor = {
         customwait = 60, -- it lasts a minute
   
@@ -8603,6 +8749,7 @@ if not next(svo.dict) then
       }
     },
     cadmus = {
+      prompttag = "cad",
       -- focusing will give one of: lethargy, clumsiness, haemophilia, healthleech, sensitivity, darkshade
       waitingfor = {
         customwait = 999,
@@ -8636,6 +8783,7 @@ if not next(svo.dict) then
       }
     },
     stain = {
+      prompttag = "sta",
       waitingfor = {
         customwait = 60*2+20, -- lasts 2min, but varies, so let's go with 140s
   
@@ -8675,6 +8823,7 @@ if not next(svo.dict) then
       }
     },
     depression = {
+      prompttag = "dep",
       herb = {
         isadvisable = function()
           return affs.depression or false
@@ -8700,6 +8849,7 @@ if not next(svo.dict) then
       }
     },
     parasite = {
+      prompttag = "prs",
       herb = {
         isadvisable = function()
           return affs.parasite or false
@@ -8725,6 +8875,7 @@ if not next(svo.dict) then
       }
     },
     retribution = {
+      prompttag = "reb",
       herb = {
         isadvisable = function()
           return affs.retribution or false
@@ -8750,6 +8901,7 @@ if not next(svo.dict) then
       }
     },
     shadowmadness = {
+      prompttag = "sham",
       herb = {
         isadvisable = function()
           return affs.shadowmadness or false
@@ -8775,6 +8927,7 @@ if not next(svo.dict) then
       }
     },
     timeloop = {
+      prompttag = "tlp",
       herb = {
         isadvisable = function()
           return affs.timeloop or false
@@ -8800,6 +8953,7 @@ if not next(svo.dict) then
       }
     },
     degenerate = {
+      prompttag = "deg",
       waitingfor = {
         customwait = 0, -- seems to last 6 seconds per degenerate affliction when boosted, set below
   
@@ -8833,6 +8987,7 @@ if not next(svo.dict) then
       }
     },
     deteriorate = {
+      prompttag = "det",
       waitingfor = {
         customwait = 0, -- seems to last 6 seconds per deteriorate affliction when boosted, set below
   
@@ -8866,6 +9021,7 @@ if not next(svo.dict) then
       }
     },
     hatred = {
+      prompttag = "htr",
       waitingfor = {
         customwait = 15,
   
@@ -8894,6 +9050,7 @@ if not next(svo.dict) then
       }
     },
     paradox = {
+      prompttag = "para",
       count = 0,
       blocked_herb = "",
       boosted = {
@@ -8929,6 +9086,7 @@ if not next(svo.dict) then
       }
     },
     mindravaged = {
+      prompttag = "ravg",
       waitingfor = {
         customwait = 30, -- Honestly not sure how long this lasts, but this seems about right; need someone to make sure
   
@@ -8957,6 +9115,7 @@ if not next(svo.dict) then
       }
     },
     unweavingbody = {
+      prompttag = "uwB",
       count = 0,
       name = 'unweavingbody',
       gamename = 'unweavingbody',
@@ -9017,6 +9176,7 @@ if not next(svo.dict) then
       }
     },
     unweavingmind = {
+      prompttag = "uwM",
       count = 0,
       name = 'unweavingmind',
       gamename = 'unweavingmind',
@@ -9077,6 +9237,7 @@ if not next(svo.dict) then
       }
     },
     unweavingspirit = {
+      prompttag = "uwS",
       count = 0,
       name = 'unweavingspirit',
       gamename = 'unweavingspirit',
@@ -9136,6 +9297,7 @@ if not next(svo.dict) then
       }
     },
     retardation = {
+      prompttag = "ret",
       waitingfor = {
         isadvisable = function()
           return false
@@ -9188,6 +9350,7 @@ if not next(svo.dict) then
     },
     
     mycalium = {
+      prompttag = "myc",
       herb = {
         isadvisable = function()
           return affs.mycalium or false
@@ -9214,6 +9377,7 @@ if not next(svo.dict) then
     },
     
     flushings = {
+      prompttag = "flsh",
       herb = {
         isadvisable = function()
           return affs.flushings or false
@@ -9240,6 +9404,7 @@ if not next(svo.dict) then
     },
   
     rebbies = {
+      prompttag = "rebb",
       herb = {
         isadvisable = function()
           return affs.rebbies or false
@@ -9266,6 +9431,7 @@ if not next(svo.dict) then
     },
     
     sandfever = {
+      prompttag = "sndf",
       herb = {
         isadvisable = function()
           return affs.sandfever or false
@@ -9292,6 +9458,7 @@ if not next(svo.dict) then
     },
     
     pyramides = {
+      prompttag = "pyr",
       herb = {
         isadvisable = function()
           return affs.pyramides or false
@@ -9318,6 +9485,7 @@ if not next(svo.dict) then
     },
   
     ensorcelled = {
+      prompttag = "ensor",
       waitingfor = {
         customwait = 20,
   
@@ -9347,6 +9515,7 @@ if not next(svo.dict) then
     },
   
     latency = {
+      prompttag = "laten",
       waitingfor = {
         customwait = 13,
   
@@ -9378,6 +9547,7 @@ if not next(svo.dict) then
     },
   
     indifference = {
+      prompttag = "indif",
       herb = {
         isadvisable = function()
           return affs.indifference or false
@@ -9404,6 +9574,7 @@ if not next(svo.dict) then
     },
     
     crescendo = {
+      prompttag = "cres",
       count = 0,
       gamename = 'crescendo',
       herb = {
@@ -9460,6 +9631,7 @@ if not next(svo.dict) then
       }
     },
     earworm = {
+      prompttag = "ear",
       smoke = {
         isadvisable = function()
           return (affs.earworm and codepaste.smoke_elm_pipe()) or false
@@ -9496,6 +9668,7 @@ if not next(svo.dict) then
     -- focusing for any mental affliction paralyses you instead - which
     -- conf.focuswithfulminated decides whether to risk, in svo.check_focus.
     fulminated = {
+      prompttag = "ful",
       herb = {
         isadvisable = function()
           return (affs.fulminated and
@@ -9528,6 +9701,7 @@ if not next(svo.dict) then
     },
     
     blistered = {
+      prompttag = "blis",
       waitingfor = {
         customwait = 20, -- Austere said it is 20!
   
@@ -14565,6 +14739,7 @@ if not next(svo.dict) then
   end
   if svo.haveskillset('metamorphosis') then
     svo.dict.cantmorph = {
+      prompttag = "nomorph",
       waitingfor = {
         customwait = 30,
   
