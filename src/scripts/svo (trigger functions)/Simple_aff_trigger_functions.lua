@@ -40,6 +40,9 @@ do
     checkimpatience = true, checkparalysis = true, checkslows       = true,
     checkstun       = true, checkwrithes   = true,
   }
+  -- Public because the cure-line maps in Main_trigger_functions read it too:
+  -- a probe's cure block is not a cure a herb or pipe line can claim.
+  svo.anti_illusion_probes = no_simple_handler
 
   -- Anything that needs more than these two lines is written out below and
   -- overwrites what this generates, so the loop has to stay above them.

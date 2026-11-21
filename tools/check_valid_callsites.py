@@ -30,6 +30,15 @@ handler per entry with an `aff` block - so its names cannot drift from the
 dictionary, and resolving a simple call means reading the dictionary rather
 than a list. dict_simple_names() below does that.
 
+The herb and smoke families went the same way. Main_trigger_functions.lua
+builds them with cure_groups(balance, cure_fields), which walks svo.dict for
+every entry whose block of that balance is not marked def and names a cure in
+the first of cure_fields it has - smokecure for a pipe, or eatcure for
+pressure's pear. A generator loop fed by cure_groups is resolved by reading
+those same arguments off the loop and applying the same predicate to the
+dictionary; dict_cure_names() below does that. Both families, like simple,
+leave out the anti-illusion probes named in `no_simple_handler`.
+
 This resolves every generator loop to the set of names it produces, then checks
 every `svo.valid.<name>()` call in src/triggers and src/aliases against it.
 
@@ -80,6 +89,7 @@ sys.path.insert(0, HERE)
 # dictionary says is worse than either being wrong alone.
 from check_derived_lists import entries as _dict_entries  # noqa: E402
 from check_derived_lists import read as _read_script      # noqa: E402
+from check_derived_lists import blank_noncode as _blank_noncode  # noqa: E402
 
 # Where the generator loops live. Every dynamic svo.valid name comes from one
 # of these three.
@@ -119,6 +129,10 @@ CALL_FLOOR = 500
 # literal: if the brace walk or the no_simple_handler read comes back empty,
 # this family collapses to the four names the fracture loop still generates and
 # every other simple call site reads as dead.
+#
+# herb_cured_ and smoke_cured_ guard the dictionary read the same way: if
+# dict_cure_names() reads no blocks, or the cure_groups loop is no longer found
+# above the generator, the family comes back empty and fails here.
 GENERATOR_FLOORS = {
     "simple": 100,
     "herb_cured_": 40,
@@ -236,21 +250,128 @@ def dict_simple_names():
     simplecheckwrithes resolve, and known_unresolved_valid.json records that
     call as dead, so the gate fails on a name that started resolving.
     """
+    return {n for n, b in dict_balances().items() if "aff" in b} - anti_illusion_probes()
+
+
+def dict_balances():
+    """{entry: {balance: body}} from the dictionary literal."""
     bals, _ = _dict_entries(_read_script(
         "svo (actions dictionary)", "Dictionary_of_actions_(affs-defs-misc).lua"))
+    return bals
+
+
+def anti_illusion_probes():
+    """The names in Simple_aff_trigger_functions.lua's `no_simple_handler`,
+    which is also svo.anti_illusion_probes at runtime. Neither the simple
+    family nor the herb and smoke cure-line maps generate a handler for them."""
     simple = _read_script("svo (trigger functions)",
                           "Simple_aff_trigger_functions.lua")
     m = re.search(r"local no_simple_handler = \{(.*?)\n  \}", simple, re.S)
-    excluded = set(re.findall(r"(\w+)\s*=\s*true", m.group(1))) if m else set()
-    return {n for n, b in bals.items() if "aff" in b} - excluded
+    return set(re.findall(r"(\w+)\s*=\s*true", m.group(1))) if m else set()
+
+
+def block_fields(body):
+    """{key: value text} for a balance block's own keys, nested ones excluded.
+
+    Depth is counted on a copy with comments and strings blanked, so a brace in
+    either cannot move it, and each value is cut from the original text at the
+    same offsets, so a table value keeps its quoted items."""
+    inner = body[1:-1]
+    blank = _blank_noncode(inner)
+    depth, at_top = 0, []
+    for ch in blank:
+        at_top.append(depth == 0)
+        if ch == "{":
+            depth += 1
+        elif ch == "}":
+            depth -= 1
+    fields = {}
+    for m in re.finditer(r"(?:^|[\n,])[ \t]*([A-Za-z_]\w*)[ \t]*=(?!=)[ \t]*",
+                         blank):
+        if not at_top[m.start(1)]:
+            continue
+        k, d = m.end(), 0
+        while k < len(blank):
+            c = blank[k]
+            if c == "{":
+                d += 1
+            elif c == "}":
+                if d == 0:
+                    break
+                d -= 1
+                if d == 0:
+                    k += 1
+                    break
+            elif d == 0 and c in ",\n":
+                break
+            k += 1
+        fields[m.group(1)] = inner[m.end():k].strip()
+    return fields
+
+
+def dict_cure_names(balance, cure_fields):
+    """(names, unreadable) for cure_groups(balance, cure_fields) in
+    Main_trigger_functions.lua: every entry whose `balance` block is not marked
+    def, and whose first present field among cure_fields is a table with a
+    first item - the same test cure_groups makes, with the probes left out as
+    it leaves them out. Entries a player registers at runtime do not exist
+    here, so there is nothing to leave out for them.
+
+    `unreadable` lists blocks whose cure field is not a literal table this can
+    read, so they fail the gate instead of quietly dropping out."""
+    probes = anti_illusion_probes()
+    names, unreadable = set(), []
+    for n, b in dict_balances().items():
+        if balance not in b or n in probes:
+            continue
+        fields = block_fields(b[balance])
+        if fields.get("def", "nil") not in ("nil", "false"):
+            continue
+        cure = next((fields[f] for f in cure_fields
+                     if fields.get(f, "nil") not in ("nil", "false")), None)
+        if cure is None:
+            continue
+        if not cure.startswith("{"):
+            unreadable.append("%s.%s: %s" % (n, balance, cure))
+            continue
+        inside = cure[1:].strip()
+        if inside.startswith("}"):
+            continue
+        if not re.match(r"""(['"]).*?\1\s*[,}]""", inside):
+            unreadable.append("%s.%s: %s" % (n, balance, cure))
+            continue
+        names.add(n)
+    return names, unreadable
+
+
+# The loop header that feeds a generator from the dictionary.
+CURE_GROUPS_LOOP = re.compile(
+    r"^for\s[^\n]*\bpairs\(\s*cure_groups\(\s*'(\w+)'\s*,\s*\{([^}]*)\}\s*\)\s*\)",
+    re.M)
+
+
+def cure_groups_args(src, idx):
+    """(balance, cure_fields) when the top-level loop enclosing `idx` iterates
+    cure_groups(...), else None. The nearest `for` at column 0 above `idx` is
+    that loop; it has to be the cure_groups one, or the names come from
+    somewhere else."""
+    heads = list(re.finditer(r"^for\s[^\n]*", src[:idx], re.M))
+    if not heads:
+        return None
+    m = CURE_GROUPS_LOOP.match(src, heads[-1].start())
+    if not m:
+        return None
+    return m.group(1), tuple(re.findall(r"'(\w+)'", m.group(2)))
 
 
 def collect_definitions():
-    """(literal names, {prefix: names}, {suffix: names}, two-part prefixes)."""
+    """(literal names, {prefix: names}, {suffix: names}, two-part prefixes,
+    reading problems)."""
     literal = set()
     prefixed = defaultdict(set)
     suffixed = defaultdict(set)
     twopart = defaultdict(set)
+    unreadable = []
 
     for root in ("scripts", "triggers", "aliases"):
         base = os.path.join(SRC, root)
@@ -267,6 +388,16 @@ def collect_definitions():
     for parts in GENERATORS:
         src = read(os.path.join(SRC, "scripts", *parts))
         for m in re.finditer(r"valid\[\s*'([a-z_]+)'\s*\.\.\s*\w+\s*\]\s*=", src):
+            # A loop over cure_groups takes its names from the dictionary;
+            # loop_names would find some unrelated literal further up instead.
+            args = cure_groups_args(src, m.start())
+            if args:
+                names, bad = dict_cure_names(*args)
+                prefixed[m.group(1)] |= names
+                unreadable += ["the %r family: the cure field is not a literal "
+                               "table whose first item this can read - %s"
+                               % (m.group(1), b) for b in bad]
+                continue
             prefixed[m.group(1)] |= loop_names(src, m.start())
         for m in re.finditer(r"valid\[\s*(\w+)\s*\.\.\s*'(\w+)'\s*\]\s*=", src):
             suffixed[m.group(2)] |= loop_names(src, m.start())
@@ -279,7 +410,7 @@ def collect_definitions():
     for pfx, names in HANDWRITTEN_DYNAMIC.items():
         prefixed[pfx] |= names
 
-    return literal, dict(prefixed), dict(suffixed), dict(twopart)
+    return literal, dict(prefixed), dict(suffixed), dict(twopart), unreadable
 
 
 def resolver(literal, prefixed, suffixed, twopart):
@@ -457,13 +588,13 @@ def main():
                     help="record the current unresolved calls and exit")
     a = ap.parse_args()
 
-    literal, prefixed, suffixed, twopart = collect_definitions()
+    literal, prefixed, suffixed, twopart, unreadable = collect_definitions()
     resolves = resolver(literal, prefixed, suffixed, twopart)
     calls = collect_calls()
 
     generated = sum(len(v) for v in prefixed.values())
 
-    problems = []
+    problems = list(unreadable)
     if len(calls) < CALL_FLOOR:
         problems.append("found only %d distinct svo.valid calls, expected at "
                         "least %d - this check is reading less than it should"

@@ -2895,19 +2895,52 @@ local function smoke_cured(aff, cures)
   end
 end
 
+-- Which affliction goes with which herb or pipe, read off the dictionary
+-- when this loads rather than listed: every entry whose `balance` block
+-- names a cure, grouped by the first item of the block's field in
+-- cure_fields, each group sorted by name. A pipe's own cure is smokecure; the
+-- one block that cures by smoking without it is pressure's, which keeps its
+-- pear in eatcure.
+--
+-- Left out: a block marked def (it raises a defence, it cures nothing), the
+-- anti-illusion probes (svo.anti_illusion_probes: their cure blocks are not
+-- cures a line can claim), and the afflictions a player registered, which
+-- cures_with adds when the line arrives.
+local function cure_groups(balance, cure_fields)
+  local probes = svo.anti_illusion_probes
+  local registered = svo.afflictions and svo.afflictions.registered
+  local groups = {}
+
+  for name, entry in pairs(svo.dict) do
+    local block = type(entry) == 'table' and entry[balance]
+    if type(block) == 'table' and not block.def and not probes[name]
+      and not (registered and registered[name]) then
+      local cure
+      for _, field in ipairs(cure_fields) do
+        cure = cure or block[field]
+      end
+      local item = type(cure) == 'table' and cure[1]
+      if item then
+        groups[item] = groups[item] or {}
+        groups[item][#groups[item]+1] = name
+      end
+    end
+  end
+
+  for _, group in pairs(groups) do table.sort(group) end
+  return groups
+end
+
 -- normal smokes
-for pipe, smoke in pairs({
-  valerian = {'disloyalty', 'slickness', 'manaleech', 'hellsight'},
-  pear = {'pressure'},
-  elm = {'deadening', 'aeon', 'tension', 'earworm'}}) do
+for pipe, smoke in pairs(cure_groups('smoke', {'smokecure', 'eatcure'})) do
   local other_smoke_cures = {}
 
-  for _, aff in pairs(smoke) do
+  for _, aff in ipairs(smoke) do
     other_smoke_cures[#other_smoke_cures+1] = svo.dict[aff].smoke
   end
   own_cures.smoke[pipe] = other_smoke_cures
 
-  for _, aff in pairs(smoke) do
+  for _, aff in ipairs(smoke) do
     valid['smoke_cured_'..aff] = function()
       smoke_cured(aff, cures_with('smoke', pipe))
     end
@@ -2959,23 +2992,15 @@ function svo.valid_cure_line(balance, aff, item)
 end
 
 -- normal herbs
-for herbname, herb in pairs({
-  ash        = {'hallucinations', 'hypersomnia', 'confusion', 'paranoia', 'dementia', 'crescendo'},
-  bellwort   = {'generosity', 'pacifism', 'justice', 'inlove', 'peace', 'pyre', 'retribution', 'timeloop', 'indifference'},
-  bloodroot  = {'paralysis', 'slickness', 'pyramides'},
-  ginger     = {'melancholichumour', 'cholerichumour', 'phlegmatichumour', 'sanguinehumour'},
-  ginseng    = {'haemophilia', 'darkshade', 'relapsing', 'addiction', 'illness', 'lethargy','flushings'},
-  goldenseal = {'dissonance', 'impatience', 'stupidity', 'dizziness', 'epilepsy', 'shyness', 'depression', 'shadowmadness', 'mycalium', 'sandfever', 'fulminated'},
-  kelp       = {'asthma', 'healthleech', 'sensitivity', 'clumsiness', 'weakness', 'parasite', 'rebbies'},
-  lobelia    = {'claustrophobia', 'recklessness', 'agoraphobia', 'loneliness', 'masochism', 'vertigo', 'guilt', 'tenderskin', 'spiritburn', 'horror', 'hypochondria', 'madness'}}) do
+for herbname, herb in pairs(cure_groups('herb', {'eatcure'})) do
   local other_herb_cures = {}
 
-  for _, aff in pairs(herb) do
+  for _, aff in ipairs(herb) do
     other_herb_cures[#other_herb_cures+1] = svo.dict[aff].herb
   end
   own_cures.herb[herbname] = other_herb_cures
 
-  for _, aff in pairs(herb) do
+  for _, aff in ipairs(herb) do
     valid['herb_cured_'..aff] = function()
       herb_cured(aff, cures_with('herb', herbname))
     end

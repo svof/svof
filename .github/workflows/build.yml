@@ -498,6 +498,13 @@ jobs:
       - name: test mucous
         run: lua tools/test_mucous.lua
 
+      # Gate 1.999991. The herb and smoke cure-line maps are derived from the
+      # dictionary: every herb's and pipe's group is what it was plus the
+      # unweaving afflictions, every handler a trigger calls exists, and an
+      # unweavingbody ginseng in flight is claimed by haemophilia's cure line.
+      - name: test cure line maps
+        run: lua tools/test_cure_line_maps.lua
+
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
