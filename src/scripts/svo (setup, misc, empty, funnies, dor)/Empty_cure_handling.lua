@@ -67,26 +67,21 @@ svo.presume_cured = presume_cured
 -- the 2020 Occultist rework
 
 -- what each herb cures, for the herbs whose handler below takes herb
--- balance itself. Public, for an affliction a player defines to be cured
--- by one
+-- balance itself. svo.dict_setup fills each list from the entries whose
+-- herb block eats it (eatcure), so the dictionary is the one place that
+-- says what an herb cures. A player's own afflictions stay out, and are
+-- ruled out through empty.defined below. Ginger and pear have handlers of
+-- their own further down
 empty.herb_affs = {
-  goldenseal = {'dissonance', 'impatience', 'stupidity', 'dizziness', 'epilepsy', 'shyness', 'depression',
-   'shadowmadness', 'mycalium', 'sandfever', 'fulminated', 'unweavingmind'},
-  kelp = {'asthma', 'healthleech', 'sensitivity', 'clumsiness', 'weakness', 'parasite', 'rebbies'},
-  lobelia = {'claustrophobia', 'recklessness', 'agoraphobia', 'loneliness', 'masochism', 'vertigo', 'guilt', 'spiritburn', 'tenderskin', 'horror',
-   'hypochondria', 'madness'},
-  ginseng = {'haemophilia', 'darkshade', 'relapsing', 'addiction', 'illness', 'lethargy', 'flushings', 'unweavingbody'},
-  ash = {'hallucinations', 'hypersomnia', 'confusion', 'paranoia', 'dementia', 'crescendo'},
-  bellwort = {'generosity', 'pacifism', 'justice', 'inlove', 'peace', 'pyre', 'retribution', 'timeloop', 'indifference'},
-  bloodroot = {'paralysis', 'slickness', 'pyramides'}
-
+  ash = {}, bellwort = {}, bloodroot = {}, ginseng = {},
+  goldenseal = {}, kelp = {}, lobelia = {},
 }
 
-for herbname, herbaffs in pairs(empty.herb_affs) do
+for herbname in pairs(empty.herb_affs) do
   empty['eat_'..herbname] = function()
     svo.lostbal_herb()
 
-    presume_cured(herbaffs)
+    presume_cured(empty.herb_affs[herbname])
   end
 end
 

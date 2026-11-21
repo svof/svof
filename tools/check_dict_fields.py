@@ -103,6 +103,14 @@ FIELDS = {
     "applying":           "sileris",
 }
 
+# Scalar keys only code sets, on entries it builds or registers at runtime, so
+# no literal entry carries them and check 4 below can't ask for one. Listed so
+# they are written down, and checked against BALANCES like the rest.
+RUNTIME_FIELDS = {
+    "playerdefined":      "an affliction vcustomaff registered; dict_setup "
+                          "leaves it out of empty.herb_affs",
+}
+
 # svo.dict entries that are name maps rather than actions. Their top-level keys
 # are game and svof affliction names, not fields, so reading them as fields
 # reports a few hundred false positives.
@@ -200,6 +208,17 @@ def main():
             "j.p.%s.isadvisable()`, so this makes the guard pass and the next "
             "term index a non-table. Rename the field."
             % (field, ", ".join(sorted(used_fields[field])[:6]), field, field))
+
+    for field in sorted(set(RUNTIME_FIELDS) & BALANCES):
+        problems.append(
+            "%s is listed in RUNTIME_FIELDS and is a balance name. "
+            "Curing_skeleton.lua:332 would read it as a balance. Rename the "
+            "field." % field)
+    for field in sorted(set(RUNTIME_FIELDS) & set(used_fields)):
+        problems.append(
+            "%r is listed in RUNTIME_FIELDS and a literal entry sets it, on "
+            "%s. Move it to FIELDS."
+            % (field, ", ".join(sorted(used_fields[field])[:6])))
 
     # 2. a table not named like a balance: dict_setup invents one
     for bal in sorted(set(used_balances) - BALANCES):

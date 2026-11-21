@@ -51,8 +51,9 @@ local empty_source = read_file(EMPTY)
 -- The entry runs from its own key to the next entry's.
 local entry_src = extract(read_file(DICT), DICT, "    pressure = {", "    cholerichumour = {")
 local eat_pear_src = extract(empty_source, EMPTY, "empty.eat_pear = function()", "\nend\n", true)
--- the herbs the herb loop makes handlers for, empty.herb_affs
-local herb_loop_src = extract(empty_source, EMPTY, "empty.herb_affs = {", "for herbname, herbaffs in pairs(empty.herb_affs) do")
+-- the herbs the herb loop makes handlers for, empty.herb_affs, as the real
+-- loaders leave it
+local herb_affs = dofile("tools/svof_world.lua").new().svo.empty.herb_affs
 print(string.format("extracted %d bytes of the real pressure entry and %d of empty.eat_pear",
   #entry_src, #eat_pear_src))
 
@@ -152,7 +153,8 @@ do
 end
 
 -- The herb loop's handlers take herb balance, so pear must stay out of it.
-check("pear is not in the herb loop", herb_loop_src:find("pear", 1, true), nil)
+check("pear is not in the herb loop", herb_affs.pear, nil)
+check("which still makes handlers for kelp", type(herb_affs.kelp), "table")
 
 print(string.format("%d checks, %d failures", checks, failures))
 if failures > 0 then os.exit(1) end

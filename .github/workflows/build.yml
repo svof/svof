@@ -339,6 +339,14 @@ jobs:
       - name: test afflictions
         run: lua tools/test_afflictions.lua
 
+      # Gate 1.99999. What an empty eat of each herb rules out, which
+      # svo.dict_setup derives from the entries' eatcure: the same names as
+      # the table it replaced, in every class, a new entry joining its herb,
+      # and a player's own affliction ruled out once, through empty.defined.
+      # Runs the real loaders (tools/svof_world.lua).
+      - name: test herb cures
+        run: lua tools/test_herb_cures.lua
+
       # Gate 1.95. Focus wiring: an affliction's focus block, its name in
       # empty.focuscurables and in the focus_cured_ generator, and its line in
       # the Focus trigger chain, read from the real sources and checked

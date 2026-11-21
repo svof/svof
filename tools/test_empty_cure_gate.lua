@@ -221,6 +221,10 @@ do
   end
   if not chunk then error("could not load the extracted handlers: " .. tostring(err)) end
   chunk()
+  -- svo.dict_setup fills what each herb cures, from the dictionary
+  for herb, list in pairs(dofile("tools/svof_world.lua").new().svo.empty.herb_affs) do
+    empty.herb_affs[herb] = list
+  end
 
   empty.eat_ash()
   for _, name in ipairs({'hallucinations', 'hypersomnia', 'confusion', 'paranoia', 'dementia', 'crescendo'}) do

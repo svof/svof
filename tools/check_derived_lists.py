@@ -516,37 +516,45 @@ def compare(data):
         broken.append("derived cures for only %d items, expected at least %d"
                       % (len(by_item), CURES_BY_ITEM_FLOOR))
 
-    # the table the herb loop makes handlers from, empty.herb_affs
+    # the herbs the herb loop makes handlers for, empty.herb_affs. dict_setup
+    # fills each list from the entries' eatcure, so there is nothing to
+    # compare: the lists ARE cures_by_item. A name written into one by hand
+    # would be emptied away by dict_setup, so that is what is checked
     gen = brace_body(EMPTY, EMPTY.index(
         "{", EMPTY.index("empty.herb_affs = {")))
-    empty_map = {m.group(1): set(quoted(m.group(2)))
-                 for m in re.finditer(r"(\w+) = \{([^}]*)\}", gen)}
-
-    # A later `empty.eat_<herb> = function()` SHADOWS the generated one, so the
-    # generated map is the wrong answer for any herb that is redefined. Today
-    # none is, and ginger and pear exist only as hand-written handlers.
+    derived = {m.group(1): set(quoted(m.group(2)))
+               for m in re.finditer(r"(\w+) = \{([^}]*)\}", gen)}
+    if len(derived) < HERB_MAP_FLOOR:
+        broken.append("read only %d herbs from the empty map, expected at least %d"
+                      % (len(derived), HERB_MAP_FLOOR))
+    for herb in sorted(derived):
+        if derived[herb]:
+            broken.append(
+                "empty.herb_affs.%s lists %s by hand. dict_setup fills it from "
+                "the entries and empties it first, so put the cure on the "
+                "entry's eatcure instead"
+                % (herb, ", ".join(sorted(derived[herb]))))
     out.append("")
-    shadowed = {}
+    out.append("  empty.herb_affs is derived by dict_setup, for %s"
+               % ", ".join(sorted(derived)))
+
+    # A later `empty.eat_<herb> = function()` SHADOWS the generated one, so a
+    # derived herb that is redefined stops following the dictionary. Ginger
+    # and pear exist only as hand-written handlers, and are compared below.
+    empty_map = {}
     for m in re.finditer(r"^empty\.eat_(\w+) = function", EMPTY, re.M):
         herb = m.group(1)
         end = EMPTY.index("\nend", m.start())
-        shadowed[herb] = set(quoted(EMPTY[m.start():end]))
-    for herb in sorted(shadowed):
-        affs = shadowed[herb]
-        if herb in empty_map:
-            out.append("  note: empty.eat_%s is redefined after the loop; using "
-                       "the live one\n        generated %s\n        live      %s"
-                       % (herb, ", ".join(sorted(empty_map[herb])),
-                          ", ".join(sorted(affs))))
+        affs = set(quoted(EMPTY[m.start():end]))
+        if herb in derived:
+            out.append("  note: empty.eat_%s is redefined after the loop, so it "
+                       "no longer follows the dictionary\n        live      %s"
+                       % (herb, ", ".join(sorted(affs))))
             diff("shadow|%s" % herb,
                  "empty.eat_%s is generated and then redefined; live set is %s"
                  % (herb, ", ".join(sorted(affs))),
-                 sorted(affs), sorted(empty_map[herb]))
+                 sorted(affs), sorted(by_item.get(herb, set())))
         empty_map[herb] = affs
-
-    if len(empty_map) < HERB_MAP_FLOOR:
-        broken.append("read only %d herbs from the empty map, expected at least %d"
-                      % (len(empty_map), HERB_MAP_FLOOR))
 
     out.append("")
     for herb in sorted(empty_map):

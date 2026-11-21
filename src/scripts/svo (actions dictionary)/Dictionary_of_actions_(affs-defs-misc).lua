@@ -15765,6 +15765,24 @@ function svo.dict_setup()
     end
   end
 
+  -- what each herb with a handler in empty.herb_affs cures, from the
+  -- entries' own eatcure, so a new entry needs no second list. Emptied in
+  -- place, since the handlers read these tables when they run. A block that
+  -- puts a defence up cures nothing, so it isn't one of them, and an
+  -- affliction a player defined is ruled out through empty.defined instead
+  for _, list in pairs(empty.herb_affs) do
+    for i = #list, 1, -1 do list[i] = nil end
+  end
+  for action, entry in pairs(svo.dict) do
+    local herb = type(entry) == 'table' and not entry.playerdefined
+      and type(entry.herb) == 'table' and entry.herb
+    local item = herb and not herb.def and type(herb.eatcure) == 'table' and herb.eatcure[1]
+    if item and empty.herb_affs[item] then
+      table.insert(empty.herb_affs[item], action)
+    end
+  end
+  for _, list in pairs(empty.herb_affs) do table.sort(list) end
+
   -- we don't want stuff in svo.dict.lovers.map!
   svo.dict.lovers.map = {}
 end
