@@ -13,9 +13,9 @@ empty.treecurables.
 The four handler families are derived now and no longer among them - what is
 left is *Empty cure handling*, which records what a cure that cured nothing
 rules out, and which cannot be derived from anything else. The two cure-line
-maps in *Main trigger functions* are compared as well: they decide which cure
-in flight a cure line belongs to, and they are one more copy of the
-dictionary's cure fields.
+maps in *Main trigger functions* are derived from the entries too, so nothing
+is compared there; this confirms the derivation is still in place and that
+neither map has become a literal again.
 
 This derives what it can from `svo.dict` and diffs it against whatever else
 holds the same information - a literal, or, since the handler families were
@@ -327,7 +327,7 @@ FLOORS = {
 FOCUS_BLOCK_FLOOR = 12
 HERB_MAP_FLOOR = 6
 SMOKE_HANDLER_FLOOR = 1
-CURE_MAP_FLOORS = {"smokes": 2, "herbs": 6}
+CURE_MAP_KINDS = ("smoke", "herb")
 CURES_BY_ITEM_FLOOR = 15
 DICT_ENTRY_FLOOR = 200
 
@@ -561,12 +561,9 @@ def compare(data):
     # --- the smoke handlers and the cure-line maps ---------------------------
     # empty.smoke_<pipe> holds, for a smoke that cured nothing, what
     # empty.eat_<herb> holds for an herb. The two maps in Main trigger
-    # functions decide which cure in flight a cure line belongs to, so a name
-    # missing from one leaves its cure line crediting another affliction's
-    # action, or none. Both are more copies of the dictionary's cure fields,
-    # and no other gate reads what they say: a name dropped from one only
-    # moves its file's digest in verify_merged, which a regenerated baseline
-    # accepts. Comments go first, because smoke_elm's quotes a smokecure field.
+    # functions decide which cure in flight a cure line belongs to; they are
+    # derived from the entries now, and checked further down for staying so.
+    # Comments go first, because smoke_elm's quotes a smokecure field.
     smokes = {}
     for m in re.finditer(r"^empty\.smoke_(\w+) = function", EMPTY, re.M):
         end = EMPTY.index("\nend", m.start())
@@ -585,27 +582,29 @@ def compare(data):
                      lambda n, p=pipe: "smokes: empty.smoke_%s clears %s, no "
                      "dictionary entry names %s as its cure" % (p, n, p))
 
-    for kind in sorted(CURE_MAP_FLOORS):
-        # the loop's key is named (for herbname, herb in ...), for own_cures
-        start = TRIG.index("-- normal %s\nfor " % kind)
-        body = brace_body(TRIG, TRIG.index("{", start))
-        cure_map = {m.group(1): set(quoted(m.group(2)))
-                    for m in re.finditer(r"(\w+)\s*=\s*\{([^}]*)\}", body)}
-        if len(cure_map) < CURE_MAP_FLOORS[kind]:
-            broken.append("read only %d items from the normal %s cure-line map, "
-                          "expected at least %d"
-                          % (len(cure_map), kind, CURE_MAP_FLOORS[kind]))
-        out.append("")
-        for item in sorted(cure_map):
-            side_by_side("cures_by_item." + item, "cure-line map",
-                         by_item.get(item, set()), cure_map[item],
-                         "curelines|%s|%s" % (kind, item), "only_cure_map",
-                         lambda n, i=item, k=kind: "cure lines: the dictionary says "
-                         "%s cures %s, the normal %s map in Main trigger functions "
-                         "does not list it" % (i, n, k),
-                         lambda n, i=item, k=kind: "cure lines: the normal %s map in "
-                         "Main trigger functions lists %s under %s, and no "
-                         "dictionary entry names %s as its cure" % (k, n, i, i))
+    # The two cure-line maps are derived from the entries when Main trigger
+    # functions loads, so there is no literal left to compare. What this checks
+    # instead is that the derivation is still there and that no literal came
+    # back: reading nothing from a literal that has moved is a clean run that
+    # compared nothing. tools/test_cure_line_maps.lua checks what it produces.
+    out.append("")
+    for kind in sorted(CURE_MAP_KINDS):
+        derived = re.search(r"^for \w+, \w+ in pairs\(cure_groups\('%s', "
+                            % kind, strip_comments(TRIG), re.M)
+        literal = re.search(r"^-- normal %ss\nfor \w+, \w+ in pairs\(\{" % kind,
+                            TRIG, re.M)
+        out.append("  normal %-7s cure-line map: %s"
+                   % (kind, "derived by cure_groups" if derived else "NOT derived"))
+        if not derived:
+            broken.append("the normal %s cure-line map in Main trigger functions "
+                          "is no longer built by cure_groups from the dictionary"
+                          % kind)
+        if literal:
+            broken.append("the normal %s cure-line map in Main trigger functions "
+                          "is a literal table again; it has to stay derived" % kind)
+    if "local function cure_groups(" not in strip_comments(TRIG):
+        broken.append("cure_groups, which derives the cure-line maps, is gone "
+                      "from Main trigger functions")
 
     return diffs, out, broken
 
