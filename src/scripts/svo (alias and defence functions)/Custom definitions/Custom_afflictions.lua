@@ -205,6 +205,9 @@ function afflictions.register(name, spec)
   ok, why = svo.basicaff(name, spec)
   if not ok then return false, why end
   local entry = svo.dict[name]
+  -- the empty handlers rule it out through empty.defined, below, so
+  -- dict_setup leaves it out of empty.herb_affs
+  entry.playerdefined = true
   local cures = svo.affcures(spec.cures)
   if type(spec.cures) == 'table' then cures = spec.cures end
 
