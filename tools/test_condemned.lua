@@ -111,10 +111,7 @@ for _, level in ipairs(BURNS) do
 end
 
 do -- its abbreviation in the @affs prompt tag
-  local f = assert(io.open("src/scripts/svo (core)/svo Utilities/Custom prompt tags/@affs.lua", "r"))
-  local tag = f:read("*a")
-  f:close()
-  eq(tag:match('\n%s*condemned%s*=%s*"([^"]*)"'), "cond", "@affs shows it as cond")
+  eq(world.new().svo.dict.condemned.prompttag, "cond", "@affs shows it as cond")
 end
 
 print(string.format("%d checks, %d failures", checks, #failures))

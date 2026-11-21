@@ -486,7 +486,8 @@ jobs:
         run: lua tools/test_counted_floor.lua
 
       # Gate 1.995. Every affliction svof can show on the prompt has a short
-      # tag in @affs, and every tag names an affliction, in every class.
+      # tag, its entry's prompttag, only afflictions have one, and @affs shows
+      # it, in every class.
       - name: test prompt tags
         run: lua tools/test_prompt_tags.lua
 
